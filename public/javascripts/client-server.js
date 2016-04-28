@@ -48,13 +48,4 @@ var startClientServer = function() {
         }
     }
 	repaintGraph();
-
-    //Client side, wake up an _independent_ amount of time
-    //from the server and try to repaint.  This gives us a smooth
-    //animation and nothing jerky.  You really don't want to put
-    //it within the socket call.  Let that "buffer" the data
-    //instead.
-    clientInterval = setInterval(function () {
-        repaintGraph();
-    },clientUpdates);
 };
