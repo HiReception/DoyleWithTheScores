@@ -48,24 +48,6 @@ var startClientServer = function() {
         }
     }
 
-    /*
-     * Receiving data from the server
-     */
-    socket.on('dataSet', function (data) {
-        if(buffer.length == 0) {
-            rebuffer = true;
-        } else if(buffer.length > minBufferSize){
-            rebuffer = false;
-        }
-        if(buffer.length <= maxBufferSize) {
-            buffer.push(data);
-        }
-    });
-
-    //Add text to the controls
-    $("#updateInterval").val(clientUpdates);
-    $("#serverInterval").val(serverUpdates);
-
     //Client side, wake up an _independent_ amount of time
     //from the server and try to repaint.  This gives us a smooth
     //animation and nothing jerky.  You really don't want to put
@@ -74,43 +56,4 @@ var startClientServer = function() {
     clientInterval = setInterval(function () {
         repaintGraph();
     },clientUpdates);
-
-    /*
-     * The browser throttle button was clicked
-     */
-    $("#clientThrottleButton").click(function(){
-        var v = $("#updateInterval").val();
-        if (v && !isNaN(+v)) {
-            clientUpdates = +v;
-            if (clientUpdates < 1) {
-                clientUpdates = 1;
-                $("#updateInterval").val(clientUpdates);
-            }
-            $(this).val("" + clientUpdates);
-            if(clientInterval) {
-                clearInterval(clientInterval);
-            }
-            clientInterval = setInterval(function () {
-                repaintGraph();
-            },clientUpdates);
-        }
-    });
-
-    /*
-     * The server throttle button was clicked
-     */
-    $("#serverThrottleButton").click(function(){
-        var v =  $("#serverInterval").val();
-        if (v && !isNaN(+v)) {
-            serverUpdates = +v;
-            if (serverUpdates < 1) {
-                serverUpdates = 1;
-                $("#serverInterval").val(serverUpdates);
-            }
-            $(this).val("" + serverUpdates);
-            //Send to the server side that we need data within
-            //this interval
-            socket.emit('updateInterval', serverUpdates);
-        }
-    });
 };
