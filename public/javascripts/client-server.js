@@ -25,9 +25,7 @@ var startClientServer = function() {
      * Repaint graph function.  This repaints the graph
      * at a timed interval
      */
-            repaintGraph.init = true;
-
-            repaintGraph.plot = $.plot("#placeholder", data, {
+            $.plot("#placeholder", data, {
                 series: {
                     shadowSize: 0	// Drawing is faster without shadows
                 },
