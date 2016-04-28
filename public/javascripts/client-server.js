@@ -11,24 +11,23 @@ var startClientServer = function() {
     //Socket IO communications
     var socket = io.connect(host);
 
-    var buffer = [];
     var minBufferSize = 50;
     var maxBufferSize = 300;
     var clientInterval = null;
     var rebuffer = true;
     var serverUpdates = 1;
+	var data = [
+		[1,12], [2, 24], [3,36]
+	];
     var clientUpdates = 30;
 
     /**
      * Repaint graph function.  This repaints the graph
      * at a timed interval
      */
-    function repaintGraph() {
-        $("#buffer").text(Math.floor(buffer.length / maxBufferSize * 100));
-        if (!repaintGraph.init && buffer.length > 0) {
             repaintGraph.init = true;
 
-            repaintGraph.plot = $.plot("#placeholder", [ buffer.shift() ], {
+            repaintGraph.plot = $.plot("#placeholder", data, {
                 series: {
                     shadowSize: 0	// Drawing is faster without shadows
                 },
@@ -40,12 +39,5 @@ var startClientServer = function() {
                     show: false
                 }
             });
-        } else if (!rebuffer && buffer.length > 0) {
-            //If we don't have data, then we have to re-buffer
-            //so there's nothing new to draw.
-            repaintGraph.plot.setData([buffer.shift()]);
-            repaintGraph.plot.draw();
-        }
-    }
-	repaintGraph();
+		
 };
