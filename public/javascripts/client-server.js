@@ -47,6 +47,7 @@ var startClientServer = function() {
             repaintGraph.plot.draw();
         }
     }
+	repaintGraph();
 
     //Client side, wake up an _independent_ amount of time
     //from the server and try to repaint.  This gives us a smooth
