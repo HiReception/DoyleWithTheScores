@@ -34,7 +34,8 @@ var startClientServer = function() {
                     max: 100
                 },
                 xaxis: {
-                    show: false
+                    min: 1,
+					max: 3
                 }
             });
 		
