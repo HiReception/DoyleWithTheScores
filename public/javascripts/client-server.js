@@ -17,7 +17,8 @@ var startClientServer = function() {
     var rebuffer = true;
     var serverUpdates = 1;
 	var data = [
-		[1,12], [2, 24], [3,36]
+	{ label: "A", data: [ [1,12], [2, 24], [3,36] ]},
+	{ label: "B", data: [ [1,25], [2, 50], [3,75] ]}
 	];
     var clientUpdates = 30;
 
