@@ -6,8 +6,141 @@ body
 {
     background: whitesmoke;
     color: #505050;
-    text-shadow: 2px 1px 3px rgba(200, 200, 200, 0.43);
 }
+
+#game-details-wrapper
+{
+	margin: auto;
+	
+}
+
+#last-nine-div
+{
+	float: left;
+	background-color: #ffffff;
+}
+
+#next-nine-div
+{
+	margin-left: 540px;
+	background-color: #ffffff;
+}
+
+table#team-probability-table
+{
+	border: 1px solid black;
+	background-color: #ffffff;
+}
+
+table#next-nine-games, table#last-nine-games
+{
+	border: 1px solid black;
+}
+
+th.team-prob-row
+{
+	white-space: nowrap;
+	height: 20px;
+	line-height: 20px;
+}
+
+td.team-prob-position
+{
+	min-width: 30px;
+	text-align: center;
+	border-left: 1px dotted black;
+	border-right: 1px dotted black;
+}
+
+tr.team-prob-row
+{
+	white-space: nowrap;
+	height: 20px;
+	border: 1px solid black;
+}
+
+tr.game-list-header
+{
+	border-bottom: 1px solid black;
+}
+
+img.teamicon
+{
+	height: 20px;
+	width: 80px;
+}
+
+td.teamicon
+{
+	background-size: 20px,80px;
+	padding-left: 60px;
+	min-width: 150px;
+	max-width: 150px;
+}
+
+td.gameteamicon-left
+{
+	background-size: 20px,80px;
+	padding-left: 60px;
+	text-align: left;
+	min-width: 150px;
+	max-width: 150px;
+}
+
+td.gameteamicon-right
+{
+	background-size: 20px,80px;
+	padding-right: 60px;
+	text-align: right;
+	min-width: 150px;
+	max-width: 150px;
+}
+
+td.gamedetails
+{
+	text-align: center;
+	font-size: 75%;
+	border-bottom: 1px solid black;
+}
+
+td.gamescore
+{
+	text-align: center;
+	min-width: 30px;
+}
+
+td.gamescore-win
+{
+	text-align: center;
+	min-width: 30px;
+	font-weight: bold;
+	color: #00dd00;
+}
+
+td.gamescore-lose
+{
+	text-align: center;
+	min-width: 30px;
+	color: #dd0000;
+	
+}
+
+td.gamecentre
+{
+	min-width: 30px;
+	max-width: 30px;
+	text-align: center;
+}
+
+td.gameperc
+{
+	text-align: center;
+	min-width: 60px;
+	border: 1px dotted black;
+}
+
+
+
 
 /**
  * Coloring h1 a bit off black, removing bold, and shadowing
@@ -30,7 +163,7 @@ h1 {
 
 
 #content {
-    width: 880px;
-    margin: 0 auto;
+    width: auto;
+    margin-left: 150px;
     padding: 10px;
 }

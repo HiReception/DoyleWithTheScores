@@ -23,6 +23,22 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+app.get('/:teamname-left', function(req, res){
+		res.sendfile(__dirname + '/public/afl/icons-left/' + req.params.teamname + '.png');
+	});
+	
+	app.get('/teampositions.csv', function(req, res){
+		res.sendfile(__dirname + '/afl/teampositions.csv');
+	});
+	
+	app.get('/upcominggames.csv', function(req, res){
+		res.sendfile(__dirname + '/afl/upcominggames.csv');
+	});
+	
+	app.get('/:teamname-right', function(req, res){
+		res.sendfile(__dirname + '/public/afl/icons-right/' + req.params.teamname + '.png');
+	});
+
 //create the server
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
