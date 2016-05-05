@@ -24,12 +24,10 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/:teamname-left', function(req, res){
-	console.log("attempting to retrieve " + __dirname + '/public/afl/icons-left/' + req.params.teamname + '.png')
 	res.sendfile(__dirname + '/public/afl/icons-left/' + req.params.teamname + '.png');
 });
 
 app.get('/:teamname-right', function(req, res){
-	console.log("attempting to retrieve " + __dirname + '/public/afl/icons-right/' + req.params.teamname + '.png')
 	res.sendfile(__dirname + '/public/afl/icons-right/' + req.params.teamname + '.png');
 });
 

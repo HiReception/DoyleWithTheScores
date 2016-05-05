@@ -174,11 +174,16 @@ var drawTeamProbTable = function() {
 				teamRow.appendChild(teamTop4);
 				
 				for (var p = 1; p <= 18; p++) {
+					
 					var teamPos = document.createElement("td");
+					var teamPosSpan = document.createElement("span");
+					teamPosSpan.setAttribute("title", parseFloat(teamLine[p + 4]) + "%");
 					teamPos.setAttribute("class", "team-prob-position");
+					teamPos.setAttribute("style", "background-color: rgba(127,127,255," + parseFloat(teamLine[p + 4]).toFixed(2) / 100 + ")");
 					if (teamLine[p + 4] != 0) {
 						var teamPosText = document.createTextNode(parseFloat(teamLine[p + 4]).toFixed(0));
-					teamPos.appendChild(teamPosText);
+						teamPosSpan.appendChild(teamPosText);
+						teamPos.appendChild(teamPosSpan);
 					}
 					
 					teamRow.appendChild(teamPos);
@@ -232,13 +237,13 @@ var drawUpcomingGamesTable = function() {
 				
 				var homeTeam = document.createElement("td");
 				homeTeam.setAttribute("class", "gameteamicon-left");
-				homeTeam.setAttribute("style", "background: url(\"" + gameLine[0] + "-left\") left center no-repeat")
-				homeTeam.appendChild(document.createTextNode(gameLine[0]));
+				homeTeam.setAttribute("style", "background: url(\"" + gameLine[1] + "-left\") left center no-repeat")
+				homeTeam.appendChild(document.createTextNode(gameLine[1]));
 				gameFirstRow.appendChild(homeTeam);
 				
 				var homePerc = document.createElement("td");
 				homePerc.setAttribute("class", "gameperc");
-				homePerc.appendChild(document.createTextNode(parseFloat(gameLine[2]).toFixed(1) + "%"));
+				homePerc.appendChild(document.createTextNode(parseFloat(gameLine[3]).toFixed(1) + "%"));
 				gameFirstRow.appendChild(homePerc);
 				
 				var centre = document.createElement("td");
@@ -248,19 +253,19 @@ var drawUpcomingGamesTable = function() {
 				
 				var awayPerc = document.createElement("td");
 				awayPerc.setAttribute("class", "gameperc");
-				awayPerc.appendChild(document.createTextNode(parseFloat(gameLine[3]).toFixed(1) + "%"));
+				awayPerc.appendChild(document.createTextNode(parseFloat(gameLine[4]).toFixed(1) + "%"));
 				gameFirstRow.appendChild(awayPerc);
 				
 				var awayTeam = document.createElement("td");
 				awayTeam.setAttribute("class", "gameteamicon-right");
-				awayTeam.setAttribute("style", "background: url(\"" + gameLine[1] + "-right\") right center no-repeat")
-				awayTeam.appendChild(document.createTextNode(gameLine[1]));
+				awayTeam.setAttribute("style", "background: url(\"" + gameLine[2] + "-right\") right center no-repeat")
+				awayTeam.appendChild(document.createTextNode(gameLine[2]));
 				gameFirstRow.appendChild(awayTeam);
 				
 				var gameDetails = document.createElement("td");
 				gameDetails.setAttribute("class", "gamedetails");
 				gameDetails.setAttribute("colspan", "5");
-				gameDetails.appendChild(document.createTextNode("Date and Time TBA - Chance of Draw: " + parseFloat(gameLine[4]).toFixed(1) + "%"))
+				gameDetails.appendChild(document.createTextNode(gameLine[0] + " - Chance of Draw: " + parseFloat(gameLine[5]).toFixed(1) + "%"))
 				gameSecondRow.appendChild(gameDetails);
 				
 				
