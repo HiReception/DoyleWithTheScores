@@ -35,6 +35,10 @@ app.get('/teampositions.csv', function(req, res){
 	res.sendfile(__dirname + '/afl/teampositions.csv');
 });
 
+app.get('/mostrecentgames.csv', function(req, res){
+	res.sendfile(__dirname + '/afl/mostrecentgames.csv');
+});
+
 app.get('/upcominggames.csv', function(req, res){
 	res.sendfile(__dirname + '/afl/upcominggames.csv');
 });

@@ -206,9 +206,110 @@ var drawTeamProbTable = function() {
 		}
 	});
 }
+	/*Format for completed game:
+		<tr class="game-list-header"><th colspan="5">Last Nine Games</th></tr>
+				<tr>
+					<td class="gameteamicon-left" style='background: url("[full home team name]-left") left center no-repeat'>[home team nickname]</td>
+					if home team won
+						<td class="gamescore-win">[home score]</td>
+					else if home team lost
+						<td class="gamescore-lose">[home score]</td>
+					else
+						<td class="gamescore">[home score]</td>
+					<td class="gamecentre">vs</td>
+					if away team won
+						<td class="gamescore-win">[away score]</td>
+					else if away team lost
+						<td class="gamescore-lose">[away score]</td>
+					else
+						<td class="gamescore">[home score]</td>
+					<td class="gameteamicon-right" style='background: url("[full away team name]-right.png") right center no-repeat'>[away team nickname]</td>
+				</tr>
+				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: [result chance]</td></tr>
+	*/
+	
+var drawRecentGamesTable = function() {
+	var tableDiv = document.getElementById('last-nine-div');
+	var tableArray = [];
+	var filepath = '/mostrecentgames.csv';
+	$.ajax({
+        url : filepath,
+        dataType: "text",
+        success : function (data) {
+			var lines = data.split('\n');
+			var table = document.createElement("table");
+			table.setAttribute("id", "team-probability-table");
+			var headerRow = document.createElement("tr");
+			headerRow.setAttribute("class", "game-list-header");
+			
+			var headerCell = document.createElement("th");
+			headerCell.setAttribute("colspan", "5");
+			headerCell.appendChild(document.createTextNode("Last Nine Games"));
+			
+			headerRow.appendChild(headerCell);
+			table.appendChild(headerRow);
+			
+			
+			for (var i = 0; i < lines.length - 1; i++) {
+				var gameLine = lines[i].split(',');
+				var gameFirstRow = document.createElement("tr");
+				var gameSecondRow = document.createElement("tr");
+				
+				var homeTeam = document.createElement("td");
+				homeTeam.setAttribute("class", "gameteamicon-left");
+				homeTeam.setAttribute("style", "background: url(\"" + gameLine[1] + "-left\") left center no-repeat")
+				homeTeam.appendChild(document.createTextNode(gameLine[1]));
+				gameFirstRow.appendChild(homeTeam);
+				
+				var homeScore = document.createElement("td");
+				homeScore.appendChild(document.createTextNode(gameLine[3]));
+				gameFirstRow.appendChild(homeScore);
+				
+				var centre = document.createElement("td");
+				centre.setAttribute("class", "gamecentre");
+				centre.appendChild(document.createTextNode("vs"));
+				gameFirstRow.appendChild(centre);
+				
+				var awayScore = document.createElement("td");
+				awayScore.appendChild(document.createTextNode(gameLine[4]));
+				gameFirstRow.appendChild(awayScore);
+				console.log("gameLine[3] = " + gameLine[3] + ", gameLine[4] = " + gameLine[4]);
+				if (parseInt(gameLine[3]) > parseInt(gameLine[4])) {
+					console.log("home win");
+					homeScore.setAttribute("class", "gamescore-win");
+					awayScore.setAttribute("class", "gamescore-lose");
+				} else if (parseInt(gameLine[3]) < parseInt(gameLine[4])) {
+					console.log("away win");
+					homeScore.setAttribute("class", "gamescore-lose");
+					awayScore.setAttribute("class", "gamescore-win");
+				} else {
+					console.log("draw");
+					homeScore.setAttribute("class", "gamescore");
+					awayScore.setAttribute("class", "gamescore");
+				}
+				
+				var awayTeam = document.createElement("td");
+				awayTeam.setAttribute("class", "gameteamicon-right");
+				awayTeam.setAttribute("style", "background: url(\"" + gameLine[2] + "-right\") right center no-repeat")
+				awayTeam.appendChild(document.createTextNode(gameLine[2]));
+				gameFirstRow.appendChild(awayTeam);
+				
+				var gameDetails = document.createElement("td");
+				gameDetails.setAttribute("class", "gamedetails");
+				gameDetails.setAttribute("colspan", "5");
+				gameDetails.appendChild(document.createTextNode(gameLine[0] + " - Predicted chance of this result: " + parseFloat(gameLine[5]).toFixed(1) + "%"))
+				gameSecondRow.appendChild(gameDetails);
+				
+				
+				table.appendChild(gameFirstRow);
+				table.appendChild(gameSecondRow);
+			}
+			tableDiv.appendChild(table);
+		}
+	});
+}
 
 var drawUpcomingGamesTable = function() {
-	console.log("TESTING");
 	var tableDiv = document.getElementById('next-nine-div');
 	var tableArray = [];
 	var filepath = '/upcominggames.csv';

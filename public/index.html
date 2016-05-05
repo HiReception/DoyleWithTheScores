@@ -17,6 +17,7 @@
         $(document).ready(function(){
             startClientServer();
 			drawTeamProbTable();
+			drawRecentGamesTable();
 			drawUpcomingGamesTable();
         });
     </script>
@@ -65,83 +66,7 @@
 				</tr>
 				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: [result chance]</td></tr>
 	-->
-		<div id="last-nine-div">
-			<table id="last-nine-games">
-				<tr class="game-list-header"><th colspan="5">Last Nine Games</th></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("North Melbourne-left") left center no-repeat'>Kangaroos</td>
-					<td class="gamescore-win">61</td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore-lose">45</td>
-					<td class="gameteamicon-right" style='background: url("Western Bulldogs-right") right center no-repeat'>Bulldogs</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("Melbourne-left") left center no-repeat'>Demons</td>
-					<td class="gamescore-lose">96</td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore-win">135</td>
-					<td class="gameteamicon-right" style='background: url("St Kilda-right") right center no-repeat'>Saints</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("Adelaide Crows-left") left center no-repeat'>Crows</td>
-					<td class="gamescore"></td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore"></td>
-					<td class="gameteamicon-right" style='background: url("Fremantle-right") right center no-repeat'>Dockers</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("GWS Giants-left") left center no-repeat'>Giants</td>
-					<td class="gamescore"></td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore"></td>
-					<td class="gameteamicon-right" style='background: url("Hawthorn-right") right center no-repeat'>Hawks</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("Richmond-left") left center no-repeat'>Tigers</td>
-					<td class="gamescore"></td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore"></td>
-					<td class="gameteamicon-right" style='background: url("Port Adelaide-right") right center no-repeat'>Power</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("Geelong Cats-left") left center no-repeat'>Cats</td>
-					<td class="gamescore"></td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore"></td>
-					<td class="gameteamicon-right" style='background: url("Gold Coast Suns-right") right center no-repeat'>Suns</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("Brisbane Lions-left") left center no-repeat'>Lions</td>
-					<td class="gamescore"></td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore"></td>
-					<td class="gameteamicon-right" style='background: url("Sydney Swans-right") right center no-repeat'>Swans</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("Carlton-left") left center no-repeat'>Blues</td>
-					<td class="gamescore"></td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore"></td>
-					<td class="gameteamicon-right" style='background: url("Essendon-right") right center no-repeat'>Bombers</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-				<tr>
-					<td class="gameteamicon-left" style='background: url("Collingwood-left") left center no-repeat'>Magpies</td>
-					<td class="gamescore"></td>
-					<td class="gamecentre">vs</td>
-					<td class="gamescore"></td>
-					<td class="gameteamicon-right" style='background: url("West Coast Eagles-right") right center no-repeat'>Eagles</td>
-				</tr>
-				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: 54.0%</td></tr>
-			</table>
-		</div>
+		<div id="last-nine-div"></div>
 		<div id="next-nine-div"></div>
 	</div>
 	
