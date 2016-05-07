@@ -1,6 +1,16 @@
 /**
  * Starts the client and server pushing functionality
  */
+
+ function generateImage (image) {
+    return function getImage(ctx, x, y, radius, shadow) {
+        var img = new Image();
+        img.onload = function() {
+            ctx.drawImage(img, x, y, img.width, img.height)
+        }
+        img.src = image;
+    }
+ }
 var startClientServer = function() {
 
     //Get the URL to hand into the connect call
@@ -11,35 +21,69 @@ var startClientServer = function() {
     //Socket IO communications
     var socket = io.connect(host);
 
-    var minBufferSize = 50;
-    var maxBufferSize = 300;
-    var clientInterval = null;
-    var rebuffer = true;
-    var serverUpdates = 1;
-	var data = [
-	{ label: "A", data: [ [1,12], [2, 24], [3,36] ]},
-	{ label: "B", data: [ [1,25], [2, 50], [3,75] ]}
-	];
-    var clientUpdates = 30;
+	$.getJSON("averageforagainst.json", function(json) {
+	    var data = [];
+	    for (var i = 0; i < json.length; i++) {
+	        data.push({
+	            label: json[i]["name"],
+	            data: [[json[i]["ave-agst"], json[i]["ave-for"]]],
+	            points: {
+	                symbol: generateImage(json[i]["name"] + "-circle")
+	            }
+	        })
+	    }
+	    console.log(data)
 
-    /**
-     * Repaint graph function.  This repaints the graph
-     * at a timed interval
-     */
-            $.plot("#placeholder", data, {
-                series: {
-                    shadowSize: 0	// Drawing is faster without shadows
-                },
-                yaxis: {
-                    min: 0,
-                    max: 100
-                },
-                xaxis: {
-                    min: 1,
-					max: 3
-                }
-            });
-		
+	    $.plot("#placeholder", data, {
+                        series: {
+                            shadowSize: 0,	// Drawing is faster without shadows
+                            points: {
+                                show: true
+                            },
+                            lines: {
+                                show: false
+                            },
+                        },
+                        yaxis: {
+                            axisLabel: 'Average Points For per Game',
+                            axisLabelFontSizePixels: 12,
+                            axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+                            axisLabelPadding: 5,
+                            min: 50,
+                            max: 120
+                        },
+                        xaxis: {
+                            axisLabel: 'Average Points Against per Game',
+                            axisLabelFontSizePixels: 12,
+                            axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+                            axisLabelPadding: 5,
+                            min: 50,
+        					max: 120
+                        },
+                        grid: {
+                            markings: [
+                                {
+                                    xaxis: { from: 0, to: 80 },
+                                    yaxis: { from: 100, to: 120 },
+                                    color: "#88ff88"
+                                },
+                                {
+                                    xaxis: { from: 0, to: 120 },
+                                    yaxis: { from: 100, to: 100 },
+                                    color: "#00bb00"
+                                },
+                                {
+                                    xaxis: { from: 80, to: 80 },
+                                    yaxis: { from: 0, to: 120 },
+                                    color: "#00bb00"
+                                },
+                            ]
+                        },
+                        legend: {
+                            show: false
+                        }
+                    });
+	})
 };
 
 /*Format for Team Probability line:
