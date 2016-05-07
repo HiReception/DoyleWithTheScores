@@ -127,6 +127,13 @@ var drawTeamProbTable = function() {
 				var headerNextText = document.createTextNode("Next Game");
 				headerNext.appendChild(headerNextText);
 				headerRow.appendChild(headerNext);
+
+				var headerAve = document.createElement("th");
+                headerAve.setAttribute("class", "team-prob-ave");
+                headerAve.setAttribute("rowspan", "2");
+                var headerAveText = document.createTextNode("Ave Seed");
+                headerAve.appendChild(headerAveText);
+                headerRow.appendChild(headerAve);
 				
 				table.appendChild(headerRow);
 				var headerSecondRow = document.createElement("tr");
@@ -154,21 +161,25 @@ var drawTeamProbTable = function() {
 				teamRow.appendChild(teamName);
 				
 				var teamWDL = document.createElement("td");
+				teamWDL.setAttribute("class", "team-prob-wdl");
 				var teamWDLText = document.createTextNode(teamLine[1]);
 				teamWDL.appendChild(teamWDLText);
 				teamRow.appendChild(teamWDL);
 				
 				var teamPerc = document.createElement("td");
+				teamPerc.setAttribute("class", "team-prob-perc");
 				var teamPercText = document.createTextNode(parseFloat(teamLine[2] * 100).toFixed(1));
 				teamPerc.appendChild(teamPercText);
 				teamRow.appendChild(teamPerc);
 				
 				var teamTop8 = document.createElement("td");
+				teamTop8.setAttribute("class", "team-prob-finals");
 				var teamTop8Text = document.createTextNode(parseFloat(teamLine[3]).toFixed(2) + "%");
 				teamTop8.appendChild(teamTop8Text);
 				teamRow.appendChild(teamTop8);
 				
 				var teamTop4 = document.createElement("td");
+				teamTop4.setAttribute("class", "team-prob-finals");
 				var teamTop4Text = document.createTextNode(parseFloat(teamLine[4]).toFixed(2) + "%");
 				teamTop4.appendChild(teamTop4Text);
 				teamRow.appendChild(teamTop4);
@@ -190,14 +201,22 @@ var drawTeamProbTable = function() {
 				}
 				
 				var teamLast = document.createElement("td");
-				var teamLastText = document.createTextNode("Coming Soon");
+				teamLast.setAttribute("class", "team-prob-lastnext")
+				var teamLastText = document.createTextNode(teamLine[23]);
 				teamLast.appendChild(teamLastText);
 				teamRow.appendChild(teamLast);
 				
 				var teamNext = document.createElement("td");
-				var teamNextText = document.createTextNode("Coming Soon");
+				teamNext.setAttribute("class", "team-prob-lastnext")
+				var teamNextText = document.createTextNode(teamLine[24]);
 				teamNext.appendChild(teamNextText);
 				teamRow.appendChild(teamNext);
+
+				var teamAve = document.createElement("td");
+				teamAve.setAttribute("class", "team-prob-ave")
+                var teamAveText = document.createTextNode(parseFloat(teamLine[25]).toFixed(1));
+                teamAve.appendChild(teamAveText);
+                teamRow.appendChild(teamAve);
 				
 				
 				table.appendChild(teamRow);
@@ -273,17 +292,13 @@ var drawRecentGamesTable = function() {
 				var awayScore = document.createElement("td");
 				awayScore.appendChild(document.createTextNode(gameLine[4]));
 				gameFirstRow.appendChild(awayScore);
-				console.log("gameLine[3] = " + gameLine[3] + ", gameLine[4] = " + gameLine[4]);
 				if (parseInt(gameLine[3]) > parseInt(gameLine[4])) {
-					console.log("home win");
 					homeScore.setAttribute("class", "gamescore-win");
 					awayScore.setAttribute("class", "gamescore-lose");
 				} else if (parseInt(gameLine[3]) < parseInt(gameLine[4])) {
-					console.log("away win");
 					homeScore.setAttribute("class", "gamescore-lose");
 					awayScore.setAttribute("class", "gamescore-win");
 				} else {
-					console.log("draw");
 					homeScore.setAttribute("class", "gamescore");
 					awayScore.setAttribute("class", "gamescore");
 				}
