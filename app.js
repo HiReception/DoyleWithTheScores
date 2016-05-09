@@ -35,16 +35,16 @@ app.get('/:teamname-circle', function(req, res){
 	res.sendfile(__dirname + '/public/afl/icons-circle/' + req.params.teamname + '.png');
 });
 
-app.get('/teampositions.csv', function(req, res){
-	res.sendfile(__dirname + '/afl/teampositions.csv');
+app.get('/teampositions.json', function(req, res){
+	res.sendfile(__dirname + '/afl/teampositions.json');
 });
 
-app.get('/mostrecentgames.csv', function(req, res){
-	res.sendfile(__dirname + '/afl/mostrecentgames.csv');
+app.get('/mostrecentgames.json', function(req, res){
+	res.sendfile(__dirname + '/afl/mostrecentgames.json');
 });
 
-app.get('/upcominggames.csv', function(req, res){
-	res.sendfile(__dirname + '/afl/upcominggames.csv');
+app.get('/upcominggames.json', function(req, res){
+	res.sendfile(__dirname + '/afl/upcominggames.json');
 });
 
 app.get('/averageforagainst.json', function(req, res){
