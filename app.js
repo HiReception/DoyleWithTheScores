@@ -71,12 +71,12 @@ app.get('/firstFinalOpponent.json', function(req, res){
 	res.sendfile(__dirname + '/afl/firstFinalOpponent.json');
 });
 
-app.get('/css/:path', function(req, res) {
+app.get('css/:path', function(req, res) {
     console.log("getting file " + __dirname + '/node_modules/bootstrap/dist/css/' + req.params.path)
     res.sendfile(__dirname + '/node_modules/bootstrap/dist/css/' + req.params.path);
 });
 
-app.get('/js/:path', function(req, res) {
+app.get('js/:path', function(req, res) {
     console.log("getting file " + __dirname + '/node_modules/bootstrap/dist/js/' + req.params.path)
     res.sendfile(__dirname + '/node_modules/bootstrap/dist/js/' + req.params.path);
 });
