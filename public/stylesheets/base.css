@@ -1,13 +1,3 @@
-/**
- * Using some off white for the background color and
- * padding the top.
- */
-body
-{
-    background: whitesmoke;
-    color: #505050;
-}
-
 #game-details-wrapper
 {
 	margin: auto;
@@ -38,23 +28,7 @@ body
     padding: 2px;
 }
 
-#last-nine-div
-{
-	float: left;
-	background-color: #ffffff;
-}
 
-#next-nine-div
-{
-	margin-left: 540px;
-	background-color: #ffffff;
-}
-
-table#team-probability-table
-{
-	border: 1px solid black;
-	background-color: #ffffff;
-}
 
 table#next-nine-games, table#last-nine-games
 {
@@ -64,7 +38,6 @@ table#next-nine-games, table#last-nine-games
 th.team-prob-row
 {
 	white-space: nowrap;
-	height: 20px;
 	line-height: 20px;
 }
 
@@ -96,8 +69,6 @@ td.team-prob-position
 {
 	min-width: 30px;
 	text-align: center;
-	border-left: 1px dotted black;
-	border-right: 1px dotted black;
 }
 
 td.team-prob-lastnext
@@ -125,8 +96,12 @@ td.team-prob-ave
 tr.team-prob-row
 {
 	white-space: nowrap;
-	height: 20px;
-	border: 1px solid black;
+}
+
+.table th.team-prob-header
+{
+	text-align: center;
+	white-space: nowrap;
 }
 
 tr.game-list-header
@@ -140,46 +115,45 @@ img.teamicon
 	width: 80px;
 }
 
-td.teamicon
+.table td.teamicon
 {
 	background-size: 20px,80px;
 	padding-left: 60px;
-	min-width: 150px;
-	max-width: 150px;
+	min-width: 180px;
+	max-width: 180px;
 }
 
-td.gameteamicon-left
+.table td.gameteamicon-left
 {
 	background-size: 20px,80px;
 	padding-left: 60px;
 	text-align: left;
-	min-width: 150px;
-	max-width: 150px;
+	min-width: 200px;
+	max-width: 200px;
 }
 
-td.gameteamicon-right
+.table td.gameteamicon-right
 {
 	background-size: 20px,80px;
 	padding-right: 60px;
 	text-align: right;
-	min-width: 150px;
-	max-width: 150px;
+	min-width: 200px;
+	max-width: 200px;
 }
 
-td.gamedetails
+.table td.gamedetails
 {
 	text-align: center;
 	font-size: 75%;
-	border-bottom: 1px solid black;
 }
 
-td.gamescore
+.table td.gamescore
 {
 	text-align: center;
 	min-width: 30px;
 }
 
-td.gamescore-win
+.table td.gamescore-win
 {
 	text-align: center;
 	min-width: 30px;
@@ -187,7 +161,7 @@ td.gamescore-win
 	color: #00dd00;
 }
 
-td.gamescore-lose
+.table td.gamescore-lose
 {
 	text-align: center;
 	min-width: 30px;
@@ -195,33 +169,23 @@ td.gamescore-lose
 	
 }
 
-td.gamecentre
+.table td.gamecentre
 {
 	min-width: 30px;
 	max-width: 30px;
 	text-align: center;
 }
 
-td.gameperc
+.table td.gameperc
 {
 	text-align: center;
 	min-width: 60px;
-	border: 1px dotted black;
 }
 
 
 
 
-/**
- * Coloring h1 a bit off black, removing bold, and shadowing
- * a touch.
- */
-h1 {
-    color: #505050;
-    text-shadow: 2px 1px 3px rgba(200, 200, 200, 0.43);
-    font-weight: normal;
-    margin-bottom: 0px;
-}
+
 
 #header {
 	position: relative;

@@ -23,6 +23,18 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+app.get('/afl', function(req, res){
+    res.sendfile(__dirname + '/public/afl/index2.html');
+});
+
+app.get('/afl2', function(req, res){
+    res.sendfile(__dirname + '/public/afl/index2.html');
+});
+
+app.get('/', function(req, res) {
+    res.sendfile(__dirname + '/index.html');
+});
+
 app.get('/:teamname-left', function(req, res){
 	res.sendfile(__dirname + '/public/afl/icons-left/' + req.params.teamname + '.png');
 });
@@ -33,6 +45,10 @@ app.get('/:teamname-right', function(req, res){
 
 app.get('/:teamname-circle', function(req, res){
 	res.sendfile(__dirname + '/public/afl/icons-circle/' + req.params.teamname + '.png');
+});
+
+app.get('/:teamname-square', function(req, res){
+	res.sendfile(__dirname + '/public/afl/icons-square/' + req.params.teamname + '.png');
 });
 
 app.get('/teampositions.json', function(req, res){
@@ -50,7 +66,26 @@ app.get('/upcominggames.json', function(req, res){
 app.get('/averageforagainst.json', function(req, res){
 	res.sendfile(__dirname + '/afl/averageforagainst.json');
 });
-	
+
+app.get('/firstFinalOpponent.json', function(req, res){
+	res.sendfile(__dirname + '/afl/firstFinalOpponent.json');
+});
+
+app.get('/css/:path', function(req, res) {
+    res.sendfile(__dirname + '/node_modules/bootstrap/dist/css/' + req.params.path);
+});
+
+app.get('/js/:path', function(req, res) {
+    res.sendfile(__dirname + '/node_modules/bootstrap/dist/js/' + req.params.path);
+});
+
+app.get('/dist/:path', function(req, res) {
+    res.sendfile(__dirname + '/node_modules/bootstrap/dist/' + req.params.path);
+});
+
+app.get('/fonts/:path', function(req, res) {
+    res.sendfile(__dirname + '/node_modules/bootstrap/fonts/' + req.params.path);
+});
 	
 
 //create the server

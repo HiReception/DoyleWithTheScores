@@ -2,6 +2,7 @@
  * Starts the client and server pushing functionality
  */
 
+var teamNames = [];
  function generateImage (image) {
     return function getImage(ctx, x, y, radius, shadow) {
         var img = new Image();
@@ -36,76 +37,66 @@ var startClientServer = function() {
 	    console.log(data)
 
 	    $.plot("#placeholder", data, {
-                        series: {
-                            shadowSize: 0,	// Drawing is faster without shadows
-                            hoverable: true,
-                            points: {
-                                show: true
-                            },
-                            lines: {
-                                show: false
-                            },
-                        },
-                        yaxis: {
-                            axisLabel: 'Average Points For per Game',
-                            axisLabelFontSizePixels: 12,
-                            axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
-                            axisLabelPadding: 5,
-                            min: 50,
-                            max: 120
-                        },
-                        xaxis: {
-                            axisLabel: 'Average Points Against per Game',
-                            axisLabelFontSizePixels: 12,
-                            axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
-                            axisLabelPadding: 5,
-                            min: 50,
-        					max: 120
-                        },
-                        grid: {
-                            markings: [
-                                {
-                                    xaxis: { from: 0, to: 80 },
-                                    yaxis: { from: 100, to: 120 },
-                                    color: "#88ff88"
-                                },
-                                {
-                                    xaxis: { from: 0, to: 120 },
-                                    yaxis: { from: 100, to: 100 },
-                                    color: "#00bb00"
-                                },
-                                {
-                                    xaxis: { from: 80, to: 80 },
-                                    yaxis: { from: 0, to: 120 },
-                                    color: "#00bb00"
-                                },
-                            ],
-                            hoverable: true
-                        },
-                        legend: {
-                            show: false
-                        }
-                    });
+            series: {
+                shadowSize: 0,	// Drawing is faster without shadows
+                hoverable: true,
+                points: {
+                    show: true
+                },
+                lines: {
+                    show: false
+                },
+            },
+            yaxis: {
+                axisLabel: 'Average Points For per Game',
+                axisLabelPadding: 0,
+                autoscaleMargin: 0.2,
+            },
+            xaxis: {
+                axisLabel: 'Average Points Against per Game',
+                axisLabelPadding: 0,
+                autoscaleMargin: 0.2,
+            },
+            grid: {
+                markings: [
+                    {
+                        xaxis: { from: 0, to: 86 },
+                        yaxis: { from: 100 },
+                        color: "#88ff88"
+                    },
+                    {
+                        yaxis: { from: 100, to: 100 },
+                        color: "#00bb00"
+                    },
+                    {
+                        xaxis: { from: 86, to: 86 },
+                        color: "#00bb00"
+                    },
+                ],
+                hoverable: true
+            },
+            legend: {
+                show: false
+            }
+        });
 
-                    $("<div id='tooltip'><div id='tooltip-label'></div><div id='tooltip-for'></div><div id='tooltip-agst'></div></div>").css({
-                                position: "absolute",
-                                display: "none",
-                            }).appendTo('body');
-                    $("#placeholder").bind("plothover", function(event, pos, item) {
-                        if (item) {
-                        var pa = item.datapoint[0].toFixed(2);
-                        var pf = item.datapoint[1].toFixed(2);
-                            $("#tooltip-label").html(item.series.label + " - " + (pf/pa * 100).toFixed(2) + "%")
-                            $("#tooltip-for").html(pf + " scored per game")
-                            $("#tooltip-agst").html(pa + " conceded per game")
-                            $("#tooltip").css({top: item.pageY+5, left: item.pageX+5})
-                        	    .fadeIn(200);
-                                console.log(item.series.label);
-                        } else {
-                            $("#tooltip").hide();
-                        }
-                    })
-
+        $("<div id='tooltip'><div id='tooltip-label'></div><div id='tooltip-for'></div><div id='tooltip-agst'></div></div>").css({
+            position: "absolute",
+            display: "none",
+        }).appendTo('body');
+        $("#placeholder").bind("plothover", function(event, pos, item) {
+            if (item) {
+                var pa = item.datapoint[0].toFixed(2);
+                var pf = item.datapoint[1].toFixed(2);
+                $("#tooltip-label").html(item.series.label + " - " + (pf/pa * 100).toFixed(2) + "%")
+                $("#tooltip-for").html(pf + " scored per game")
+                $("#tooltip-agst").html(pa + " conceded per game")
+                $("#tooltip").css({top: item.pageY+5, left: item.pageX+5}).fadeIn(200);
+                console.log(item.series.label);
+            } else {
+                $("#tooltip").hide();
+            }
+        })
 	})
 };
 
@@ -128,177 +119,187 @@ var drawTeamProbTable = function() {
 	var tableDiv = document.getElementById('team-probability-wrapper');
 	var tableArray = [];
 	$.getJSON("teampositions.json", function(json) {
-			var table = document.createElement("table");
-			table.setAttribute("id", "team-probability-table");
-			var headerRow = document.createElement("tr");
-			
-				var headerName = document.createElement("th");
-				headerName.setAttribute("class", "team-prob-row");
-				headerName.setAttribute("rowspan", "2");
-				var headerNameText = document.createTextNode("Team Name");
-				headerName.appendChild(headerNameText);
-				headerRow.appendChild(headerName);
+		var table = document.createElement("table");
+		table.setAttribute("id", "team-probability-table");
+		table.setAttribute("class", "table table-striped table-condensed")
+		var tableHead = document.createElement("thead");
+		tableHead.setAttribute("class", "team-prob-header")
+		var headerRow = document.createElement("tr");
+		headerRow.setAttribute("class", "team-prob-header");
+		var headerName = document.createElement("th");
+		headerName.setAttribute("class", "team-prob-header");
+		headerName.setAttribute("rowspan", "2");
+		var headerNameText = document.createTextNode("Team Name");
+		headerName.appendChild(headerNameText);
+		headerRow.appendChild(headerName);
 				
-				var headerWDL = document.createElement("th");
-				headerWDL.setAttribute("class", "team-prob-row");
-				headerWDL.setAttribute("rowspan", "2");
-				var headerWDLText = document.createTextNode("W-D-L");
-				headerWDL.appendChild(headerWDLText);
-				headerRow.appendChild(headerWDL);
+		var headerWDL = document.createElement("th");
+		headerWDL.setAttribute("class", "team-prob-header");
+		headerWDL.setAttribute("rowspan", "2");
+		var headerWDLText = document.createTextNode("W-D-L");
+		headerWDL.appendChild(headerWDLText);
+		headerRow.appendChild(headerWDL);
 				
-				var headerPerc = document.createElement("th");
-				headerPerc.setAttribute("class", "team-prob-row");
-				headerPerc.setAttribute("rowspan", "2");
-				var headerPercText = document.createTextNode("%");
-				headerPerc.appendChild(headerPercText);
-				headerRow.appendChild(headerPerc);
+		var headerPerc = document.createElement("th");
+		headerPerc.setAttribute("class", "team-prob-header");
+		headerPerc.setAttribute("rowspan", "2");
+		var headerPercText = document.createTextNode("%");
+		headerPerc.appendChild(headerPercText);
+		headerRow.appendChild(headerPerc);
 				
-				var headerTop8 = document.createElement("th");
-				headerTop8.setAttribute("class", "team-prob-row");
-				headerTop8.setAttribute("rowspan", "2");
-				headerTop8.appendChild(document.createTextNode("Chance of"));
-				headerTop8.appendChild(document.createElement("br"));
-				headerTop8.appendChild(document.createTextNode("Finals"));
-				headerRow.appendChild(headerTop8);
+		var headerTop8 = document.createElement("th");
+		headerTop8.setAttribute("class", "team-prob-header");
+		headerTop8.setAttribute("rowspan", "2");
+		headerTop8.appendChild(document.createTextNode("Chance of"));
+		headerTop8.appendChild(document.createElement("br"));
+		headerTop8.appendChild(document.createTextNode("Finals"));
+		headerRow.appendChild(headerTop8);
 				
-				var headerTop4 = document.createElement("th");
-				headerTop4.setAttribute("class", "team-prob-row");
-				headerTop4.setAttribute("rowspan", "2");
-				headerTop4.appendChild(document.createTextNode("Chance of"));
-				headerTop4.appendChild(document.createElement("br"));
-				headerTop4.appendChild(document.createTextNode("Top 4"));
-				headerRow.appendChild(headerTop4);
+		var headerTop4 = document.createElement("th");
+	    headerTop4.setAttribute("class", "team-prob-header");
+		headerTop4.setAttribute("rowspan", "2");
+		headerTop4.appendChild(document.createTextNode("Chance of"));
+		headerTop4.appendChild(document.createElement("br"));
+		headerTop4.appendChild(document.createTextNode("Top 4"));
+		headerRow.appendChild(headerTop4);
 				
-				var headerPosTop = document.createElement("th");
-				headerPosTop.setAttribute("class", "team-prob-row");
-				headerPosTop.setAttribute("colspan", "18");
-				var headerPosTopText = document.createTextNode("Chance of finishing in position:");
-				headerPosTop.appendChild(headerPosTopText);
-				headerRow.appendChild(headerPosTop);
+		var headerPosTop = document.createElement("th");
+		headerPosTop.setAttribute("class", "team-prob-header");
+		headerPosTop.setAttribute("colspan", "18");
+		var headerPosTopText = document.createTextNode("Chance of finishing in position:");
+		headerPosTop.appendChild(headerPosTopText);
+		headerRow.appendChild(headerPosTop);
 				
-				var headerLast = document.createElement("th");
-				headerLast.setAttribute("class", "team-prob-row");
-				headerLast.setAttribute("rowspan", "2");
-				var headerLastText = document.createTextNode("Last Game");
-				headerLast.appendChild(headerLastText);
-				headerRow.appendChild(headerLast);
+		var headerLast = document.createElement("th");
+		headerLast.setAttribute("class", "team-prob-header");
+		headerLast.setAttribute("rowspan", "2");
+		var headerLastText = document.createTextNode("Last Game");
+		headerLast.appendChild(headerLastText);
+		headerRow.appendChild(headerLast);
 				
-				var headerNext = document.createElement("th");
-				headerNext.setAttribute("class", "team-prob-row");
-				headerNext.setAttribute("rowspan", "2");
-				var headerNextText = document.createTextNode("Next Game");
-				headerNext.appendChild(headerNextText);
-				headerRow.appendChild(headerNext);
+		var headerNext = document.createElement("th");
+		headerNext.setAttribute("class", "team-prob-header");
+		headerNext.setAttribute("rowspan", "2");
+		var headerNextText = document.createTextNode("Next Game");
+		headerNext.appendChild(headerNextText);
+		headerRow.appendChild(headerNext);
 
-				var headerAve = document.createElement("th");
-                headerAve.setAttribute("class", "team-prob-ave");
-                headerAve.setAttribute("rowspan", "2");
-                var headerAveText = document.createTextNode("Ave Seed");
-                headerAve.appendChild(headerAveText);
-                headerRow.appendChild(headerAve);
+		var headerAve = document.createElement("th");
+        headerAve.setAttribute("class", "team-prob-header");
+        headerAve.setAttribute("rowspan", "2");
+        headerAve.appendChild(document.createTextNode("Ave"));
+        headerAve.appendChild(document.createElement("br"));
+        headerAve.appendChild(document.createTextNode("Seed"));
+        headerRow.appendChild(headerAve);
 
-                var headerRPI = document.createElement("th");
-                                headerRPI.setAttribute("class", "team-prob-rpi");
-                                headerRPI.setAttribute("rowspan", "2");
-                                var headerRPIText = document.createTextNode("RPI");
-                                headerRPI.appendChild(headerRPIText);
-                                headerRow.appendChild(headerRPI);
+        var headerRPI = document.createElement("th");
+        headerRPI.setAttribute("class", "team-prob-header");
+        headerRPI.setAttribute("rowspan", "2");
+        var headerRPIText = document.createTextNode("RPI");
+        headerRPI.appendChild(headerRPIText);
+        headerRow.appendChild(headerRPI);
 				
-				table.appendChild(headerRow);
-				var headerSecondRow = document.createElement("tr");
+		tableHead.appendChild(headerRow);
+		var headerSecondRow = document.createElement("tr");
+		headerSecondRow.setAttribute("class", "team-prob-header")
 				
-				for (var p = 1; p <= 18; p++) {
-					var headerPos = document.createElement("th");
-					headerPos.setAttribute("class", "team-prob-row");
-					var headerPosText = document.createTextNode("" + p);
-					headerPos.appendChild(headerPosText);
-					headerSecondRow.appendChild(headerPos);
-				}
-				table.appendChild(headerSecondRow);
+		for (var p = 1; p <= json.length; p++) {
+			var headerPos = document.createElement("th");
+			headerPos.setAttribute("class", "team-prob-header");
+			var headerPosText = document.createTextNode("" + p);
+			headerPos.appendChild(headerPosText);
+			headerSecondRow.appendChild(headerPos);
+		}
+		tableHead.appendChild(headerSecondRow);
+		table.appendChild(tableHead);
 			
-			
-			for (var i = 0; i < json.length; i++) {
-				var teamData = json[i];
-				var teamRow = document.createElement("tr");
-				teamRow.setAttribute("class", "team-prob-row");
+		var tableBody = document.createElement("tbody");
+		for (var i = 0; i < json.length; i++) {
+			var teamData = json[i];
+			teamNames[i] = teamData.name.toString();
+			var teamRow = document.createElement("tr");
+			teamRow.setAttribute("class", "team-prob-row");
+
+			var teamName = document.createElement("td");
+			teamName.setAttribute("class", "teamicon");
+			teamName.setAttribute("style", "background: url(\"" + teamData.name + "-left\") left center no-repeat")
+			var teamNameText = document.createTextNode(teamData.name);
+			teamName.appendChild(teamNameText);
+			teamRow.appendChild(teamName);
 				
-				var teamName = document.createElement("td");
-				teamName.setAttribute("class", "teamicon");
-				teamName.setAttribute("style", "background: url(\"" + teamData.name + "-left\") left center no-repeat")
-				var teamNameText = document.createTextNode(teamData.name);
-				teamName.appendChild(teamNameText);
-				teamRow.appendChild(teamName);
+			var teamWDL = document.createElement("td");
+			teamWDL.setAttribute("class", "team-prob-wdl");
+			var teamWDLText = document.createTextNode(teamData.wdl);
+			teamWDL.appendChild(teamWDLText);
+			teamRow.appendChild(teamWDL);
 				
-				var teamWDL = document.createElement("td");
-				teamWDL.setAttribute("class", "team-prob-wdl");
-				var teamWDLText = document.createTextNode(teamData.wdl);
-				teamWDL.appendChild(teamWDLText);
-				teamRow.appendChild(teamWDL);
+			var teamPerc = document.createElement("td");
+			teamPerc.setAttribute("class", "team-prob-perc");
+			var teamPercText = document.createTextNode(parseFloat(teamData.percentage * 100).toFixed(1));
+			teamPerc.appendChild(teamPercText);
+			teamRow.appendChild(teamPerc);
 				
-				var teamPerc = document.createElement("td");
-				teamPerc.setAttribute("class", "team-prob-perc");
-				var teamPercText = document.createTextNode(parseFloat(teamData.percentage * 100).toFixed(1));
-				teamPerc.appendChild(teamPercText);
-				teamRow.appendChild(teamPerc);
+			var teamTop8 = document.createElement("td");
+			teamTop8.setAttribute("class", "team-prob-finals");
+			var teamTop8Text = document.createTextNode(parseFloat(teamData.finalschance).toFixed(2) + "%");
+			teamTop8.appendChild(teamTop8Text);
+			teamRow.appendChild(teamTop8);
 				
-				var teamTop8 = document.createElement("td");
-				teamTop8.setAttribute("class", "team-prob-finals");
-				var teamTop8Text = document.createTextNode(parseFloat(teamData.finalschance).toFixed(2) + "%");
-				teamTop8.appendChild(teamTop8Text);
-				teamRow.appendChild(teamTop8);
+			var teamTop4 = document.createElement("td");
+			teamTop4.setAttribute("class", "team-prob-finals");
+			var teamTop4Text = document.createTextNode(parseFloat(teamData.top4chance).toFixed(2) + "%");
+			teamTop4.appendChild(teamTop4Text);
+			teamRow.appendChild(teamTop4);
 				
-				var teamTop4 = document.createElement("td");
-				teamTop4.setAttribute("class", "team-prob-finals");
-				var teamTop4Text = document.createTextNode(parseFloat(teamData.top4chance).toFixed(2) + "%");
-				teamTop4.appendChild(teamTop4Text);
-				teamRow.appendChild(teamTop4);
-				
-				for (var p = 1; p <= 18; p++) {
+			for (var p = 1; p <= json.length; p++) {
 					
-					var teamPos = document.createElement("td");
-					var teamPosSpan = document.createElement("span");
-					teamPosSpan.setAttribute("title", parseFloat(teamData.positionchance[p.toString()]) + "%");
-					teamPos.setAttribute("class", "team-prob-position");
-					teamPos.setAttribute("style", "background-color: rgba(127,127,255," + parseFloat(teamData.positionchance[p.toString()]).toFixed(2) / 100 + ")");
-					if (teamData.positionchance[p.toString()] != 0) {
-						var teamPosText = document.createTextNode(parseFloat(teamData.positionchance[p.toString()].toFixed(0)));
-						teamPosSpan.appendChild(teamPosText);
-						teamPos.appendChild(teamPosSpan);
-					}
-					
-					teamRow.appendChild(teamPos);
+				var teamPos = document.createElement("td");
+				var teamPosSpan = document.createElement("span");
+				teamPosSpan.setAttribute("title", parseFloat(teamData.positionchance[p.toString()]) + "%");
+				teamPos.setAttribute("class", "team-prob-position");
+				teamPos.setAttribute("style", "background-color: rgba(127,127,255," + parseFloat(teamData.positionchance[p.toString()]).toFixed(2) / 100 + ")");
+				if (teamData.positionchance[p.toString()] != 0) {
+					var teamPosText = document.createTextNode(parseFloat(teamData.positionchance[p.toString()].toFixed(0)));
+					teamPosSpan.appendChild(teamPosText);
+					teamPos.appendChild(teamPosSpan);
 				}
-				
-				var teamLast = document.createElement("td");
-				teamLast.setAttribute("class", "team-prob-lastnext")
-				var teamLastText = document.createTextNode(teamData.lastgame);
-				teamLast.appendChild(teamLastText);
-				teamRow.appendChild(teamLast);
-				
-				var teamNext = document.createElement("td");
-				teamNext.setAttribute("class", "team-prob-lastnext")
-				var teamNextText = document.createTextNode(teamData.nextgame);
-				teamNext.appendChild(teamNextText);
-				teamRow.appendChild(teamNext);
-
-				var teamAve = document.createElement("td");
-				teamAve.setAttribute("class", "team-prob-ave")
-                var teamAveText = document.createTextNode(parseFloat(teamData.averageseed).toFixed(1));
-                teamAve.appendChild(teamAveText);
-                teamRow.appendChild(teamAve);
-
-                var teamRPI = document.createElement("td");
-                				teamRPI.setAttribute("class", "team-prob-rpi")
-                                var teamRPIText = document.createTextNode(parseFloat(teamData.rpi).toFixed(3));
-                                teamRPI.appendChild(teamRPIText);
-                                teamRow.appendChild(teamRPI);
-				
-				
-				table.appendChild(teamRow);
+					
+				teamRow.appendChild(teamPos);
 			}
-			tableDiv.appendChild(table);
-		});
+				
+			var teamLast = document.createElement("td");
+			teamLast.setAttribute("class", "team-prob-lastnext")
+			var teamLastText = document.createTextNode(teamData.lastgame);
+			teamLast.appendChild(teamLastText);
+			teamRow.appendChild(teamLast);
+				
+			var teamNext = document.createElement("td");
+			teamNext.setAttribute("class", "team-prob-lastnext")
+			var teamNextText = document.createTextNode(teamData.nextgame);
+			teamNext.appendChild(teamNextText);
+			teamRow.appendChild(teamNext);
+
+			var teamAve = document.createElement("td");
+			teamAve.setAttribute("class", "team-prob-ave")
+            var teamAveText = document.createTextNode(parseFloat(teamData.averageseed).toFixed(1));
+            teamAve.appendChild(teamAveText);
+            teamRow.appendChild(teamAve);
+
+            var teamRPI = document.createElement("td");
+            teamRPI.setAttribute("class", "team-prob-rpi")
+            var teamRPIText = document.createTextNode(parseFloat(teamData.rpi).toFixed(3));
+            teamRPI.appendChild(teamRPIText);
+            teamRow.appendChild(teamRPI);
+				
+				
+			tableBody.appendChild(teamRow);
+		}
+		table.appendChild(tableBody);
+		tableDiv.appendChild(table);
+	});
 }
+
+
 	/*Format for completed game:
 		<tr class="game-list-header"><th colspan="5">Last Nine Games</th></tr>
 				<tr>
@@ -327,17 +328,10 @@ var drawRecentGamesTable = function() {
 	$.getJSON("mostrecentgames.json", function(json) {
 			var table = document.createElement("table");
 			table.setAttribute("id", "team-probability-table");
-			var headerRow = document.createElement("tr");
-			headerRow.setAttribute("class", "game-list-header");
-			
-			var headerCell = document.createElement("th");
-			headerCell.setAttribute("colspan", "5");
-			headerCell.appendChild(document.createTextNode("Last Nine Games"));
-			
-			headerRow.appendChild(headerCell);
-			table.appendChild(headerRow);
-			
-			console.log(json.length)
+			table.setAttribute("class", "table table-striped table-condensed");
+
+			var tableBody = document.createElement("tbody");
+
 			for (var i = 0; i < json.length; i++) {
 				var gameData = json[i];
 				var gameFirstRow = document.createElement("tr");
@@ -385,9 +379,11 @@ var drawRecentGamesTable = function() {
 				gameSecondRow.appendChild(gameDetails);
 				
 				
-				table.appendChild(gameFirstRow);
-				table.appendChild(gameSecondRow);
+				tableBody.appendChild(gameFirstRow);
+				tableBody.appendChild(gameSecondRow);
 			}
+
+			table.appendChild(tableBody)
 			tableDiv.appendChild(table);
 	});
 }
@@ -398,16 +394,8 @@ var drawUpcomingGamesTable = function() {
 	$.getJSON("upcominggames.json", function(json) {
 			var table = document.createElement("table");
 			table.setAttribute("id", "team-probability-table");
-			var headerRow = document.createElement("tr");
-			headerRow.setAttribute("class", "game-list-header");
-			
-			var headerCell = document.createElement("th");
-			headerCell.setAttribute("colspan", "5");
-			headerCell.appendChild(document.createTextNode("Next Nine Games"));
-			
-			headerRow.appendChild(headerCell);
-			table.appendChild(headerRow);
-			
+			table.setAttribute("class", "table table-striped table-condensed")
+			var tableBody = document.createElement("tbody");
 			
 			for (var i = 0; i < json.length; i++) {
 				var gameData = json[i];
@@ -448,9 +436,250 @@ var drawUpcomingGamesTable = function() {
 				gameSecondRow.appendChild(gameDetails);
 				
 				
-				table.appendChild(gameFirstRow);
-				table.appendChild(gameSecondRow);
+				tableBody.appendChild(gameFirstRow);
+				tableBody.appendChild(gameSecondRow);
 			}
+			table.appendChild(tableBody);
 			tableDiv.appendChild(table);
 		});
+}
+
+var drawFirstFinalOpponentTable = function() {
+	var tableDiv = document.getElementById('first-final-opponent-div');
+	var tableArray = [];
+	$.getJSON("firstFinalOpponent.json", function(json) {
+	    console.log(teamNames)
+
+		var table = document.createElement("table");
+		table.setAttribute("id", "team-probability-table");
+		table.setAttribute("class", "table table-striped table-condensed");
+		var tableHead = document.createElement("thead");
+		var headerRow = document.createElement("tr");
+
+		var headerName = document.createElement("th");
+		headerName.setAttribute("class", "team-prob-header");
+		headerName.setAttribute("rowspan", "2");
+		var headerNameText = document.createTextNode("Team Name");
+		headerName.appendChild(headerNameText);
+		headerRow.appendChild(headerName);
+
+		var headerPosTop = document.createElement("th");
+		headerPosTop.setAttribute("class", "team-prob-header");
+		headerPosTop.setAttribute("colspan", teamNames.length.toString());
+		var headerPosTopText = document.createTextNode("Chance of playing team in the first week of the Finals:");
+		headerPosTop.appendChild(headerPosTopText);
+		headerRow.appendChild(headerPosTop);
+
+		tableHead.appendChild(headerRow);
+		var headerSecondRow = document.createElement("tr");
+
+		for (var p = 0; p < teamNames.length; p++) {
+			var headerOpp = document.createElement("th");
+			headerOpp.setAttribute("class", "team-prob-header");
+			headerOpp.setAttribute("title", teamNames[p]);
+			var headerOppIcon = document.createElement("img");
+			headerOppIcon.setAttribute("src", teamNames[p] + "-square")
+			headerOpp.appendChild(headerOppIcon);
+			headerSecondRow.appendChild(headerOpp);
+		}
+		tableHead.appendChild(headerSecondRow);
+		table.appendChild(tableHead);
+
+        var tableBody = document.createElement("tbody");
+    	for (var i = 0; i < teamNames.length; i++) {
+			var teamData = json[teamNames[i]];
+			console.log(teamNames[i])
+			console.log(teamData)
+			var teamRow = document.createElement("tr");
+			teamRow.setAttribute("class", "team-prob-row");
+
+			var teamName = document.createElement("td");
+			teamName.setAttribute("class", "teamicon");
+			teamName.setAttribute("style", "background: url(\"" + teamNames[i] + "-left\") left center no-repeat")
+			var teamNameText = document.createTextNode(teamNames[i]);
+			teamName.appendChild(teamNameText);
+			teamRow.appendChild(teamName);
+
+			for (var p = 0; p < teamNames.length; p++) {
+				var teamPos = document.createElement("td");
+				var teamPosSpan = document.createElement("span");
+				teamPosSpan.setAttribute("title", parseFloat(teamData[teamNames[p]]) + "%");
+				teamPos.setAttribute("class", "team-prob-position");
+				teamPos.setAttribute("style", "background-color: rgba(127,127,255," + parseFloat(teamData[teamNames[p]]).toFixed(2) / 100 + ")");
+				if (teamData[teamNames[p]] != 0) {
+					var teamPosText = document.createTextNode(parseFloat(teamData[teamNames[p]]).toFixed(0));
+					teamPosSpan.appendChild(teamPosText);
+					teamPos.appendChild(teamPosSpan);
+				}
+				teamRow.appendChild(teamPos);
+			}
+			tableBody.appendChild(teamRow);
+		}
+		table.appendChild(tableBody);
+		tableDiv.appendChild(table);
+	});
+}
+
+var drawNavbar = function(thispage) {
+    var navbar = document.getElementById("navbar-nav");
+
+    var container = document.createElement("div");
+    container.setAttribute("class", "container");
+
+        var navbarHeader = document.createElement("div");
+        navbarHeader.setAttribute("class", "navbar-header");
+
+            var toggleButton = document.createElement("button");
+            toggleButton.setAttribute("class", "navbar-toggle collapsed");
+            toggleButton.setAttribute("data-toggle", "collapse");
+            toggleButton.setAttribute("data-target", "#navbar");
+            toggleButton.setAttribute("aria-expanded", "false");
+            toggleButton.setAttribute("aria-controls", "navbar");
+
+                var toggleSR = document.createElement("span");
+                toggleSR.setAttribute("class", "sr-only");
+                toggleSR.appendChild(document.createTextNode("Toggle navigation"));
+
+            toggleButton.appendChild(toggleSR);
+            var iconBar = document.createElement("span");
+            iconBar.setAttribute("class", "icon-bar");
+            toggleButton.appendChild(iconBar);
+            toggleButton.appendChild(iconBar);
+            toggleButton.appendChild(iconBar);
+
+        navbarHeader.appendChild(toggleButton);
+
+            var titleButton = document.createElement("a");
+            titleButton.setAttribute("class", "navbar-brand");
+            titleButton.setAttribute("href", "/");
+            titleButton.appendChild(document.createTextNode("Doyle with the Scores"));
+
+        navbarHeader.appendChild(titleButton)
+
+    container.appendChild(navbarHeader);
+
+        var navbarDiv = document.createElement("div");
+        navbarDiv.setAttribute("id", "navbar")
+        navbarDiv.setAttribute("class", "navbar-collapse collapse")
+
+            var navbarList = document.createElement("ul");
+            navbarList.setAttribute("class", "nav navbar-nav")
+
+                var homeButton = document.createElement("li")
+                if (thispage === "home") {
+                    homeButton.setAttribute("class", "active")
+                }
+                    var homeLink = document.createElement("a")
+                    homeLink.setAttribute("href", "/");
+                    homeLink.appendChild(document.createTextNode("Home"));
+
+                homeButton.appendChild(homeLink);
+
+            navbarList.appendChild(homeButton);
+
+                var aflButton = document.createElement("li")
+                if (thispage === "afl") {
+                    aflButton.setAttribute("class", "active")
+                }
+                    var aflLink = document.createElement("a")
+                    aflLink.setAttribute("href", "/afl");
+                    aflLink.appendChild(document.createTextNode("AFL"));
+
+                aflButton.appendChild(aflLink);
+
+            navbarList.appendChild(aflButton);
+
+                var nrlButton = document.createElement("li")
+                if (thispage === "nrl") {
+                    nrlButton.setAttribute("class", "active")
+                }
+                    var nrlLink = document.createElement("a")
+                    nrlLink.setAttribute("href", "#");
+                    nrlLink.appendChild(document.createTextNode("NRL (soon)"));
+
+                nrlButton.appendChild(nrlLink);
+
+            navbarList.appendChild(nrlButton);
+
+                var dropdown = document.createElement("li")
+                dropdown.setAttribute("class", "dropdown")
+
+                    var dropdownToggle = document.createElement("a")
+                        dropdownToggle.setAttribute("href", "#")
+                        dropdownToggle.setAttribute("class", "dropdown-toggle")
+                        dropdownToggle.setAttribute("data-toggle", "dropdown")
+                        dropdownToggle.setAttribute("role", "button")
+                        dropdownToggle.setAttribute("aria-haspopup", "true")
+                        dropdownToggle.setAttribute("aria-expanded", "false")
+                        dropdownToggle.appendChild(document.createTextNode("Other Sports"))
+                            var caret = document.createElement("span")
+                            caret.setAttribute("class", "caret");
+                        dropdownToggle.appendChild(caret);
+
+                dropdown.appendChild(dropdownToggle);
+
+                    var dropdownMenu = document.createElement("ul")
+                    dropdownMenu.setAttribute("class", "dropdown-menu");
+
+                        var superRugbyButton = document.createElement("li")
+                            var superRugbyLink = document.createElement("a")
+                            superRugbyLink.setAttribute("href", "#");
+                            superRugbyLink.appendChild(document.createTextNode("Super Rugby (soon)"))
+                            superRugbyButton.appendChild(superRugbyLink);
+
+                    dropdownMenu.appendChild(superRugbyButton);
+
+                        var aleagueButton = document.createElement("li")
+                            var aleagueLink = document.createElement("a")
+                            aleagueLink.setAttribute("href", "#")
+                            aleagueLink.appendChild(document.createTextNode("A-League (soon)"))
+                        aleagueButton.appendChild(aleagueLink);
+
+                    dropdownMenu.appendChild(aleagueButton);
+
+                        var shieldButton = document.createElement("li")
+                            var shieldLink = document.createElement("a")
+                            shieldLink.setAttribute("href", "#")
+                            shieldLink.appendChild(document.createTextNode("Sheffield Shield (soon)"))
+                        shieldButton.appendChild(shieldLink);
+
+                    dropdownMenu.appendChild(shieldButton);
+
+                        var separator = document.createElement("li")
+                        separator.setAttribute("role", "separator")
+                        separator.setAttribute("class", "divider");
+
+                    dropdownMenu.appendChild(separator);
+
+                        var internationalHeader = document.createElement("li")
+                        internationalHeader.setAttribute("class", "dropdown-header")
+                        internationalHeader.appendChild(document.createTextNode("International Stuff"))
+
+                    dropdownMenu.appendChild(internationalHeader);
+
+                        var cfbButton = document.createElement("li")
+                            var cfbLink = document.createElement("a");
+                            cfbLink.setAttribute("href", "#");
+                            cfbLink.appendChild(document.createTextNode("College Football (soon)"))
+                        cfbButton.appendChild(cfbLink);
+
+                    dropdownMenu.appendChild(cfbButton);
+
+                        var nflButton = document.createElement("li")
+                            var nflLink = document.createElement("a")
+                            nflLink.setAttribute("href", "#")
+                            nflLink.appendChild(document.createTextNode("NFL (soon)"))
+                        nflButton.appendChild(nflLink);
+
+                    dropdownMenu.appendChild(nflButton);
+
+                dropdown.appendChild(dropdownMenu);
+
+            navbarList.appendChild(dropdown);
+
+        navbarDiv.appendChild(navbarList);
+
+    container.appendChild(navbarDiv);
+
+    navbar.appendChild(container);
 }
