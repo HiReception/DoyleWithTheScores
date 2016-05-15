@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Flot Examples: Real-time updates</title>
+    <!-- CSS files -->
+    <link href="stylesheets/pure-min.css" rel="stylesheet" type="text/css">
+    <link href="stylesheets/base.css" rel="stylesheet" type="text/css">
+    <link href="stylesheets/chart-modules.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 8]><script type="text/javascript" src="javascripts/excanvas.min.js"></script><![endif]-->
+    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.flot.min.js"></script>
+    <script type="text/javascript" src="javascripts/socket.io.js"></script>
+    <script type="text/javascript" src="javascripts/client-server.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            startClientServer();
+			drawTeamProbTable();
+			drawRecentGamesTable();
+			drawUpcomingGamesTable();
+        });
+    </script>
+</head>
+<body>
+
+<div id="header">
+    <h1>AFL Finals Positions</h1>
+</div>
+
+<div id="content">
+    <div class="demo-container">
+        <div id="placeholder" class="demo-placeholder"></div>
+    </div>
+
+    <p>
+        The throttle controls limit how fast the server pushes random data and how fast the browser updates its display.
+        If you see the buffer always decreasing to zero, increase the browser throttle to slow
+        the browser's consumption of data.  Otherwise decrease the browser throttle to speed up the chart or increase the
+        server throttle to slow the server down.
+    </p>
+	<div id="team-probability-wrapper">
+			
+
+	</div>
+	<section id="game-details-wrapper">
+	
+	<!-- Format for completed game:
+		<tr class="game-list-header"><th colspan="5">Last Nine Games</th></tr>
+				<tr>
+					<td class="gameteamicon-left" style='background: url("[full home team name]-left") left center no-repeat'>[home team nickname]</td>
+					if home team won
+						<td class="gamescore-win">[home score]</td>
+					else if home team lost
+						<td class="gamescore-lose">[home score]</td>
+					else
+						<td class="gamescore">[home score]</td>
+					<td class="gamecentre">vs</td>
+					if away team won
+						<td class="gamescore-win">[away score]</td>
+					else if away team lost
+						<td class="gamescore-lose">[away score]</td>
+					else
+						<td class="gamescore">[home score]</td>
+					<td class="gameteamicon-right" style='background: url("[full away team name]-right.png") right center no-repeat'>[away team nickname]</td>
+				</tr>
+				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: [result chance]</td></tr>
+	-->
+		<div id="last-nine-div"></div>
+		<div id="next-nine-div"></div>
+	</div>
+	
+</div>
+</body>
+</html>
