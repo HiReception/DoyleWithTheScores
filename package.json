@@ -1,16 +1,17 @@
 {
-  "name": "socketioflotexample",
+  "name": "doyle-sports-predictions",
   "version": "1.0.0",
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.4.x",
+    "chartjs": "^0.3.23",
     "ejs": "0.7.x",
+    "express": "3.4.x",
     "socket.io": "0.9.x"
   },
   "engines": {
     "node": "0.10.x",
-    "npm":  "1.2.x"
-   }
+    "npm": "1.2.x"
+  }
 }

@@ -4,9 +4,14 @@
 
 var teamNames = [];
  function generateImage (image) {
+    console.log("generateImage(" + image + ") called")
     return function getImage(ctx, x, y, radius, shadow) {
+    console.log(shadow)
+        if (shadow) return; // don't draw the image if it's for a shadow
+        console.log("returned function called for " + image)
         var img = new Image();
         img.onload = function() {
+            console.log("onload called for " + image)
             ctx.drawImage(img, x+radius, y+radius, img.width, img.height)
         }
         img.src = image;
@@ -29,7 +34,7 @@ var startClientServer = function() {
 	            label: json[i]["name"],
 	            data: [[json[i]["ave-agst"], json[i]["ave-for"]]],
 	            points: {
-	                radius: 10,
+	                radius: 0,
 	                symbol: generateImage(json[i]["name"] + "-circle")
 	            }
 	        })
@@ -37,6 +42,7 @@ var startClientServer = function() {
 	    console.log(data)
 
 	    $.plot("#placeholder", data, {
+	        shadowSize: 0,
             series: {
                 shadowSize: 0,	// Drawing is faster without shadows
                 hoverable: true,
@@ -51,11 +57,13 @@ var startClientServer = function() {
                 axisLabel: 'Average Points For per Game',
                 axisLabelPadding: 0,
                 autoscaleMargin: 0.2,
+                tickSize: 10,
             },
             xaxis: {
                 axisLabel: 'Average Points Against per Game',
                 axisLabelPadding: 0,
                 autoscaleMargin: 0.2,
+                tickSize: 10,
             },
             grid: {
                 markings: [

@@ -71,22 +71,29 @@ app.get('/firstFinalOpponent.json', function(req, res){
 	res.sendfile(__dirname + '/afl/firstFinalOpponent.json');
 });
 
-app.get('css/:path', function(req, res) {
-    console.log("getting file " + __dirname + '/node_modules/bootstrap/dist/css/' + req.params.path)
-    res.sendfile(__dirname + '/node_modules/bootstrap/dist/css/' + req.params.path);
-});
-
-app.get('js/:path', function(req, res) {
-    console.log("getting file " + __dirname + '/node_modules/bootstrap/dist/js/' + req.params.path)
-    res.sendfile(__dirname + '/node_modules/bootstrap/dist/js/' + req.params.path);
-});
 
 app.get('/dist/:path', function(req, res) {
-    res.sendfile(__dirname + '/node_modules/bootstrap/dist/' + req.params.path);
+    res.sendfile(__dirname + '/bootstrap/dist/' + req.params.path);
 });
 
 app.get('/fonts/:path', function(req, res) {
-    res.sendfile(__dirname + '/node_modules/bootstrap/fonts/' + req.params.path);
+    res.sendfile(__dirname + '/bootstrap/fonts/' + req.params.path);
+});
+
+app.use('/css', function(req, res, next) {
+  // GET 'http://www.example.com/admin/new'
+  res.sendfile(__dirname + '/bootstrap/dist/css' + req.path);
+  console.log(req.originalUrl); // '/admin/new'
+  console.log(req.baseUrl); // '/admin'
+  console.log(req.path); // '/new'
+});
+
+app.use('/js', function(req, res, next) {
+  // GET 'http://www.example.com/admin/new'
+  res.sendfile(__dirname + '/bootstrap/dist/js' + req.path);
+  console.log(req.originalUrl); // '/admin/new'
+  console.log(req.baseUrl); // '/admin'
+  console.log(req.path); // '/new'
 });
 	
 
