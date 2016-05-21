@@ -27,50 +27,54 @@ app.get('/afl', function(req, res){
     res.sendfile(__dirname + '/public/afl/index2.html');
 });
 
-app.get('/afl2', function(req, res){
-    res.sendfile(__dirname + '/public/afl/index2.html');
+app.get('/aleague', function(req, res){
+    res.sendfile(__dirname + '/public/aleague/index.html');
 });
+
 
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
 });
 
-app.get('/:teamname-left', function(req, res){
-	res.sendfile(__dirname + '/public/afl/icons-left/' + req.params.teamname + '.png');
+app.get('/:comp/:teamname-left', function(req, res){
+	res.sendfile(__dirname + '/public/' + req.params.comp +'/icons-left/' + req.params.teamname + '.png');
 });
 
-app.get('/:teamname-right', function(req, res){
-	res.sendfile(__dirname + '/public/afl/icons-right/' + req.params.teamname + '.png');
+app.get('/:comp/:teamname-right', function(req, res){
+	res.sendfile(__dirname + '/public/' + req.params.comp + '/icons-right/' + req.params.teamname + '.png');
 });
 
-app.get('/:teamname-circle', function(req, res){
-	res.sendfile(__dirname + '/public/afl/icons-circle/' + req.params.teamname + '.png');
+app.get('/:comp/:teamname-circle', function(req, res){
+	res.sendfile(__dirname + '/public/' + req.params.comp + '/icons-circle/' + req.params.teamname + '.png');
 });
 
-app.get('/:teamname-square', function(req, res){
-	res.sendfile(__dirname + '/public/afl/icons-square/' + req.params.teamname + '.png');
+app.get('/:comp/:teamname-square', function(req, res){
+	res.sendfile(__dirname + '/public/' + req.params.comp + '/icons-square/' + req.params.teamname + '.png');
 });
 
-app.get('/teampositions.json', function(req, res){
-	res.sendfile(__dirname + '/afl/teampositions.json');
+app.get('/:comp-teampositions', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/teampositions.json');
 });
 
-app.get('/mostrecentgames.json', function(req, res){
-	res.sendfile(__dirname + '/afl/mostrecentgames.json');
+app.get('/:comp-teampositionsheader', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/teampositionsheader.json');
 });
 
-app.get('/upcominggames.json', function(req, res){
-	res.sendfile(__dirname + '/afl/upcominggames.json');
+app.get('/:comp-mostrecentgames', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/mostrecentgames.json');
 });
 
-app.get('/averageforagainst.json', function(req, res){
-	res.sendfile(__dirname + '/afl/averageforagainst.json');
+app.get('/:comp-averageforagainst', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/averageforagainst.json');
 });
 
-app.get('/firstFinalOpponent.json', function(req, res){
-	res.sendfile(__dirname + '/afl/firstFinalOpponent.json');
+app.get('/:comp-upcominggames', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/upcominggames.json');
 });
 
+app.get('/:comp-firstFinalOpponent', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/firstFinalOpponent.json');
+});
 
 app.get('/dist/:path', function(req, res) {
     res.sendfile(__dirname + '/bootstrap/dist/' + req.params.path);

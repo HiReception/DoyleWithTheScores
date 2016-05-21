@@ -1,0 +1,37 @@
+[
+  {
+    "attribute": "wdl",
+    "title": "W-D-L",
+    "class": "team-prob-wdl",
+    "type": "text",
+    "prefix": "",
+    "suffix": ""
+  },
+  {
+    "attribute": "goaldifference",
+    "title": "GD",
+    "class": "team-prob-perc",
+    "type": "number",
+    "decimals": 0,
+    "prefix": "",
+    "suffix": ""
+  },
+  {
+    "attribute": "finalschance",
+    "title": "Chance of Finals",
+    "class": "team-prob-finals",
+    "type": "number",
+    "decimals": 2,
+    "prefix": "",
+    "suffix": "%"
+  },
+  {
+    "attribute": "top2chance",
+    "title": "Chance of Top 2",
+    "class": "team-prob-finals",
+    "type": "number",
+    "decimals": 2,
+    "prefix": "",
+    "suffix": "%"
+  }
+]

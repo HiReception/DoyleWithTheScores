@@ -17,7 +17,7 @@ var teamNames = [];
         img.src = image;
     }
  }
-var startClientServer = function() {
+var startClientServer = function(competition) {
 
     //Get the URL to hand into the connect call
     var http = location.protocol;
@@ -27,7 +27,7 @@ var startClientServer = function() {
     //Socket IO communications
     var socket = io.connect(host);
 
-	$.getJSON("averageforagainst.json", function(json) {
+	$.getJSON(competition + "-averageforagainst", function(json) {
 	    var data = [];
 	    for (var i = 0; i < json.length; i++) {
 	        data.push({
@@ -35,7 +35,7 @@ var startClientServer = function() {
 	            data: [[json[i]["ave-agst"], json[i]["ave-for"]]],
 	            points: {
 	                radius: 0,
-	                symbol: generateImage(json[i]["name"] + "-circle")
+	                symbol: generateImage("/" + competition + "/" + json[i]["name"] + "-circle")
 	            }
 	        })
 	    }
@@ -122,11 +122,12 @@ var startClientServer = function() {
 				</tr>			
 */
 
-var drawTeamProbTable = function() {
+var drawTeamProbTable = function(competition) {
 	console.log("TESTING");
 	var tableDiv = document.getElementById('team-probability-wrapper');
 	var tableArray = [];
-	$.getJSON("teampositions.json", function(json) {
+	$.getJSON("/" + competition + "-teampositions", function(json) {
+	$.getJSON("/" + competition + "-teampositionsheader", function(headerjson) {
 		var table = document.createElement("table");
 		table.setAttribute("id", "team-probability-table");
 		table.setAttribute("class", "table table-striped table-condensed")
@@ -140,40 +141,19 @@ var drawTeamProbTable = function() {
 		var headerNameText = document.createTextNode("Team Name");
 		headerName.appendChild(headerNameText);
 		headerRow.appendChild(headerName);
-				
-		var headerWDL = document.createElement("th");
-		headerWDL.setAttribute("class", "team-prob-header");
-		headerWDL.setAttribute("rowspan", "2");
-		var headerWDLText = document.createTextNode("W-D-L");
-		headerWDL.appendChild(headerWDLText);
-		headerRow.appendChild(headerWDL);
-				
-		var headerPerc = document.createElement("th");
-		headerPerc.setAttribute("class", "team-prob-header");
-		headerPerc.setAttribute("rowspan", "2");
-		var headerPercText = document.createTextNode("%");
-		headerPerc.appendChild(headerPercText);
-		headerRow.appendChild(headerPerc);
-				
-		var headerTop8 = document.createElement("th");
-		headerTop8.setAttribute("class", "team-prob-header");
-		headerTop8.setAttribute("rowspan", "2");
-		headerTop8.appendChild(document.createTextNode("Chance of"));
-		headerTop8.appendChild(document.createElement("br"));
-		headerTop8.appendChild(document.createTextNode("Finals"));
-		headerRow.appendChild(headerTop8);
-				
-		var headerTop4 = document.createElement("th");
-	    headerTop4.setAttribute("class", "team-prob-header");
-		headerTop4.setAttribute("rowspan", "2");
-		headerTop4.appendChild(document.createTextNode("Chance of"));
-		headerTop4.appendChild(document.createElement("br"));
-		headerTop4.appendChild(document.createTextNode("Top 4"));
-		headerRow.appendChild(headerTop4);
+
+		for (var i = 0; i < headerjson.length; i++) {
+		    var headerColumn = document.createElement("th");
+            headerColumn.setAttribute("class", "team-prob-header");
+            headerColumn.setAttribute("rowspan", "2");
+            var headerColumnText = document.createTextNode(headerjson[i].title);
+            headerColumn.appendChild(headerColumnText);
+            headerRow.appendChild(headerColumn);
+		}
 				
 		var headerPosTop = document.createElement("th");
 		headerPosTop.setAttribute("class", "team-prob-header");
-		headerPosTop.setAttribute("colspan", "18");
+		headerPosTop.setAttribute("colspan", json.length.toString());
 		var headerPosTopText = document.createTextNode("Chance of finishing in position:");
 		headerPosTop.appendChild(headerPosTopText);
 		headerRow.appendChild(headerPosTop);
@@ -230,34 +210,25 @@ var drawTeamProbTable = function() {
 
 			var teamName = document.createElement("td");
 			teamName.setAttribute("class", "teamicon");
-			teamName.setAttribute("style", "background: url(\"" + teamData.name + "-left\") left center no-repeat")
+			var styleString = "background: url(\"" + competition + "/" + teamData.name + "-left\") left center no-repeat"
+			teamName.setAttribute("style", styleString)
 			var teamNameText = document.createTextNode(teamData.name);
 			teamName.appendChild(teamNameText);
 			teamRow.appendChild(teamName);
-				
-			var teamWDL = document.createElement("td");
-			teamWDL.setAttribute("class", "team-prob-wdl");
-			var teamWDLText = document.createTextNode(teamData.wdl);
-			teamWDL.appendChild(teamWDLText);
-			teamRow.appendChild(teamWDL);
-				
-			var teamPerc = document.createElement("td");
-			teamPerc.setAttribute("class", "team-prob-perc");
-			var teamPercText = document.createTextNode(parseFloat(teamData.percentage * 100).toFixed(1));
-			teamPerc.appendChild(teamPercText);
-			teamRow.appendChild(teamPerc);
-				
-			var teamTop8 = document.createElement("td");
-			teamTop8.setAttribute("class", "team-prob-finals");
-			var teamTop8Text = document.createTextNode(parseFloat(teamData.finalschance).toFixed(2) + "%");
-			teamTop8.appendChild(teamTop8Text);
-			teamRow.appendChild(teamTop8);
-				
-			var teamTop4 = document.createElement("td");
-			teamTop4.setAttribute("class", "team-prob-finals");
-			var teamTop4Text = document.createTextNode(parseFloat(teamData.top4chance).toFixed(2) + "%");
-			teamTop4.appendChild(teamTop4Text);
-			teamRow.appendChild(teamTop4);
+
+			for (var h = 0; h < headerjson.length; h++) {
+			    console.log(headerjson[h])
+			    var teamValue = document.createElement("td");
+                teamValue.setAttribute("class", headerjson[h].class);
+                var teamValueText;
+                if (headerjson[h].type === "text") {
+                    teamValueText = document.createTextNode(headerjson[h].prefix + teamData[headerjson[h].attribute] + headerjson[h].suffix);
+                } else {
+                    teamValueText = document.createTextNode(headerjson[h].prefix + parseFloat(teamData[headerjson[h].attribute]).toFixed(headerjson[h].decimals) + headerjson[h].suffix);
+                }
+                teamValue.appendChild(teamValueText);
+                teamRow.appendChild(teamValue);
+			}
 				
 			for (var p = 1; p <= json.length; p++) {
 					
@@ -305,6 +276,7 @@ var drawTeamProbTable = function() {
 		table.appendChild(tableBody);
 		tableDiv.appendChild(table);
 	});
+	});
 }
 
 
@@ -330,10 +302,10 @@ var drawTeamProbTable = function() {
 				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: [result chance]</td></tr>
 	*/
 	
-var drawRecentGamesTable = function() {
+var drawRecentGamesTable = function(competition) {
 	var tableDiv = document.getElementById('last-nine-div');
 	var tableArray = [];
-	$.getJSON("mostrecentgames.json", function(json) {
+	$.getJSON("/" + competition + "-mostrecentgames", function(json) {
 			var table = document.createElement("table");
 			table.setAttribute("id", "team-probability-table");
 			table.setAttribute("class", "table table-striped table-condensed");
@@ -347,7 +319,8 @@ var drawRecentGamesTable = function() {
 				
 				var homeTeam = document.createElement("td");
 				homeTeam.setAttribute("class", "gameteamicon-left");
-				homeTeam.setAttribute("style", "background: url(\"" + gameData.hometeam + "-left\") left center no-repeat")
+				var homeStyleString = "background: url(\"" + competition + "/" + gameData.hometeam + "-left\") left center no-repeat"
+				homeTeam.setAttribute("style", homeStyleString)
 				homeTeam.appendChild(document.createTextNode(gameData.hometeam));
 				gameFirstRow.appendChild(homeTeam);
 				
@@ -376,7 +349,7 @@ var drawRecentGamesTable = function() {
 				
 				var awayTeam = document.createElement("td");
 				awayTeam.setAttribute("class", "gameteamicon-right");
-				awayTeam.setAttribute("style", "background: url(\"" + gameData.awayteam + "-right\") right center no-repeat")
+				awayTeam.setAttribute("style", "background: url(\"" + competition + "/" + gameData.awayteam + "-right\") right center no-repeat")
 				awayTeam.appendChild(document.createTextNode(gameData.awayteam));
 				gameFirstRow.appendChild(awayTeam);
 				
@@ -396,10 +369,10 @@ var drawRecentGamesTable = function() {
 	});
 }
 
-var drawUpcomingGamesTable = function() {
+var drawUpcomingGamesTable = function(competition) {
 	var tableDiv = document.getElementById('next-nine-div');
 	var tableArray = [];
-	$.getJSON("upcominggames.json", function(json) {
+	$.getJSON(competition + "-upcominggames", function(json) {
 			var table = document.createElement("table");
 			table.setAttribute("id", "team-probability-table");
 			table.setAttribute("class", "table table-striped table-condensed")
@@ -412,7 +385,7 @@ var drawUpcomingGamesTable = function() {
 				
 				var homeTeam = document.createElement("td");
 				homeTeam.setAttribute("class", "gameteamicon-left");
-				homeTeam.setAttribute("style", "background: url(\"" + gameData.hometeam + "-left\") left center no-repeat")
+				homeTeam.setAttribute("style", "background: url(\"" + competition + "/" + gameData.hometeam + "-left\") left center no-repeat")
 				homeTeam.appendChild(document.createTextNode(gameData.hometeam));
 				gameFirstRow.appendChild(homeTeam);
 				
@@ -433,7 +406,7 @@ var drawUpcomingGamesTable = function() {
 				
 				var awayTeam = document.createElement("td");
 				awayTeam.setAttribute("class", "gameteamicon-right");
-				awayTeam.setAttribute("style", "background: url(\"" + gameData.awayteam + "-right\") right center no-repeat")
+				awayTeam.setAttribute("style", "background: url(\"" + competition + "/" + gameData.awayteam + "-right\") right center no-repeat")
 				awayTeam.appendChild(document.createTextNode(gameData.awayteam));
 				gameFirstRow.appendChild(awayTeam);
 				
@@ -452,10 +425,10 @@ var drawUpcomingGamesTable = function() {
 		});
 }
 
-var drawFirstFinalOpponentTable = function() {
+var drawFirstFinalOpponentTable = function(competition) {
 	var tableDiv = document.getElementById('first-final-opponent-div');
 	var tableArray = [];
-	$.getJSON("firstFinalOpponent.json", function(json) {
+	$.getJSON(competition + "-firstFinalOpponent", function(json) {
 	    console.log(teamNames)
 
 		var table = document.createElement("table");
@@ -486,7 +459,7 @@ var drawFirstFinalOpponentTable = function() {
 			headerOpp.setAttribute("class", "team-prob-header");
 			headerOpp.setAttribute("title", teamNames[p]);
 			var headerOppIcon = document.createElement("img");
-			headerOppIcon.setAttribute("src", teamNames[p] + "-square")
+			headerOppIcon.setAttribute("src", competition + "/" + teamNames[p] + "-square")
 			headerOpp.appendChild(headerOppIcon);
 			headerSecondRow.appendChild(headerOpp);
 		}
@@ -503,7 +476,8 @@ var drawFirstFinalOpponentTable = function() {
 
 			var teamName = document.createElement("td");
 			teamName.setAttribute("class", "teamicon");
-			teamName.setAttribute("style", "background: url(\"" + teamNames[i] + "-left\") left center no-repeat")
+			var styleString = "background: url(\"" + competition + "/" + teamNames[i] + "-left\") left center no-repeat"
+			teamName.setAttribute("style", styleString)
 			var teamNameText = document.createTextNode(teamNames[i]);
 			teamName.appendChild(teamNameText);
 			teamRow.appendChild(teamName);
@@ -609,6 +583,39 @@ var drawNavbar = function(thispage) {
 
             navbarList.appendChild(nrlButton);
 
+                var superRugbyButton = document.createElement("li")
+                if (thispage === "superrugby") {
+                    superRugbyButton.setAttribute("class", "active")
+                }
+                    var superRugbyLink = document.createElement("a")
+                    superRugbyLink.setAttribute("href", "#");
+                    superRugbyLink.appendChild(document.createTextNode("Super Rugby (soon)"))
+                superRugbyButton.appendChild(superRugbyLink);
+
+            navbarList.appendChild(superRugbyButton);
+
+                var aleagueButton = document.createElement("li")
+                if (thispage === "aleague") {
+                    aleagueButton.setAttribute("class", "active")
+                }
+                    var aleagueLink = document.createElement("a")
+                    aleagueLink.setAttribute("href", "/aleague")
+                    aleagueLink.appendChild(document.createTextNode("A-League"))
+                aleagueButton.appendChild(aleagueLink);
+
+            navbarList.appendChild(aleagueButton);
+
+                var shieldButton = document.createElement("li")
+                if (thispage === "sheffieldshield") {
+                    shieldButton.setAttribute("class", "active")
+                }
+                    var shieldLink = document.createElement("a")
+                    shieldLink.setAttribute("href", "#")
+                    shieldLink.appendChild(document.createTextNode("Sheffield Shield (soon)"))
+                shieldButton.appendChild(shieldLink);
+
+            navbarList.appendChild(shieldButton);
+
                 var dropdown = document.createElement("li")
                 dropdown.setAttribute("class", "dropdown")
 
@@ -628,42 +635,6 @@ var drawNavbar = function(thispage) {
 
                     var dropdownMenu = document.createElement("ul")
                     dropdownMenu.setAttribute("class", "dropdown-menu");
-
-                        var superRugbyButton = document.createElement("li")
-                            var superRugbyLink = document.createElement("a")
-                            superRugbyLink.setAttribute("href", "#");
-                            superRugbyLink.appendChild(document.createTextNode("Super Rugby (soon)"))
-                            superRugbyButton.appendChild(superRugbyLink);
-
-                    dropdownMenu.appendChild(superRugbyButton);
-
-                        var aleagueButton = document.createElement("li")
-                            var aleagueLink = document.createElement("a")
-                            aleagueLink.setAttribute("href", "#")
-                            aleagueLink.appendChild(document.createTextNode("A-League (soon)"))
-                        aleagueButton.appendChild(aleagueLink);
-
-                    dropdownMenu.appendChild(aleagueButton);
-
-                        var shieldButton = document.createElement("li")
-                            var shieldLink = document.createElement("a")
-                            shieldLink.setAttribute("href", "#")
-                            shieldLink.appendChild(document.createTextNode("Sheffield Shield (soon)"))
-                        shieldButton.appendChild(shieldLink);
-
-                    dropdownMenu.appendChild(shieldButton);
-
-                        var separator = document.createElement("li")
-                        separator.setAttribute("role", "separator")
-                        separator.setAttribute("class", "divider");
-
-                    dropdownMenu.appendChild(separator);
-
-                        var internationalHeader = document.createElement("li")
-                        internationalHeader.setAttribute("class", "dropdown-header")
-                        internationalHeader.appendChild(document.createTextNode("International Stuff"))
-
-                    dropdownMenu.appendChild(internationalHeader);
 
                         var cfbButton = document.createElement("li")
                             var cfbLink = document.createElement("a");

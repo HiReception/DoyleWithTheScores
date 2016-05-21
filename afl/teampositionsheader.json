@@ -1,0 +1,37 @@
+[
+  {
+    "attribute": "wdl",
+    "title": "W-D-L",
+    "class": "team-prob-wdl",
+    "type": "text",
+    "prefix": "",
+    "suffix": ""
+  },
+  {
+    "attribute": "percentage",
+    "title": "%",
+    "class": "team-prob-perc",
+    "type": "number",
+    "decimals": 1,
+    "prefix": "",
+    "suffix": ""
+  },
+  {
+    "attribute": "finalschance",
+    "title": "Chance of Finals",
+    "class": "team-prob-finals",
+    "decimals": 2,
+    "type": "number",
+    "prefix": "",
+    "suffix": "%"
+  },
+  {
+    "attribute": "top4chance",
+    "title": "Chance of Top 4",
+    "class": "team-prob-finals",
+    "decimals": 2,
+    "type": "number",
+    "prefix": "",
+    "suffix": "%"
+  }
+]
