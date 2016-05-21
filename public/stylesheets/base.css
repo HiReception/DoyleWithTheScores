@@ -129,6 +129,7 @@ img.teamicon
 	text-align: left;
 	min-width: 200px;
 	max-width: 200px;
+	white-space: nowrap;
 }
 
 .table td.gameteamicon-right
@@ -138,6 +139,7 @@ img.teamicon
 	text-align: right;
 	min-width: 200px;
 	max-width: 200px;
+	white-space: nowrap;
 }
 
 .table td.gamedetails

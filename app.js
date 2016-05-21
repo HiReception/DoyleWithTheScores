@@ -27,6 +27,10 @@ app.get('/afl', function(req, res){
     res.sendfile(__dirname + '/public/afl/index2.html');
 });
 
+app.get('/nrl', function(req, res){
+    res.sendfile(__dirname + '/public/nrl/index.html');
+});
+
 app.get('/aleague', function(req, res){
     res.sendfile(__dirname + '/public/aleague/index.html');
 });

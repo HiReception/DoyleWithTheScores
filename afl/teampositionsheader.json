@@ -8,6 +8,15 @@
     "suffix": ""
   },
   {
+    "attribute": "prem-pts",
+    "title": "Pts",
+    "class": "team-prob-perc",
+    "type": "number",
+    "decimals": 0,
+    "prefix": "",
+    "suffix": ""
+  },
+  {
     "attribute": "percentage",
     "title": "%",
     "class": "team-prob-perc",
@@ -18,7 +27,7 @@
   },
   {
     "attribute": "finalschance",
-    "title": "Chance of Finals",
+    "title": "Chance of<br/>Finals",
     "class": "team-prob-finals",
     "decimals": 2,
     "type": "number",
@@ -27,7 +36,7 @@
   },
   {
     "attribute": "top4chance",
-    "title": "Chance of Top 4",
+    "title": "Chance of<br/>Top 4",
     "class": "team-prob-finals",
     "decimals": 2,
     "type": "number",

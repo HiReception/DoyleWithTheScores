@@ -1,0 +1,46 @@
+[
+  {
+    "attribute": "wdl",
+    "title": "W-D-L",
+    "class": "team-prob-wdl",
+    "type": "text",
+    "prefix": "",
+    "suffix": ""
+  },
+  {
+    "attribute": "prem-pts",
+    "title": "Pts",
+    "class": "team-prob-perc",
+    "type": "number",
+    "decimals": 0,
+    "prefix": "",
+    "suffix": ""
+  },
+  {
+    "attribute": "point-differential",
+    "title": "PD",
+    "class": "team-prob-perc",
+    "type": "number",
+    "decimals": 0,
+    "prefix": "",
+    "suffix": ""
+  },
+  {
+    "attribute": "finalschance",
+    "title": "Chance of<br/>Finals",
+    "class": "team-prob-finals",
+    "decimals": 2,
+    "type": "number",
+    "prefix": "",
+    "suffix": "%"
+  },
+  {
+    "attribute": "top4chance",
+    "title": "Chance of<br/>Top 4",
+    "class": "team-prob-finals",
+    "decimals": 2,
+    "type": "number",
+    "prefix": "",
+    "suffix": "%"
+  }
+]

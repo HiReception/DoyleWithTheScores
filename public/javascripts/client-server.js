@@ -3,7 +3,7 @@
  */
 
 var teamNames = [];
- function generateImage (image) {
+function generateImage (image) {
     console.log("generateImage(" + image + ") called")
     return function getImage(ctx, x, y, radius, shadow) {
     console.log(shadow)
@@ -16,7 +16,8 @@ var teamNames = [];
         }
         img.src = image;
     }
- }
+}
+
 var startClientServer = function(competition) {
 
     //Get the URL to hand into the connect call
@@ -123,158 +124,144 @@ var startClientServer = function(competition) {
 */
 
 var drawTeamProbTable = function(competition) {
-	console.log("TESTING");
-	var tableDiv = document.getElementById('team-probability-wrapper');
+    console.log("drawTeamProbTable")
+	var tableDiv = $('#team-probability-wrapper');
 	var tableArray = [];
 	$.getJSON("/" + competition + "-teampositions", function(json) {
 	$.getJSON("/" + competition + "-teampositionsheader", function(headerjson) {
-		var table = document.createElement("table");
-		table.setAttribute("id", "team-probability-table");
-		table.setAttribute("class", "table table-striped table-condensed")
-		var tableHead = document.createElement("thead");
-		tableHead.setAttribute("class", "team-prob-header")
-		var headerRow = document.createElement("tr");
-		headerRow.setAttribute("class", "team-prob-header");
-		var headerName = document.createElement("th");
-		headerName.setAttribute("class", "team-prob-header");
-		headerName.setAttribute("rowspan", "2");
-		var headerNameText = document.createTextNode("Team Name");
-		headerName.appendChild(headerNameText);
-		headerRow.appendChild(headerName);
+		var table = $("<table></table>")
+		    .attr("id", "team-probability-table")
+		    .addClass("table table-striped table-condensed");
+
+		var tableHead = $("<thead></thead>")
+		    .addClass("team-prob-header");
+
+		var headerRow = $("<tr></tr>")
+		    .addClass("team-prob-header");
+
+		var headerName = $("<th></th>")
+		    .addClass("team-prob-header")
+		    .attr("rowspan", "2")
+		    .html("Team Name");
+		headerRow.append(headerName);
 
 		for (var i = 0; i < headerjson.length; i++) {
-		    var headerColumn = document.createElement("th");
-            headerColumn.setAttribute("class", "team-prob-header");
-            headerColumn.setAttribute("rowspan", "2");
-            var headerColumnText = document.createTextNode(headerjson[i].title);
-            headerColumn.appendChild(headerColumnText);
-            headerRow.appendChild(headerColumn);
+		    var headerColumn = $("<th></th>")
+                .addClass("team-prob-header")
+                .attr("rowspan", "2")
+                .html(headerjson[i].title);
+            headerRow.append(headerColumn);
 		}
 				
-		var headerPosTop = document.createElement("th");
-		headerPosTop.setAttribute("class", "team-prob-header");
-		headerPosTop.setAttribute("colspan", json.length.toString());
-		var headerPosTopText = document.createTextNode("Chance of finishing in position:");
-		headerPosTop.appendChild(headerPosTopText);
-		headerRow.appendChild(headerPosTop);
+		var headerPosTop = $("<th></th>")
+		    .addClass("team-prob-header")
+		    .attr("colspan", json.length.toString())
+		    .html("Chance of finishing in position:");
+		headerRow.append(headerPosTop);
 				
-		var headerLast = document.createElement("th");
-		headerLast.setAttribute("class", "team-prob-header");
-		headerLast.setAttribute("rowspan", "2");
-		var headerLastText = document.createTextNode("Last Game");
-		headerLast.appendChild(headerLastText);
-		headerRow.appendChild(headerLast);
+		var headerLast = $("<th></th>")
+		    .addClass("team-prob-header")
+		    .attr("rowspan", "2")
+		    .html("Last Game")
+		headerRow.append(headerLast);
 				
-		var headerNext = document.createElement("th");
-		headerNext.setAttribute("class", "team-prob-header");
-		headerNext.setAttribute("rowspan", "2");
-		var headerNextText = document.createTextNode("Next Game");
-		headerNext.appendChild(headerNextText);
-		headerRow.appendChild(headerNext);
+		var headerNext = $("<th></th>")
+		    .addClass("team-prob-header")
+		    .attr("rowspan", "2")
+		    .html("Next Game");
+		headerRow.append(headerNext);
 
-		var headerAve = document.createElement("th");
-        headerAve.setAttribute("class", "team-prob-header");
-        headerAve.setAttribute("rowspan", "2");
-        headerAve.appendChild(document.createTextNode("Ave"));
-        headerAve.appendChild(document.createElement("br"));
-        headerAve.appendChild(document.createTextNode("Seed"));
-        headerRow.appendChild(headerAve);
+		var headerAve = $("<th></th>")
+            .addClass("team-prob-header")
+            .attr("rowspan", "2")
+            .html("Ave<br/>Seed");
+        headerRow.append(headerAve);
 
-        var headerRPI = document.createElement("th");
-        headerRPI.setAttribute("class", "team-prob-header");
-        headerRPI.setAttribute("rowspan", "2");
-        var headerRPIText = document.createTextNode("RPI");
-        headerRPI.appendChild(headerRPIText);
-        headerRow.appendChild(headerRPI);
+        var headerRPI = $("<th></th>")
+            .addClass("team-prob-header")
+            .attr("rowspan", "2")
+            .html("RPI");
+        headerRow.append(headerRPI);
 				
-		tableHead.appendChild(headerRow);
-		var headerSecondRow = document.createElement("tr");
-		headerSecondRow.setAttribute("class", "team-prob-header")
+		tableHead.append(headerRow);
+
+		var headerSecondRow = $("<tr></tr>")
+		.addClass("team-prob-header");
 				
 		for (var p = 1; p <= json.length; p++) {
-			var headerPos = document.createElement("th");
-			headerPos.setAttribute("class", "team-prob-header");
-			var headerPosText = document.createTextNode("" + p);
-			headerPos.appendChild(headerPosText);
-			headerSecondRow.appendChild(headerPos);
+			var headerPos = $("<th></th>")
+			    .addClass("team-prob-header")
+			    .text(p);
+			headerSecondRow.append(headerPos);
 		}
-		tableHead.appendChild(headerSecondRow);
-		table.appendChild(tableHead);
+		tableHead.append(headerSecondRow);
+		table.append(tableHead);
 			
-		var tableBody = document.createElement("tbody");
+		var tableBody = $("<tbody></tbody>");
 		for (var i = 0; i < json.length; i++) {
 			var teamData = json[i];
 			teamNames[i] = teamData.name.toString();
-			var teamRow = document.createElement("tr");
-			teamRow.setAttribute("class", "team-prob-row");
+			var teamRow = $("<tr></tr>")
+			    .addClass("team-prob-row");
 
-			var teamName = document.createElement("td");
-			teamName.setAttribute("class", "teamicon");
-			var styleString = "background: url(\"" + competition + "/" + teamData.name + "-left\") left center no-repeat"
-			teamName.setAttribute("style", styleString)
-			var teamNameText = document.createTextNode(teamData.name);
-			teamName.appendChild(teamNameText);
-			teamRow.appendChild(teamName);
+			var teamName = $("<td></td>")
+			    .addClass("teamicon")
+			    .attr("style", "background: url(\"" + competition + "/" + teamData.name + "-left\") left center no-repeat")
+			    .text(teamData.name);
+			teamRow.append(teamName);
 
 			for (var h = 0; h < headerjson.length; h++) {
-			    console.log(headerjson[h])
-			    var teamValue = document.createElement("td");
-                teamValue.setAttribute("class", headerjson[h].class);
-                var teamValueText;
+			    var teamValue = $("<td></td>")
+			    .addClass(headerjson[h].class);
                 if (headerjson[h].type === "text") {
-                    teamValueText = document.createTextNode(headerjson[h].prefix + teamData[headerjson[h].attribute] + headerjson[h].suffix);
+                    teamValue.html(headerjson[h].prefix + teamData[headerjson[h].attribute] + headerjson[h].suffix);
                 } else {
-                    teamValueText = document.createTextNode(headerjson[h].prefix + parseFloat(teamData[headerjson[h].attribute]).toFixed(headerjson[h].decimals) + headerjson[h].suffix);
+                    teamValue.html(headerjson[h].prefix + parseFloat(teamData[headerjson[h].attribute]).toFixed(headerjson[h].decimals) + headerjson[h].suffix);
                 }
-                teamValue.appendChild(teamValueText);
-                teamRow.appendChild(teamValue);
+                teamRow.append(teamValue);
 			}
 				
 			for (var p = 1; p <= json.length; p++) {
 					
-				var teamPos = document.createElement("td");
-				var teamPosSpan = document.createElement("span");
-				teamPosSpan.setAttribute("title", parseFloat(teamData.positionchance[p.toString()]) + "%");
-				teamPos.setAttribute("class", "team-prob-position");
-				teamPos.setAttribute("style", "background-color: rgba(127,127,255," + parseFloat(teamData.positionchance[p.toString()]).toFixed(2) / 100 + ")");
+				var teamPos = $("<td></td>")
+				    .addClass("team-prob-position")
+                    .attr("style", "background-color: rgba(127,127,255," + parseFloat(teamData.positionchance[p.toString()]).toFixed(2) / 100 + ")");
+
+				var teamPosSpan = $("<span></span>")
+				    .attr("title", parseFloat(teamData.positionchance[p.toString()]) + "%");
 				if (teamData.positionchance[p.toString()] != 0) {
-					var teamPosText = document.createTextNode(parseFloat(teamData.positionchance[p.toString()].toFixed(0)));
-					teamPosSpan.appendChild(teamPosText);
-					teamPos.appendChild(teamPosSpan);
+					teamPosSpan.text(parseFloat(teamData.positionchance[p.toString()].toFixed(0)));
+					teamPos.append(teamPosSpan);
 				}
 					
-				teamRow.appendChild(teamPos);
+				teamRow.append(teamPos);
 			}
 				
-			var teamLast = document.createElement("td");
-			teamLast.setAttribute("class", "team-prob-lastnext")
-			var teamLastText = document.createTextNode(teamData.lastgame);
-			teamLast.appendChild(teamLastText);
-			teamRow.appendChild(teamLast);
+			var teamLast = $("<td></td>")
+			    .addClass("team-prob-lastnext")
+			    .text(teamData.lastgame);
+			teamRow.append(teamLast);
 				
-			var teamNext = document.createElement("td");
-			teamNext.setAttribute("class", "team-prob-lastnext")
-			var teamNextText = document.createTextNode(teamData.nextgame);
-			teamNext.appendChild(teamNextText);
-			teamRow.appendChild(teamNext);
+			var teamNext = $("<td></td>")
+			    .addClass("team-prob-lastnext")
+			    .text(teamData.nextgame);
+			teamRow.append(teamNext);
 
-			var teamAve = document.createElement("td");
-			teamAve.setAttribute("class", "team-prob-ave")
-            var teamAveText = document.createTextNode(parseFloat(teamData.averageseed).toFixed(1));
-            teamAve.appendChild(teamAveText);
-            teamRow.appendChild(teamAve);
+			var teamAve = $("<td></td>")
+			    .addClass("team-prob-ave")
+                .text(parseFloat(teamData.averageseed).toFixed(1));
+            teamRow.append(teamAve);
 
-            var teamRPI = document.createElement("td");
-            teamRPI.setAttribute("class", "team-prob-rpi")
-            var teamRPIText = document.createTextNode(parseFloat(teamData.rpi).toFixed(3));
-            teamRPI.appendChild(teamRPIText);
-            teamRow.appendChild(teamRPI);
+            var teamRPI = $("<td></td>")
+                .addClass("team-prob-rpi")
+                .text(parseFloat(teamData.rpi).toFixed(3))
+            teamRow.append(teamRPI);
 				
 				
-			tableBody.appendChild(teamRow);
+			tableBody.append(teamRow);
 		}
-		table.appendChild(tableBody);
-		tableDiv.appendChild(table);
+		table.append(tableBody);
+		tableDiv.append(table);
 	});
 	});
 }
@@ -303,202 +290,200 @@ var drawTeamProbTable = function(competition) {
 	*/
 	
 var drawRecentGamesTable = function(competition) {
-	var tableDiv = document.getElementById('last-nine-div');
+    console.log("drawRecentGamesTable")
+	var tableDiv = $('#last-nine-div');
 	var tableArray = [];
 	$.getJSON("/" + competition + "-mostrecentgames", function(json) {
-			var table = document.createElement("table");
-			table.setAttribute("id", "team-probability-table");
-			table.setAttribute("class", "table table-striped table-condensed");
+			var table = $("<table></table>")
+			.attr("id", "team-probability-table")
+			.addClass("table table-striped table-condensed");
 
-			var tableBody = document.createElement("tbody");
+			var tableBody = $("<tbody></tbody>");
 
 			for (var i = 0; i < json.length; i++) {
 				var gameData = json[i];
-				var gameFirstRow = document.createElement("tr");
-				var gameSecondRow = document.createElement("tr");
+				var gameFirstRow = $("<tr></tr>");
+				var gameSecondRow = $("<tr></tr>");
 				
-				var homeTeam = document.createElement("td");
-				homeTeam.setAttribute("class", "gameteamicon-left");
-				var homeStyleString = "background: url(\"" + competition + "/" + gameData.hometeam + "-left\") left center no-repeat"
-				homeTeam.setAttribute("style", homeStyleString)
-				homeTeam.appendChild(document.createTextNode(gameData.hometeam));
-				gameFirstRow.appendChild(homeTeam);
+				var homeTeam = $("<td></td>")
+				    .addClass("gameteamicon-left")
+				    .attr("style", "background: url(\"" + competition + "/" + gameData.hometeam + "-left\") left center no-repeat")
+				    .text(gameData.hometeam);
+				gameFirstRow.append(homeTeam);
 				
-				var homeScore = document.createElement("td");
-				homeScore.appendChild(document.createTextNode(gameData.homescore));
-				gameFirstRow.appendChild(homeScore);
+				var homeScore = $("<td></td>")
+				    .text(gameData.homescore);
+				gameFirstRow.append(homeScore);
 				
-				var centre = document.createElement("td");
-				centre.setAttribute("class", "gamecentre");
-				centre.appendChild(document.createTextNode("vs"));
-				gameFirstRow.appendChild(centre);
+				var centre = $("<td></td>")
+				    .addClass("gamecentre")
+				    .text("vs");
+				gameFirstRow.append(centre);
 				
-				var awayScore = document.createElement("td");
-				awayScore.appendChild(document.createTextNode(gameData.awayscore));
-				gameFirstRow.appendChild(awayScore);
+				var awayScore = $("<td></td>")
+				    .text(gameData.awayscore);
+				gameFirstRow.append(awayScore);
+
 				if (parseInt(gameData.homescore) > parseInt(gameData.awayscore)) {
-					homeScore.setAttribute("class", "gamescore-win");
-					awayScore.setAttribute("class", "gamescore-lose");
+					homeScore.addClass("gamescore-win");
+					awayScore.addClass("gamescore-lose");
 				} else if (parseInt(gameData.homescore) < parseInt(gameData.awayscore)) {
-					homeScore.setAttribute("class", "gamescore-lose");
-					awayScore.setAttribute("class", "gamescore-win");
+					homeScore.addClass("gamescore-lose");
+					awayScore.addClass("gamescore-win");
 				} else {
-					homeScore.setAttribute("class", "gamescore");
-					awayScore.setAttribute("class", "gamescore");
+					homeScore.addClass("gamescore");
+					awayScore.addClass("gamescore");
 				}
 				
-				var awayTeam = document.createElement("td");
-				awayTeam.setAttribute("class", "gameteamicon-right");
-				awayTeam.setAttribute("style", "background: url(\"" + competition + "/" + gameData.awayteam + "-right\") right center no-repeat")
-				awayTeam.appendChild(document.createTextNode(gameData.awayteam));
-				gameFirstRow.appendChild(awayTeam);
+				var awayTeam = $("<td></td>")
+				    .addClass("gameteamicon-right")
+				    .attr("style", "background: url(\"" + competition + "/" + gameData.awayteam + "-right\") right center no-repeat")
+				    .text(gameData.awayteam);
+				gameFirstRow.append(awayTeam);
 				
-				var gameDetails = document.createElement("td");
-				gameDetails.setAttribute("class", "gamedetails");
-				gameDetails.setAttribute("colspan", "5");
-				gameDetails.appendChild(document.createTextNode(gameData.date + " - Predicted chance of this result: " + parseFloat(gameData.chanceofresult).toFixed(1) + "%"))
-				gameSecondRow.appendChild(gameDetails);
+				var gameDetails = $("<td></td>")
+				    .addClass("gamedetails")
+				    .attr("colspan", "5")
+				    .text(gameData.date + " - Predicted chance of this result: " + parseFloat(gameData.chanceofresult).toFixed(1) + "%")
+				gameSecondRow.append(gameDetails);
 				
 				
-				tableBody.appendChild(gameFirstRow);
-				tableBody.appendChild(gameSecondRow);
+				tableBody.append(gameFirstRow);
+				tableBody.append(gameSecondRow);
 			}
 
-			table.appendChild(tableBody)
-			tableDiv.appendChild(table);
+			table.append(tableBody)
+			tableDiv.append(table);
 	});
 }
 
 var drawUpcomingGamesTable = function(competition) {
-	var tableDiv = document.getElementById('next-nine-div');
+    console.log("drawUpcomingGamesTable")
+	var tableDiv = $('#next-nine-div');
 	var tableArray = [];
 	$.getJSON(competition + "-upcominggames", function(json) {
-			var table = document.createElement("table");
-			table.setAttribute("id", "team-probability-table");
-			table.setAttribute("class", "table table-striped table-condensed")
-			var tableBody = document.createElement("tbody");
+			var table = $("<table></table>")
+			    .attr("id", "team-probability-table")
+			    .addClass("table table-striped table-condensed");
+			var tableBody = $("<tbody></tbody>");
 			
 			for (var i = 0; i < json.length; i++) {
 				var gameData = json[i];
-				var gameFirstRow = document.createElement("tr");
-				var gameSecondRow = document.createElement("tr");
+				var gameFirstRow = $("<tr></tr>");
+				var gameSecondRow = $("<tr></tr>");
 				
-				var homeTeam = document.createElement("td");
-				homeTeam.setAttribute("class", "gameteamicon-left");
-				homeTeam.setAttribute("style", "background: url(\"" + competition + "/" + gameData.hometeam + "-left\") left center no-repeat")
-				homeTeam.appendChild(document.createTextNode(gameData.hometeam));
-				gameFirstRow.appendChild(homeTeam);
+				var homeTeam = $("<td></td>")
+                    .addClass("gameteamicon-left")
+				    .attr("style", "background: url(\"" + competition + "/" + gameData.hometeam + "-left\") left center no-repeat")
+				    .text(gameData.hometeam);
+				gameFirstRow.append(homeTeam);
 				
-				var homePerc = document.createElement("td");
-				homePerc.setAttribute("class", "gameperc");
-				homePerc.appendChild(document.createTextNode(parseFloat(gameData.homechance).toFixed(1) + "%"));
-				gameFirstRow.appendChild(homePerc);
+				var homePerc = $("<td></td>")
+				    .addClass("gameperc")
+				    .text(parseFloat(gameData.homechance).toFixed(1) + "%");
+				gameFirstRow.append(homePerc);
 				
-				var centre = document.createElement("td");
-				centre.setAttribute("class", "gamecentre");
-				centre.appendChild(document.createTextNode("vs"));
-				gameFirstRow.appendChild(centre);
+				var centre = $("<td></td>")
+				    .addClass("gamecentre")
+				    .text("vs");
+				gameFirstRow.append(centre);
 				
-				var awayPerc = document.createElement("td");
-				awayPerc.setAttribute("class", "gameperc");
-				awayPerc.appendChild(document.createTextNode(parseFloat(gameData.awaychance).toFixed(1) + "%"));
-				gameFirstRow.appendChild(awayPerc);
+				var awayPerc = $("<td></td>")
+				    .addClass("gameperc")
+				    .text(parseFloat(gameData.awaychance).toFixed(1) + "%");
+				gameFirstRow.append(awayPerc);
 				
-				var awayTeam = document.createElement("td");
-				awayTeam.setAttribute("class", "gameteamicon-right");
-				awayTeam.setAttribute("style", "background: url(\"" + competition + "/" + gameData.awayteam + "-right\") right center no-repeat")
-				awayTeam.appendChild(document.createTextNode(gameData.awayteam));
-				gameFirstRow.appendChild(awayTeam);
+				var awayTeam = $("<td></td>")
+				    .addClass("gameteamicon-right")
+				    .attr("style", "background: url(\"" + competition + "/" + gameData.awayteam + "-right\") right center no-repeat")
+				    .text(gameData.awayteam);
+				gameFirstRow.append(awayTeam);
 				
-				var gameDetails = document.createElement("td");
-				gameDetails.setAttribute("class", "gamedetails");
-				gameDetails.setAttribute("colspan", "5");
-				gameDetails.appendChild(document.createTextNode(gameData.date + " - Chance of Draw: " + parseFloat(gameData.drawchance).toFixed(1) + "%"))
-				gameSecondRow.appendChild(gameDetails);
-				
-				
-				tableBody.appendChild(gameFirstRow);
-				tableBody.appendChild(gameSecondRow);
+				var gameDetails = $("<td></td>")
+				    .addClass("gamedetails")
+				    .attr("colspan", "5")
+				    .text(gameData.date + " - Chance of Draw: " + parseFloat(gameData.drawchance).toFixed(1) + "%");
+				gameSecondRow.append(gameDetails);
+
+				tableBody.append(gameFirstRow);
+				tableBody.append(gameSecondRow);
 			}
-			table.appendChild(tableBody);
-			tableDiv.appendChild(table);
+			table.append(tableBody);
+			tableDiv.append(table);
 		});
 }
 
 var drawFirstFinalOpponentTable = function(competition) {
-	var tableDiv = document.getElementById('first-final-opponent-div');
+    console.log("drawFirstFinalOpponentTable")
+	var tableDiv = $('#first-final-opponent-div');
 	var tableArray = [];
 	$.getJSON(competition + "-firstFinalOpponent", function(json) {
-	    console.log(teamNames)
 
-		var table = document.createElement("table");
-		table.setAttribute("id", "team-probability-table");
-		table.setAttribute("class", "table table-striped table-condensed");
-		var tableHead = document.createElement("thead");
-		var headerRow = document.createElement("tr");
 
-		var headerName = document.createElement("th");
-		headerName.setAttribute("class", "team-prob-header");
-		headerName.setAttribute("rowspan", "2");
-		var headerNameText = document.createTextNode("Team Name");
-		headerName.appendChild(headerNameText);
-		headerRow.appendChild(headerName);
+		var table = $('<table></table>')
+		    .attr("id","team-probability-table")
+		    .addClass("table table-striped table-condensed");
+		var tableHead = $('<thead></thead>');
+		var headerRow = $('<tr></tr>');
 
-		var headerPosTop = document.createElement("th");
-		headerPosTop.setAttribute("class", "team-prob-header");
-		headerPosTop.setAttribute("colspan", teamNames.length.toString());
-		var headerPosTopText = document.createTextNode("Chance of playing team in the first week of the Finals:");
-		headerPosTop.appendChild(headerPosTopText);
-		headerRow.appendChild(headerPosTop);
+		var headerName = $("<th></th>")
+		    .addClass("team-prob-header")
+            .attr("rowspan", "2")
+            .html("Team Name");
+		headerRow.append(headerName);
 
-		tableHead.appendChild(headerRow);
-		var headerSecondRow = document.createElement("tr");
+		var headerPosTop = $("<th></th>")
+		    .addClass("team-prob-header")
+		    .attr("colspan", json.length.toString())
+		    .html("Chance of playing team in the first week of the Finals:");
+		headerRow.append(headerPosTop);
 
-		for (var p = 0; p < teamNames.length; p++) {
-			var headerOpp = document.createElement("th");
-			headerOpp.setAttribute("class", "team-prob-header");
-			headerOpp.setAttribute("title", teamNames[p]);
-			var headerOppIcon = document.createElement("img");
-			headerOppIcon.setAttribute("src", competition + "/" + teamNames[p] + "-square")
-			headerOpp.appendChild(headerOppIcon);
-			headerSecondRow.appendChild(headerOpp);
+		tableHead.append(headerRow);
+
+		var headerSecondRow = $("<tr></tr>");
+
+		for (var p = 0; p < json.length; p++) {
+			var headerOpp = $("<th></th>")
+			    .addClass("team-prob-header")
+			    .attr("title", json[p].name);
+			var headerOppIcon = $("<img></img>")
+			    .attr("src", competition + "/" + json[p].name + "-square");
+			headerOpp.append(headerOppIcon);
+			headerSecondRow.append(headerOpp);
 		}
-		tableHead.appendChild(headerSecondRow);
-		table.appendChild(tableHead);
+		tableHead.append(headerSecondRow);
+		table.append(tableHead);
 
-        var tableBody = document.createElement("tbody");
-    	for (var i = 0; i < teamNames.length; i++) {
-			var teamData = json[teamNames[i]];
-			console.log(teamNames[i])
+        var tableBody = $("<tbody></tbody>");
+    	for (var i = 0; i < json.length; i++) {
+			var teamData = json[i];
 			console.log(teamData)
-			var teamRow = document.createElement("tr");
-			teamRow.setAttribute("class", "team-prob-row");
+			var teamRow = $("<tr></tr>")
+			.addClass("team-prob-row");
 
-			var teamName = document.createElement("td");
-			teamName.setAttribute("class", "teamicon");
-			var styleString = "background: url(\"" + competition + "/" + teamNames[i] + "-left\") left center no-repeat"
-			teamName.setAttribute("style", styleString)
-			var teamNameText = document.createTextNode(teamNames[i]);
-			teamName.appendChild(teamNameText);
-			teamRow.appendChild(teamName);
+			var teamName = $("<td></td>")
+			    .addClass("teamicon")
+			    .attr("style", "background: url(\"" + competition + "/" + json[i].name + "-left\") left center no-repeat")
+			    .html(json[i].name);
+			teamRow.append(teamName);
 
-			for (var p = 0; p < teamNames.length; p++) {
-				var teamPos = document.createElement("td");
-				var teamPosSpan = document.createElement("span");
-				teamPosSpan.setAttribute("title", parseFloat(teamData[teamNames[p]]) + "%");
-				teamPos.setAttribute("class", "team-prob-position");
-				teamPos.setAttribute("style", "background-color: rgba(127,127,255," + parseFloat(teamData[teamNames[p]]).toFixed(2) / 100 + ")");
-				if (teamData[teamNames[p]] != 0) {
-					var teamPosText = document.createTextNode(parseFloat(teamData[teamNames[p]]).toFixed(0));
-					teamPosSpan.appendChild(teamPosText);
-					teamPos.appendChild(teamPosSpan);
+			for (var p = 0; p < json.length; p++) {
+				var teamPos = $("<td></td>")
+				.attr("style", "background-color: rgba(127,127,255," + parseFloat(teamData.probabilities[json[p].name]).toFixed(2) / 100 + ")")
+				.addClass("team-prob-position")
+				var teamPosSpan = $("<span></span>")
+				.attr("title", parseFloat(teamData.probabilities[json[p].name]) + "%")
+
+				if (teamData[json[p].name] != 0) {
+					teamPosSpan.text(parseFloat(teamData.probabilities[json[p].name]).toFixed(0));
 				}
-				teamRow.appendChild(teamPos);
+				teamPos.append(teamPosSpan);
+				teamRow.append(teamPos);
 			}
-			tableBody.appendChild(teamRow);
+			tableBody.append(teamRow);
 		}
-		table.appendChild(tableBody);
-		tableDiv.appendChild(table);
+		table.append(tableBody);
+		tableDiv.append(table);
 	});
 }
 
@@ -576,8 +561,8 @@ var drawNavbar = function(thispage) {
                     nrlButton.setAttribute("class", "active")
                 }
                     var nrlLink = document.createElement("a")
-                    nrlLink.setAttribute("href", "#");
-                    nrlLink.appendChild(document.createTextNode("NRL (soon)"));
+                    nrlLink.setAttribute("href", "/nrl");
+                    nrlLink.appendChild(document.createTextNode("NRL"));
 
                 nrlButton.appendChild(nrlLink);
 
