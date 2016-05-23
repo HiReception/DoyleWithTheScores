@@ -74,9 +74,9 @@
         <h1>Scoring Quadrants</h1>
     </div>
 
-    <div class="demo-container container">
-        <div id="placeholder" class="demo-placeholder">
-        </div>
+    <div class="container">
+        <canvas id="placeholder" class="demo-placeholder">
+        </canvas>
     </div>
 </div> <!-- /container -->
 
@@ -86,12 +86,14 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="javascripts/jquery.min.js"></script>
-<script type="text/javascript" src="javascripts/jquery.flot.min.js"></script>
-<script type="text/javascript" src="javascripts/jquery.flot.axislabels.js"></script>
 <script type="text/javascript" src="javascripts/socket.io.js"></script>
+<script type="text/javascript" src="/Chart.js"></script>
+<script type="text/javascript" src="/Chart.Scatter.js"></script>
 <script type="text/javascript" src="javascripts/client-server.js"></script>
+
 
 <script type="text/javascript">
         $(document).ready(function(){

@@ -23,6 +23,15 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+app.get('/Chart.js', function(req, res){
+    res.sendfile(__dirname + '/public/javascripts/Chart.Core.js');
+});
+
+app.get('/Chart.Scatter.js', function(req, res){
+    res.sendfile(__dirname + '/public/javascripts/Chart.Scatter.js');
+});
+
+
 app.get('/afl', function(req, res){
     res.sendfile(__dirname + '/public/afl/index2.html');
 });

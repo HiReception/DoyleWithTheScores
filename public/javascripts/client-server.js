@@ -3,23 +3,18 @@
  */
 
 var teamNames = [];
-function generateImage (image) {
+var generateImage = function (ctx, image) {
     console.log("generateImage(" + image + ") called")
-    return function getImage(ctx, x, y, radius, shadow) {
-    console.log(shadow)
-        if (shadow) return; // don't draw the image if it's for a shadow
-        console.log("returned function called for " + image)
         var img = new Image();
+        img.src = image;
         img.onload = function() {
             console.log("onload called for " + image)
-            ctx.drawImage(img, x+radius, y+radius, img.width, img.height)
+            return ctx.createPattern(img, 'repeat')
         }
-        img.src = image;
-    }
 }
 
 var startClientServer = function(competition) {
-
+    var ctx = $("#placeholder").get(0).getContext("2d");
     //Get the URL to hand into the connect call
     var http = location.protocol;
     var slashes = http.concat("//");
@@ -29,43 +24,45 @@ var startClientServer = function(competition) {
     var socket = io.connect(host);
 
 	$.getJSON(competition + "-averageforagainst", function(json) {
-	    var data = [];
+	    var data = {
+	        datasets: []
+	    };
 	    for (var i = 0; i < json.length; i++) {
-	        data.push({
-	            label: json[i]["name"],
-	            data: [[json[i]["ave-agst"], json[i]["ave-for"]]],
-	            points: {
-	                radius: 0,
-	                symbol: generateImage("/" + competition + "/" + json[i]["name"] + "-circle")
-	            }
+	        data.datasets.push({
+	            label: json[i].name,
+	            data: [{
+	                x: json[i]["ave-agst"],
+	                y: json[i]["ave-for"],
+
+	            }],
+	            pointBackgroundColor: generateImage(ctx, "/" + competition + "/" + json[i].name + "-circle"),
+	            pointRadius: 5
 	        })
 	    }
-	    console.log(data)
+	    console.log(data);
 
-	    $.plot("#placeholder", data, {
-	        shadowSize: 0,
-            series: {
-                shadowSize: 0,	// Drawing is faster without shadows
-                hoverable: true,
-                points: {
-                    show: true
-                },
-                lines: {
-                    show: false
-                },
-            },
-            yaxis: {
-                axisLabel: 'Average Points For per Game',
-                axisLabelPadding: 0,
-                autoscaleMargin: 0.2,
-                tickSize: 10,
-            },
-            xaxis: {
-                axisLabel: 'Average Points Against per Game',
-                axisLabelPadding: 0,
-                autoscaleMargin: 0.2,
-                tickSize: 10,
-            },
+
+	    console.log(ctx);
+	    console.log("context.canvas = " + ctx.canvas)
+
+	    new Chart(ctx).Scatter(data, {
+	        scales: {
+	            xaxes: [{
+	                scaleLabel: {
+	                    display: true,
+	                    labelString: "Average Points Against per Game"
+	                }
+	            }],
+	            yaxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Average Points For per Game"
+                    }
+                }]
+	        },
+	        hover: {
+	            mode: 'single',
+	        },
             grid: {
                 markings: [
                     {
@@ -84,16 +81,16 @@ var startClientServer = function(competition) {
                 ],
                 hoverable: true
             },
-            legend: {
-                show: false
-            }
+            responsive: true,
+            pointDotRadius: 10,
+
         });
 
         $("<div id='tooltip'><div id='tooltip-label'></div><div id='tooltip-for'></div><div id='tooltip-agst'></div></div>").css({
             position: "absolute",
             display: "none",
         }).appendTo('body');
-        $("#placeholder").bind("plothover", function(event, pos, item) {
+        var chartHover = function (event, pos, item) {
             if (item) {
                 var pa = item.datapoint[0].toFixed(2);
                 var pf = item.datapoint[1].toFixed(2);
@@ -105,7 +102,7 @@ var startClientServer = function(competition) {
             } else {
                 $("#tooltip").hide();
             }
-        })
+        }
 	})
 };
 
@@ -474,7 +471,7 @@ var drawFirstFinalOpponentTable = function(competition) {
 				var teamPosSpan = $("<span></span>")
 				.attr("title", parseFloat(teamData.probabilities[json[p].name]) + "%")
 
-				if (teamData[json[p].name] != 0) {
+				if (teamData.probabilities[json[p].name] != 0) {
 					teamPosSpan.text(parseFloat(teamData.probabilities[json[p].name]).toFixed(0));
 				}
 				teamPos.append(teamPosSpan);
