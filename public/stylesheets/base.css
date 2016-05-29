@@ -284,3 +284,7 @@ img.teamicon
     margin-top: 120px;
   }
 }
+
+.img-circle {
+    border: 3px solid black;
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Doyle with the Scores - Super Rugby</title>
+
+    <link href="stylesheets/pure-min.css" rel="stylesheet" type="text/css">
+    <link href="stylesheets/base.css" rel="stylesheet" type="text/css">
+    <link href="stylesheets/chart-modules.css" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body role="document">
+
+<!-- Fixed navbar -->
+<nav id="navbar-nav" class="navbar navbar-inverse navbar-fixed-top"></nav>
+
+<div class="container theme-showcase" role="main">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <h1>Super Rugby - Prediction and Analysis</h1>
+        <p>Remember: The "Sin Bin" is not the proper receptacle for used condoms.</p>
+    </div>
+
+
+    <div class="page-header">
+        <h1>Ladder Position Probabilities - All Teams</h1>
+    </div>
+
+    <div class="table-responsive" id="team-probability-wrapper"><div class="well">Loading...</div></div>
+
+
+    <div class="page-header">
+        <h1>Australasian Group</h1>
+    </div>
+
+    <div class="table-responsive" id="anz-probability-wrapper"><div class="well">Loading...</div></div>
+
+
+    <div class="page-header">
+        <h1>South African Group</h1>
+    </div>
+
+    <div class="table-responsive" id="sa-probability-wrapper"><div class="well">Loading...</div></div>
+
+
+    <div class="page-header">
+        <h1>Australian Conference</h1>
+    </div>
+
+    <div class="table-responsive" id="aus-probability-wrapper"><div class="well">Loading...</div></div>
+
+
+    <div class="page-header">
+        <h1>New Zealand Conference</h1>
+    </div>
+
+    <div class="table-responsive" id="nz-probability-wrapper"><div class="well">Loading...</div></div>
+
+
+    <div class="page-header">
+        <h1>Africa One Conference</h1>
+    </div>
+
+    <div class="table-responsive" id="africaone-probability-wrapper"><div class="well">Loading...</div></div>
+
+
+    <div class="page-header">
+        <h1>Africa Two Conference</h1>
+    </div>
+
+    <div class="table-responsive" id="africatwo-probability-wrapper"><div class="well">Loading...</div></div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="page-header"><h1>Last Nine Games</h1></div>
+            <div class="table-responsive" id="last-nine-div"><div class="well">Loading...</div></div>
+        </div>
+        <div class="col-md-6">
+            <div class="page-header"><h1>Next Nine Games</h1></div>
+            <div class="table-responsive" id="next-nine-div"><div class="well">Loading...</div></div>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>First Up in the Finals</h1>
+    </div>
+
+    <div class="table-responsive" id="first-final-opponent-div"><div class="well">Loading...</div></div>
+
+    <div class="page-header">
+        <h1>Scoring Quadrants</h1>
+    </div>
+
+    <div class="container">
+        <canvas id="placeholder" class="demo-placeholder">
+        </canvas>
+    </div>
+</div> <!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="javascripts/jquery.min.js"></script>
+<script type="text/javascript" src="javascripts/jquery.flot.min.js"></script>
+<script type="text/javascript" src="javascripts/jquery.flot.axislabels.js"></script>
+<script type="text/javascript" src="javascripts/Chart.Core.js"></script>
+<script type="text/javascript" src="javascripts/Chart.Scatter.js"></script>
+
+<script type="text/javascript" src="javascripts/socket.io.js"></script>
+<script type="text/javascript" src="javascripts/client-server.js"></script>
+
+<script type="text/javascript">
+        $(document).ready(function(){
+            drawNavbar("superrugby");
+            startClientServer("superrugby");
+
+			drawTeamProbTable("superrugby");
+			drawTeamProbTable("superrugby", "australasia", "#anz-probability-wrapper");
+			drawTeamProbTable("superrugby", "southafrica", "#sa-probability-wrapper");
+			drawTeamProbTable("superrugby", "australia", "#aus-probability-wrapper");
+			drawTeamProbTable("superrugby", "newzealand", "#nz-probability-wrapper");
+			drawTeamProbTable("superrugby", "africa1", "#africaone-probability-wrapper");
+			drawTeamProbTable("superrugby", "africa2", "#africatwo-probability-wrapper");
+
+			drawRecentGamesTable("superrugby");
+			drawUpcomingGamesTable("superrugby");
+			drawFirstFinalOpponentTable("superrugby");
+        });
+    </script>
+</body>
+</html>

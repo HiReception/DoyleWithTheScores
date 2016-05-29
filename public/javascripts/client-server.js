@@ -117,15 +117,31 @@ var startClientServer = function(competition) {
 						<td>[chance of finishing ith]</td>
 					<td>[last game - format tbd]</td>
 					<td>[next game - format tbd]</td>
-				</tr>			
+	    			</tr>
 */
 
-var drawTeamProbTable = function(competition) {
+var drawTeamProbTable = function(competition, division, targetDiv) {
     console.log("drawTeamProbTable")
-	var tableDiv = $('#team-probability-wrapper');
+    var tableDiv;
+	if (typeof targetDiv === 'undefined') {
+	    tableDiv = $('#team-probability-wrapper');
+	} else {
+	    tableDiv = $(targetDiv);
+	}
+
 	var tableArray = [];
-	$.getJSON("/" + competition + "-teampositions", function(json) {
-	$.getJSON("/" + competition + "-teampositionsheader", function(headerjson) {
+
+	var positionsFilename, headerFilename;
+	if (typeof division === 'undefined') {
+	    positionsFilename = "/" + competition + "-teampositions"
+	    headerFilename = "/" + competition + "-teampositionsheader"
+	} else {
+	    positionsFilename = "/" + competition + "/" + division + "-teampositions"
+	    headerFilename = "/" + competition + "/" + division + "-teampositionsheader"
+	}
+
+	$.getJSON(positionsFilename, function(json) {
+	$.getJSON(headerFilename, function(headerjson) {
 		var table = $("<table></table>")
 		    .attr("id", "team-probability-table")
 		    .addClass("table table-striped table-condensed");
@@ -258,6 +274,7 @@ var drawTeamProbTable = function(competition) {
 			tableBody.append(teamRow);
 		}
 		table.append(tableBody);
+		tableDiv.empty();
 		tableDiv.append(table);
 	});
 	});
@@ -350,6 +367,7 @@ var drawRecentGamesTable = function(competition) {
 			}
 
 			table.append(tableBody)
+			tableDiv.empty();
 			tableDiv.append(table);
 	});
 }
@@ -406,6 +424,7 @@ var drawUpcomingGamesTable = function(competition) {
 				tableBody.append(gameSecondRow);
 			}
 			table.append(tableBody);
+			tableDiv.empty();
 			tableDiv.append(table);
 		});
 }
@@ -480,6 +499,7 @@ var drawFirstFinalOpponentTable = function(competition) {
 			tableBody.append(teamRow);
 		}
 		table.append(tableBody);
+		tableDiv.empty();
 		tableDiv.append(table);
 	});
 }
@@ -570,8 +590,8 @@ var drawNavbar = function(thispage) {
                     superRugbyButton.setAttribute("class", "active")
                 }
                     var superRugbyLink = document.createElement("a")
-                    superRugbyLink.setAttribute("href", "#");
-                    superRugbyLink.appendChild(document.createTextNode("Super Rugby (soon)"))
+                    superRugbyLink.setAttribute("href", "/superrugby");
+                    superRugbyLink.appendChild(document.createTextNode("Super Rugby"))
                 superRugbyButton.appendChild(superRugbyLink);
 
             navbarList.appendChild(superRugbyButton);

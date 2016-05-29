@@ -33,7 +33,7 @@ app.get('/Chart.Scatter.js', function(req, res){
 
 
 app.get('/afl', function(req, res){
-    res.sendfile(__dirname + '/public/afl/index2.html');
+    res.sendfile(__dirname + '/public/afl/index.html');
 });
 
 app.get('/nrl', function(req, res){
@@ -44,6 +44,10 @@ app.get('/aleague', function(req, res){
     res.sendfile(__dirname + '/public/aleague/index.html');
 });
 
+app.get('/superrugby', function(req, res){
+    res.sendfile(__dirname + '/public/superrugby/index.html');
+});
+
 
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
@@ -51,6 +55,10 @@ app.get('/', function(req, res) {
 
 app.get('/:comp/:teamname-left', function(req, res){
 	res.sendfile(__dirname + '/public/' + req.params.comp +'/icons-left/' + req.params.teamname + '.png');
+});
+
+app.get('/:comp-homeicon', function(req, res){
+	res.sendfile(__dirname + '/home-icons/' + req.params.comp + '.png');
 });
 
 app.get('/:comp/:teamname-right', function(req, res){
@@ -71,6 +79,14 @@ app.get('/:comp-teampositions', function(req, res){
 
 app.get('/:comp-teampositionsheader', function(req, res){
 	res.sendfile(__dirname + '/' + req.params.comp + '/teampositionsheader.json');
+});
+
+app.get('/:comp/:div-teampositions', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/' + req.params.div + '/teampositions.json');
+});
+
+app.get('/:comp/:div-teampositionsheader', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/' + req.params.div + '/teampositionsheader.json');
 });
 
 app.get('/:comp-mostrecentgames', function(req, res){
