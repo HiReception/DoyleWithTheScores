@@ -18,6 +18,14 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/icons/:path', function(req, res, next) {
+  // GET 'http://www.example.com/admin/new'
+  res.sendfile(__dirname + '/icons/' + req.params.path);
+  console.log(req.originalUrl); // '/admin/new'
+    console.log(req.baseUrl); // '/admin'
+    console.log(req.path); // '/new'
+});
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -128,6 +136,8 @@ app.use('/js', function(req, res, next) {
   console.log(req.baseUrl); // '/admin'
   console.log(req.path); // '/new'
 });
+
+
 	
 
 //create the server
