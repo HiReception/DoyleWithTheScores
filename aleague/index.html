@@ -27,7 +27,7 @@
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <title>Doyle with the Scores - Super Rugby</title>
+    <title>Doyle with the Scores - A-League</title>
 
     <link href="stylesheets/pure-min.css" rel="stylesheet" type="text/css">
     <link href="stylesheets/base.css" rel="stylesheet" type="text/css">
@@ -57,67 +57,25 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-        <h1>Super Rugby - Prediction and Analysis</h1>
-        <p>Remember: The "Sin Bin" is not the proper receptacle for used condoms.</p>
+        <h1>A-League - Prediction and Analysis</h1>
+        <p>Broxham fantastico! Broxham magnifico! Ole ole, ole ole!</p>
     </div>
 
 
     <div class="page-header">
-        <h1>Ladder Position Probabilities - All Teams</h1>
+        <h1>Ladder Position Probabilities</h1>
     </div>
 
     <div class="table-responsive" id="team-probability-wrapper"><div class="well">Loading...</div></div>
 
-
-    <div class="page-header">
-        <h1>Australasian Group</h1>
-    </div>
-
-    <div class="table-responsive" id="anz-probability-wrapper"><div class="well">Loading...</div></div>
-
-
-    <div class="page-header">
-        <h1>South African Group</h1>
-    </div>
-
-    <div class="table-responsive" id="sa-probability-wrapper"><div class="well">Loading...</div></div>
-
-
-    <div class="page-header">
-        <h1>Australian Conference</h1>
-    </div>
-
-    <div class="table-responsive" id="aus-probability-wrapper"><div class="well">Loading...</div></div>
-
-
-    <div class="page-header">
-        <h1>New Zealand Conference</h1>
-    </div>
-
-    <div class="table-responsive" id="nz-probability-wrapper"><div class="well">Loading...</div></div>
-
-
-    <div class="page-header">
-        <h1>Africa One Conference</h1>
-    </div>
-
-    <div class="table-responsive" id="africaone-probability-wrapper"><div class="well">Loading...</div></div>
-
-
-    <div class="page-header">
-        <h1>Africa Two Conference</h1>
-    </div>
-
-    <div class="table-responsive" id="africatwo-probability-wrapper"><div class="well">Loading...</div></div>
-
     <div class="row">
 
         <div class="col-md-6">
-            <div class="page-header"><h1>Last Nine Games</h1></div>
+            <div class="page-header"><h1>Last Ten Games</h1></div>
             <div class="table-responsive" id="last-nine-div"><div class="well">Loading...</div></div>
         </div>
         <div class="col-md-6">
-            <div class="page-header"><h1>Next Nine Games</h1></div>
+            <div class="page-header"><h1>Next Ten Games</h1></div>
             <div class="table-responsive" id="next-nine-div"><div class="well">Loading...</div></div>
         </div>
     </div>
@@ -136,6 +94,14 @@
         <canvas id="placeholder" class="demo-placeholder">
         </canvas>
     </div>
+
+    <div class="page-header">
+        <h1>Who should I barrack for?</h1>
+    </div>
+
+    <div class="table-responsive" id="match-finals-impact-div">
+        <div class="well">Loading...</div>
+    </div>
 </div> <!-- /container -->
 
 
@@ -148,28 +114,20 @@
 <script type="text/javascript" src="javascripts/jquery.min.js"></script>
 <script type="text/javascript" src="javascripts/jquery.flot.min.js"></script>
 <script type="text/javascript" src="javascripts/jquery.flot.axislabels.js"></script>
+<script type="text/javascript" src="javascripts/socket.io.js"></script>
 <script type="text/javascript" src="javascripts/Chart.Core.js"></script>
 <script type="text/javascript" src="javascripts/Chart.Scatter.js"></script>
-
-<script type="text/javascript" src="javascripts/socket.io.js"></script>
 <script type="text/javascript" src="javascripts/client-server.js"></script>
 
 <script type="text/javascript">
         $(document).ready(function(){
-            drawNavbar("superrugby");
-            startClientServer("superrugby");
-
-			drawTeamProbTable("superrugby");
-			drawTeamProbTable("superrugby", "australasia", "#anz-probability-wrapper");
-			drawTeamProbTable("superrugby", "southafrica", "#sa-probability-wrapper");
-			drawTeamProbTable("superrugby", "australia", "#aus-probability-wrapper");
-			drawTeamProbTable("superrugby", "newzealand", "#nz-probability-wrapper");
-			drawTeamProbTable("superrugby", "africa1", "#africaone-probability-wrapper");
-			drawTeamProbTable("superrugby", "africa2", "#africatwo-probability-wrapper");
-
-			drawRecentGamesTable("superrugby");
-			drawUpcomingGamesTable("superrugby");
-			drawFirstFinalOpponentTable("superrugby");
+            drawNavbar("aleague");
+            startClientServer("aleague");
+			drawTeamProbTable("aleague");
+			drawRecentGamesTable("aleague");
+			drawUpcomingGamesTable("aleague");
+			drawFirstFinalOpponentTable("aleague");
+			drawMatchFinalsImpactTable("aleague");
         });
     </script>
 </body>

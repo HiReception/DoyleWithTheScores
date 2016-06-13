@@ -2,13 +2,15 @@
   "name": "doyle-sports-predictions",
   "version": "1.0.0",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "postinstall": "grunt dist"
   },
   "dependencies": {
     "chartjs": "^0.3.23",
     "ejs": "0.7.x",
     "express": "3.4.x",
-    "socket.io": "0.9.x"
+    "socket.io": "0.9.x",
+    "grunt-cli": "1.2.0"
   },
   "engines": {
     "node": "0.10.x",

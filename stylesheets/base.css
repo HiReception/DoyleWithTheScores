@@ -122,6 +122,50 @@ img.teamicon
 	min-width: 180px;
 }
 
+.table th.impactheader-left
+{
+	background-size: 20px,80px;
+	padding-left: 60px;
+	min-width: 150px;
+}
+
+.table th.impactheader-right
+{
+    text-align: right;
+	background-size: 20px,80px;
+	padding-right: 60px;
+	min-width: 150px;
+}
+
+.table th.impactheader-draw
+{
+	background-size: 20px,80px;
+	text-align: center;
+	min-width: 150px;
+}
+
+.table td.impactcell
+{
+    text-align: center;
+    min-width: 150px;
+}
+
+.table td.impactcell-up
+{
+    text-align: center;
+    min-width: 150px;
+    font-weight: bold;
+    color: #00dd00;
+}
+
+.table td.impactcell-down
+{
+    text-align: center;
+    min-width: 150px;
+    font-weight: bold;
+    color: #dd0000;
+}
+
 .table td.gameteamicon-left
 {
 	background-size: 20px,80px;

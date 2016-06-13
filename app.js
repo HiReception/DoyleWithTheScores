@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
 
 app.get('/icons/:path', function(req, res, next) {
   // GET 'http://www.example.com/admin/new'
@@ -32,28 +32,28 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/Chart.js', function(req, res){
-    res.sendfile(__dirname + '/public/javascripts/Chart.Core.js');
+    res.sendfile(__dirname + '/javascripts/Chart.Core.js');
 });
 
 app.get('/Chart.Scatter.js', function(req, res){
-    res.sendfile(__dirname + '/public/javascripts/Chart.Scatter.js');
+    res.sendfile(__dirname + '/javascripts/Chart.Scatter.js');
 });
 
 
 app.get('/afl', function(req, res){
-    res.sendfile(__dirname + '/public/afl/index.html');
+    res.sendfile(__dirname + '/afl/index.html');
 });
 
 app.get('/nrl', function(req, res){
-    res.sendfile(__dirname + '/public/nrl/index.html');
+    res.sendfile(__dirname + '/nrl/index.html');
 });
 
 app.get('/aleague', function(req, res){
-    res.sendfile(__dirname + '/public/aleague/index.html');
+    res.sendfile(__dirname + '/aleague/index.html');
 });
 
 app.get('/superrugby', function(req, res){
-    res.sendfile(__dirname + '/public/superrugby/index.html');
+    res.sendfile(__dirname + '/superrugby/index.html');
 });
 
 
@@ -62,7 +62,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/:comp/:teamname-left', function(req, res){
-	res.sendfile(__dirname + '/public/' + req.params.comp +'/icons-left/' + req.params.teamname + '.png');
+	res.sendfile(__dirname + '/' + req.params.comp +'/icons-left/' + req.params.teamname + '.png');
 });
 
 app.get('/:comp-homeicon', function(req, res){
@@ -70,19 +70,23 @@ app.get('/:comp-homeicon', function(req, res){
 });
 
 app.get('/:comp/:teamname-right', function(req, res){
-	res.sendfile(__dirname + '/public/' + req.params.comp + '/icons-right/' + req.params.teamname + '.png');
+	res.sendfile(__dirname + '/' + req.params.comp + '/icons-right/' + req.params.teamname + '.png');
 });
 
 app.get('/:comp/:teamname-circle', function(req, res){
-	res.sendfile(__dirname + '/public/' + req.params.comp + '/icons-circle/' + req.params.teamname + '.png');
+	res.sendfile(__dirname + '/' + req.params.comp + '/icons-circle/' + req.params.teamname + '.png');
 });
 
 app.get('/:comp/:teamname-square', function(req, res){
-	res.sendfile(__dirname + '/public/' + req.params.comp + '/icons-square/' + req.params.teamname + '.png');
+	res.sendfile(__dirname + '/' + req.params.comp + '/icons-square/' + req.params.teamname + '.png');
 });
 
 app.get('/:comp-teampositions', function(req, res){
 	res.sendfile(__dirname + '/' + req.params.comp + '/teampositions.json');
+});
+
+app.get('/:comp-winsminuslosses', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/winsminuslosses.json');
 });
 
 app.get('/:comp-teampositionsheader', function(req, res){
@@ -111,6 +115,14 @@ app.get('/:comp-upcominggames', function(req, res){
 
 app.get('/:comp-firstFinalOpponent', function(req, res){
 	res.sendfile(__dirname + '/' + req.params.comp + '/firstFinalOpponent.json');
+});
+
+app.get('/:comp-matchfinalsimpact', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/matchfinalsimpact.json');
+});
+
+app.get('/:comp-matchfinalsimpactheader', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/matchfinalsimpactheader.json');
 });
 
 app.get('/dist/:path', function(req, res) {

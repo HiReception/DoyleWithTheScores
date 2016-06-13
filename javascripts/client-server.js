@@ -504,163 +504,372 @@ var drawFirstFinalOpponentTable = function(competition) {
 	});
 }
 
+var drawMatchFinalsImpactTable = function(competition) {
+    console.log("drawMatchFinalsImpactTable")
+    var targetDiv = $('#match-finals-impact-div');
+    var tableArray = [];
+    var newDiv = $('<div></div>');
+    $.getJSON(competition + "-matchfinalsimpact", function(json) {
+    $.getJSON(competition + "-matchfinalsimpactheader", function(headerjson) {
+        for (var game = 0; game < json.length; game++) {
+            var gameData = json[game];
+            newDiv.append("<h2>" + gameData.homeTeam + " vs " + gameData.awayTeam + "</h2>");
+            newDiv.append("<p>" + gameData.date + "</p>");
+            var table = $('<table></table>')
+                .addClass("table table-striped table-condensed");
+            var tableHead = $('<thead></thead>');
+                var topHeaderRow = $('<tr></tr>')
+                    .append($('<th></th>')
+                        .addClass("impactheader-draw")
+                        .attr("rowspan", "2")
+                        .text("Team Name")
+                    );
+
+                for (var i=0; i < headerjson.categories.length; i++) {
+                    var topHeaderCat = $('<th></th>')
+                        .addClass("impactheader-draw")
+                        .text(headerjson.categories[i].title);
+
+
+                    if (headerjson["include-draw"] === "true") {
+                        topHeaderCat.attr("colspan", 3);
+                    } else {
+                        topHeaderCat.attr("colspan", 2);
+                    }
+
+                    topHeaderRow.append(topHeaderCat);
+                }
+                tableHead.append(topHeaderRow);
+
+                var secondHeaderRow = $('<tr></tr>');
+                for (var i=0; i < headerjson.categories.length; i++) {
+                    secondHeaderRow.append($('<th></th>')
+                        .addClass("impactheader-left")
+                        .attr("style", "background: url(\"" + competition + "/" + gameData.homeTeam + "-left\") left center no-repeat")
+                        .text(gameData.homeAbbr + " win")
+                    )
+                    secondHeaderRow.append($('<th></th>')
+                        .addClass("impactheader-draw")
+                        .text("Draw")
+                    )
+                    secondHeaderRow.append($('<th></th>')
+                        .addClass("impactheader-right")
+                        .attr("style", "background: url(\"" + competition + "/" + gameData.awayTeam + "-right\") right center no-repeat")
+                        .text(gameData.awayAbbr + " win")
+                    )
+                }
+                tableHead.append(secondHeaderRow);
+            table.append(tableHead);
+
+            var tableBody = $('<tbody></tbody>');
+            console.log(teamNames);
+            $.each(gameData.homeWinImpact, function(key, val) {
+                var teamName = key;
+
+                var teamRow = $('<tr></tr>');
+                teamRow.append($('<td></td>').addClass("teamicon")
+                    .attr("style", "background: url(\"" + competition + "/" + teamName + "-left\") left center no-repeat")
+                    .text(teamName));
+            // finals chance
+
+                for (var i = 0; i < headerjson.categories.length; i++) {
+                    var homeWinProb = parseFloat(gameData.homeWinImpact[teamName][headerjson.categories[i]["probability-attr"]]);
+                    var homeWinChange = parseFloat(gameData.homeWinImpact[teamName][headerjson.categories[i]["change-attr"]]);
+
+                    if (homeWinProb === -1) {
+                        teamRow.append($('<td></td>').addClass("impactcell").text("-"));
+                    } else if (homeWinChange > 0) {
+                        teamRow.append($('<td></td>').addClass("impactcell-up")
+                            .text(homeWinProb.toFixed(2) + "%"
+                                + " (+" + homeWinChange.toFixed(2) + "%)")
+                        )
+                    } else if (homeWinChange < 0) {
+                        teamRow.append($('<td></td>').addClass("impactcell-down")
+                            .text(homeWinProb.toFixed(2) + "%"
+                                + " (" + homeWinChange.toFixed(2) + "%)")
+                        )
+                    } else {
+                        teamRow.append($('<td></td>').addClass("impactcell")
+                            .text(homeWinProb.toFixed(2) + "%" + " (0.00%)")
+                                )
+                    }
+
+                    if (headerjson["include-draw"]) {
+                        var drawProb = parseFloat(gameData.drawImpact[teamName][headerjson.categories[i]["probability-attr"]]);
+                        var drawChange = parseFloat(gameData.drawImpact[teamName].finalsChange);
+
+                        if (drawProb === -1) {
+                            teamRow.append($('<td></td>').addClass("impactcell").text("-"));
+                        } else if (drawChange > 0) {
+                            teamRow.append($('<td></td>').addClass("impactcell-up")
+                                .text(drawProb.toFixed(2) + "%"
+                                    + " (+" + drawChange.toFixed(2) + "%)")
+                            )
+                        } else if (drawChange < 0) {
+                            teamRow.append($('<td></td>').addClass("impactcell-down")
+                                .text(drawProb.toFixed(2) + "%"
+                                    + " (" + drawChange.toFixed(2) + "%)")
+                            )
+                        } else {
+                            teamRow.append($('<td></td>').addClass("impactcell")
+                                .text(drawProb.toFixed(2) + "%" + " (0.00%)")
+                            )
+                        }
+                    }
+
+                    var awayWinProb = parseFloat(gameData.awayWinImpact[teamName][headerjson.categories[i]["probability-attr"]]);
+                    var awayWinChange = parseFloat(gameData.awayWinImpact[teamName][headerjson.categories[i]["change-attr"]]);
+
+                    if (awayWinProb === -1) {
+                        teamRow.append($('<td></td>').addClass("impactcell").text("-"));
+                    } else if (awayWinChange > 0) {
+                        teamRow.append($('<td></td>').addClass("impactcell-up")
+                            .text(awayWinProb.toFixed(2) + "%"
+                                + " (+" + awayWinChange.toFixed(2) + "%)")
+                        )
+                    } else if (awayWinChange < 0) {
+                        teamRow.append($('<td></td>').addClass("impactcell-down")
+                            .text(awayWinProb.toFixed(2) + "%"
+                                + " (" + awayWinChange.toFixed(2) + "%)")
+                        )
+                    } else {
+                        teamRow.append($('<td></td>').addClass("impactcell")
+                            .text(awayWinProb.toFixed(2) + "%" + " (0.00%)")
+                        )
+                    }
+                }
+
+                tableBody.append(teamRow);
+            });
+
+            table.append(tableBody);
+
+            newDiv.append(table);
+
+        }
+
+        targetDiv.empty();
+        targetDiv.append(newDiv);
+    })
+    })
+}
+
+var drawWinLossWormChart = function(competition) {
+    var ctx = $("#wl-placeholder").get(0).getContext("2d");
+        //Get the URL to hand into the connect call
+        var http = location.protocol;
+        var slashes = http.concat("//");
+        var host = slashes.concat(window.location.hostname);
+
+        //Socket IO communications
+        var socket = io.connect(host);
+
+    	$.getJSON(competition + "-winsminuslosses", function(json) {
+    	    var data = {
+    	        datasets: []
+    	    };
+    	    for (var i = 0; i < json.length; i++) {
+    	        data.datasets.push({
+    	            label: json[i].name,
+    	            data: json[i].points,
+    	        })
+    	    }
+    	    console.log(data);
+
+
+    	    console.log(ctx);
+    	    console.log("context.canvas = " + ctx.canvas)
+
+    	    new Chart(ctx, {
+    	        type: 'line',
+    	        data: data,
+    	        options: {
+    	            scales: {
+    	                xaxes: [{
+    	                    type: 'time',
+                            time: {
+                                displayFormats: {
+                                    month: 'MMM'
+                                }
+                            },
+    	                    scaleLabel: {
+    	                        display: true,
+    	                        labelString: "Date"
+    	                    }
+    	                }],
+    	                yaxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Wins Above/Below Even"
+                            }
+                        }]
+    	            },
+    	            hover: {
+    	                mode: 'single',
+    	            },
+                    grid: {
+                        hoverable: true
+                    },
+                    responsive: true,
+                    pointDotRadius: 10,
+                }
+            });
+    	})
+}
+
 var drawNavbar = function(thispage) {
-    var navbar = document.getElementById("navbar-nav");
+    var navbar = $("#navbar-nav");
 
-    var container = document.createElement("div");
-    container.setAttribute("class", "container");
+    var container = $("<div></div>")
+        .addClass("container");
 
-        var navbarHeader = document.createElement("div");
-        navbarHeader.setAttribute("class", "navbar-header");
+        var navbarHeader = $("<div></div>").addClass("navbar-header");
 
-            var toggleButton = document.createElement("button");
-            toggleButton.setAttribute("class", "navbar-toggle collapsed");
-            toggleButton.setAttribute("data-toggle", "collapse");
-            toggleButton.setAttribute("data-target", "#navbar");
-            toggleButton.setAttribute("aria-expanded", "false");
-            toggleButton.setAttribute("aria-controls", "navbar");
+            var toggleButton = $("<button></button>")
+            .addClass("navbar-toggle collapsed")
+            .attr("data-toggle", "collapse")
+            .attr("data-target", "#navbar")
+            .attr("aria-expanded", "false")
+            .attr("aria-controls", "navbar");
 
-                var toggleSR = document.createElement("span");
-                toggleSR.setAttribute("class", "sr-only");
-                toggleSR.appendChild(document.createTextNode("Toggle navigation"));
+                var toggleSR = $("<span></span>")
+                .addClass("sr-only")
+                .text("Toggle navigation");
 
-            toggleButton.appendChild(toggleSR);
-            var iconBar = document.createElement("span");
-            iconBar.setAttribute("class", "icon-bar");
-            toggleButton.appendChild(iconBar);
-            toggleButton.appendChild(iconBar);
-            toggleButton.appendChild(iconBar);
+            toggleButton.append(toggleSR);
+            toggleButton.append($("<span></span>").addClass("icon-bar"));
+            toggleButton.append($("<span></span>").addClass("icon-bar"));
+            toggleButton.append($("<span></span>").addClass("icon-bar"));
 
-        navbarHeader.appendChild(toggleButton);
+        navbarHeader.append(toggleButton);
 
-            var titleButton = document.createElement("a");
-            titleButton.setAttribute("class", "navbar-brand");
-            titleButton.setAttribute("href", "/");
-            titleButton.appendChild(document.createTextNode("Doyle with the Scores"));
+            var titleButton = $("<a></a>")
+                .addClass("navbar-brand")
+                .attr("href", "/")
+                .text("Doyle with the Scores");
 
-        navbarHeader.appendChild(titleButton)
+        navbarHeader.append(titleButton)
 
-    container.appendChild(navbarHeader);
+    container.append(navbarHeader);
 
-        var navbarDiv = document.createElement("div");
-        navbarDiv.setAttribute("id", "navbar")
-        navbarDiv.setAttribute("class", "navbar-collapse collapse")
+        var navbarDiv = $("<div></div>")
+            .attr("id", "navbar")
+            .addClass("navbar-collapse collapse");
 
-            var navbarList = document.createElement("ul");
-            navbarList.setAttribute("class", "nav navbar-nav")
+            var navbarList = $("<ul></ul>")
+                .addClass("nav navbar-nav");
 
-                var homeButton = document.createElement("li")
+                var homeButton = $("<li></li>")
                 if (thispage === "home") {
-                    homeButton.setAttribute("class", "active")
+                    homeButton.addClass("active");
                 }
-                    var homeLink = document.createElement("a")
-                    homeLink.setAttribute("href", "/");
-                    homeLink.appendChild(document.createTextNode("Home"));
 
-                homeButton.appendChild(homeLink);
+                    var homeLink = $("<a></a>")
+                        .attr("href", "/")
+                        .text("Home");
 
-            navbarList.appendChild(homeButton);
+                homeButton.append(homeLink);
 
-                var aflButton = document.createElement("li")
+            navbarList.append(homeButton);
+
+                var aflButton = $("<li></li>");
                 if (thispage === "afl") {
-                    aflButton.setAttribute("class", "active")
+                    aflButton.addClass("active")
                 }
-                    var aflLink = document.createElement("a")
-                    aflLink.setAttribute("href", "/afl");
-                    aflLink.appendChild(document.createTextNode("AFL"));
+                    var aflLink = $("<a></a>")
+                        .attr("href", "/afl")
+                        .text("AFL");
 
-                aflButton.appendChild(aflLink);
+                aflButton.append(aflLink);
 
-            navbarList.appendChild(aflButton);
+            navbarList.append(aflButton);
 
-                var nrlButton = document.createElement("li")
+                var nrlButton = $("<li></li>")
                 if (thispage === "nrl") {
-                    nrlButton.setAttribute("class", "active")
+                    nrlButton.addClass("active")
                 }
-                    var nrlLink = document.createElement("a")
-                    nrlLink.setAttribute("href", "/nrl");
-                    nrlLink.appendChild(document.createTextNode("NRL"));
+                    var nrlLink = $("<a></a>")
+                        .attr("href", "/nrl")
+                        .text("NRL");
 
-                nrlButton.appendChild(nrlLink);
+                nrlButton.append(nrlLink);
 
-            navbarList.appendChild(nrlButton);
+            navbarList.append(nrlButton);
 
-                var superRugbyButton = document.createElement("li")
+                var superRugbyButton = $("<li></li>")
                 if (thispage === "superrugby") {
-                    superRugbyButton.setAttribute("class", "active")
+                    superRugbyButton.addClass("active")
                 }
-                    var superRugbyLink = document.createElement("a")
-                    superRugbyLink.setAttribute("href", "/superrugby");
-                    superRugbyLink.appendChild(document.createTextNode("Super Rugby"))
-                superRugbyButton.appendChild(superRugbyLink);
+                    var superRugbyLink = $("<a></a>")
+                        .attr("href", "/superrugby")
+                        .text("Super Rugby");
+                superRugbyButton.append(superRugbyLink);
 
-            navbarList.appendChild(superRugbyButton);
+            navbarList.append(superRugbyButton);
 
-                var aleagueButton = document.createElement("li")
+                var aleagueButton = $("<li></li>")
                 if (thispage === "aleague") {
-                    aleagueButton.setAttribute("class", "active")
+                    aleagueButton.addClass("active")
                 }
-                    var aleagueLink = document.createElement("a")
-                    aleagueLink.setAttribute("href", "/aleague")
-                    aleagueLink.appendChild(document.createTextNode("A-League"))
-                aleagueButton.appendChild(aleagueLink);
+                    var aleagueLink = $("<a></a>")
+                        .attr("href", "/aleague")
+                        .text("A-League");
+                aleagueButton.append(aleagueLink);
 
-            navbarList.appendChild(aleagueButton);
+            navbarList.append(aleagueButton);
 
-                var shieldButton = document.createElement("li")
+                var shieldButton = $("<li></li>")
                 if (thispage === "sheffieldshield") {
-                    shieldButton.setAttribute("class", "active")
+                    shieldButton.addClass("active")
                 }
-                    var shieldLink = document.createElement("a")
-                    shieldLink.setAttribute("href", "#")
-                    shieldLink.appendChild(document.createTextNode("Sheffield Shield (soon)"))
-                shieldButton.appendChild(shieldLink);
+                    var shieldLink = $("<a></a>")
+                        .attr("href", "#")
+                        .text("Sheffield Shield (soon)")
+                shieldButton.append(shieldLink);
 
-            navbarList.appendChild(shieldButton);
+            navbarList.append(shieldButton);
 
-                var dropdown = document.createElement("li")
-                dropdown.setAttribute("class", "dropdown")
+                var dropdown = $("<li></li>")
+                    .addClass("dropdown")
 
-                    var dropdownToggle = document.createElement("a")
-                        dropdownToggle.setAttribute("href", "#")
-                        dropdownToggle.setAttribute("class", "dropdown-toggle")
-                        dropdownToggle.setAttribute("data-toggle", "dropdown")
-                        dropdownToggle.setAttribute("role", "button")
-                        dropdownToggle.setAttribute("aria-haspopup", "true")
-                        dropdownToggle.setAttribute("aria-expanded", "false")
-                        dropdownToggle.appendChild(document.createTextNode("Other Sports"))
-                            var caret = document.createElement("span")
-                            caret.setAttribute("class", "caret");
-                        dropdownToggle.appendChild(caret);
+                    var dropdownToggle = $("<a></a>")
+                        .attr("href", "#")
+                        .addClass("dropdown-toggle")
+                        .attr("data-toggle", "dropdown")
+                        .attr("role", "button")
+                        .attr("aria-haspopup", "true")
+                        .attr("aria-expanded", "false")
+                        .text("Other Sports")
+                        .append($("<span></span>").addClass("caret"));
 
-                dropdown.appendChild(dropdownToggle);
+                dropdown.append(dropdownToggle);
 
-                    var dropdownMenu = document.createElement("ul")
-                    dropdownMenu.setAttribute("class", "dropdown-menu");
+                    var dropdownMenu = $("<ul></ul>")
+                        .addClass("dropdown-menu");
 
-                        var cfbButton = document.createElement("li")
-                            var cfbLink = document.createElement("a");
-                            cfbLink.setAttribute("href", "#");
-                            cfbLink.appendChild(document.createTextNode("College Football (soon)"))
-                        cfbButton.appendChild(cfbLink);
+                        var cfbButton = $("<li></li>");
+                            var cfbLink = $("<a></a>")
+                                .attr("href", "#")
+                                .text("College Football (soon)")
+                        cfbButton.append(cfbLink);
 
-                    dropdownMenu.appendChild(cfbButton);
+                    dropdownMenu.append(cfbButton);
 
-                        var nflButton = document.createElement("li")
-                            var nflLink = document.createElement("a")
-                            nflLink.setAttribute("href", "#")
-                            nflLink.appendChild(document.createTextNode("NFL (soon)"))
-                        nflButton.appendChild(nflLink);
+                        var nflButton = $("<li></li>");
+                            var nflLink = $("<a></a>")
+                                .attr("href", "#")
+                                .text("NFL (soon)");
+                        nflButton.append(nflLink);
 
-                    dropdownMenu.appendChild(nflButton);
+                    dropdownMenu.append(nflButton);
 
-                dropdown.appendChild(dropdownMenu);
+                dropdown.append(dropdownMenu);
 
-            navbarList.appendChild(dropdown);
+            navbarList.append(dropdown);
 
-        navbarDiv.appendChild(navbarList);
+        navbarDiv.append(navbarList);
 
-    container.appendChild(navbarDiv);
+    container.append(navbarDiv);
 
-    navbar.appendChild(container);
+    navbar.append(container);
 }

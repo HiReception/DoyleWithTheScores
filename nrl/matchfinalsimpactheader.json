@@ -1,0 +1,15 @@
+{
+  "include-draw": "true",
+  "categories": [
+    {
+      "title": "Finals Chance if:",
+      "probability-attr": "finalsProb",
+      "change-attr": "finalsChange"
+    },
+    {
+      "title": "Top 4 Chance if:",
+      "probability-attr": "top4Prob",
+      "change-attr": "top4Change"
+    }
+  ]
+}
