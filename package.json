@@ -2,7 +2,8 @@
   "name": "doyle-sports-predictions",
   "version": "1.0.0",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "postinstall": "cd bootstrap && grunt dist && cd .."
   },
   "dependencies": {
     "chartjs": "^0.3.23",

@@ -104,6 +104,14 @@ tr.team-prob-row
 	white-space: nowrap;
 }
 
+
+.table td.team-prob-withrank
+{
+	text-align: center;
+	min-width: 90px;
+	max-width: 90px;
+}
+
 tr.game-list-header
 {
 	border-bottom: 1px solid black;
@@ -226,6 +234,8 @@ img.teamicon
 	text-align: center;
 	min-width: 60px;
 }
+
+
 
 
 

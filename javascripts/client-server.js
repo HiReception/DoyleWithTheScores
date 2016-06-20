@@ -195,6 +195,12 @@ var drawTeamProbTable = function(competition, division, targetDiv) {
             .attr("rowspan", "2")
             .html("RPI");
         headerRow.append(headerRPI);
+
+        var headerElo = $("<th></th>")
+            .addClass("team-prob-header")
+            .attr("rowspan", "2")
+            .html("Elo");
+        headerRow.append(headerElo);
 				
 		tableHead.append(headerRow);
 
@@ -266,9 +272,14 @@ var drawTeamProbTable = function(competition, division, targetDiv) {
             teamRow.append(teamAve);
 
             var teamRPI = $("<td></td>")
-                .addClass("team-prob-rpi")
-                .text(parseFloat(teamData.rpi).toFixed(3))
+                .addClass("team-prob-withrank")
+                .text(parseFloat(teamData.rpi).toFixed(3) + " (#" + teamData.rpirank + ")")
             teamRow.append(teamRPI);
+
+            var teamElo = $("<td></td>")
+                .addClass("team-prob-withrank")
+                .text(parseInt(teamData.elo) + " (#" + teamData.elorank + ")");
+            teamRow.append(teamElo);
 				
 				
 			tableBody.append(teamRow);
