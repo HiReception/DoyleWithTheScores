@@ -39,6 +39,10 @@ app.get('/Chart.Scatter.js', function(req, res){
     res.sendfile(__dirname + '/javascripts/Chart.Scatter.js');
 });
 
+app.get('/jumbotron-bg', function(req, res){
+    res.sendfile(__dirname + '/jumbotron-bg.jpg');
+});
+
 
 app.get('/afl', function(req, res){
     res.sendfile(__dirname + '/afl/index.html');

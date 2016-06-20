@@ -104,6 +104,25 @@ tr.team-prob-row
 	white-space: nowrap;
 }
 
+.jumbotron
+{
+    background: url('/jumbotron-bg') no-repeat top center;
+    background-size: cover;
+}
+
+.jumbotron h1
+{
+    color: #ffffff;
+    text-shadow: 2px 2px 5px #000000;
+}
+
+.jumbotron p
+{
+    color: #ffffff;
+    text-shadow: 2px 2px 5px #000000;
+}
+
+
 
 .table td.team-prob-withrank
 {
