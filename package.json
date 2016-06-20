@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node app.js",
-    "postinstall": "cd bootstrap && grunt dist && cd .."
+    "postinstall": ""
   },
   "dependencies": {
     "chartjs": "^0.3.23",
