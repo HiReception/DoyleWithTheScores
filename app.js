@@ -4,7 +4,6 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var randomizer = require('./randomizer');
 var app = express();
 
 // all environments
@@ -159,13 +158,4 @@ app.use('/js', function(req, res, next) {
 //create the server
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
-});
-
-//Socket IO specifics
-io = require('socket.io').listen(server, { log: false });
-io.sockets.on('connection', function (socket) {
-    var interval = setInterval(function() {
-        var randomData = randomizer.getRandomData();
-        socket.emit('dataSet', randomData);
-    }, 1);
 });
