@@ -20,8 +20,6 @@ var startClientServer = function(competition) {
     var slashes = http.concat("//");
     var host = slashes.concat(window.location.hostname);
 
-    //Socket IO communications
-    var socket = io.connect(host);
 
 	$.getJSON(competition + "-averageforagainst", function(json) {
 	    var data = {
@@ -672,8 +670,6 @@ var drawWinLossWormChart = function(competition) {
         var slashes = http.concat("//");
         var host = slashes.concat(window.location.hostname);
 
-        //Socket IO communications
-        var socket = io.connect(host);
 
     	$.getJSON(competition + "-winsminuslosses", function(json) {
     	    var data = {
