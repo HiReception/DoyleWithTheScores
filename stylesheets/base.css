@@ -35,6 +35,10 @@ table#next-nine-games, table#last-nine-games
 	border: 1px solid black;
 }
 
+.table-hover {
+    cursor: pointer;
+}
+
 th.team-prob-row
 {
 	white-space: nowrap;
@@ -65,9 +69,15 @@ td.team-prob-finals
     border-right: 1px dotted black;
 }
 
+td.team-prob-center
+{
+    text-align: center;
+}
+
 td.team-prob-position
 {
 	min-width: 30px;
+	max-width: 30px;
 	text-align: center;
 }
 
@@ -77,6 +87,26 @@ td.team-prob-lastnext
 	text-align: center;
 	border-left: 1px dotted black;
 	border-right: 1px dotted black;
+}
+
+.all-bold
+{
+    font-weight: bold
+}
+
+.border-top
+{
+    border-top: 1px dotted black;
+}
+
+.border-left
+{
+    border-left: 1px dotted black;
+}
+
+.border-right
+{
+    border-right: 1px dotted black;
 }
 
 td.team-prob-ave
@@ -96,6 +126,11 @@ td.team-prob-ave
 tr.team-prob-row
 {
 	white-space: nowrap;
+}
+
+tr.highlighted
+{
+    background: #aaaaaa;
 }
 
 .table th.team-prob-header

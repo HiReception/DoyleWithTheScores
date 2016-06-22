@@ -30,6 +30,10 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+app.get('/:comp/team', function(req, res){
+    res.sendfile(__dirname + '/' + req.params.comp + '/team.html');
+});
+
 app.get('/Chart.js', function(req, res){
     res.sendfile(__dirname + '/javascripts/Chart.Core.js');
 });
@@ -90,6 +94,14 @@ app.get('/:comp-teampositions', function(req, res){
 
 app.get('/:comp-winsminuslosses', function(req, res){
 	res.sendfile(__dirname + '/' + req.params.comp + '/winsminuslosses.json');
+});
+
+app.get('/:comp-finalschancebyrecord', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/finalschancebyrecord.json');
+});
+
+app.get('/:comp-finalschancebyrecordheader', function(req, res){
+	res.sendfile(__dirname + '/' + req.params.comp + '/finalschancebyrecordheader.json');
 });
 
 app.get('/:comp-teampositionsheader', function(req, res){

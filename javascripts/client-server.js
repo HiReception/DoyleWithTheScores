@@ -142,7 +142,7 @@ var drawTeamProbTable = function(competition, division, targetDiv) {
 	$.getJSON(headerFilename, function(headerjson) {
 		var table = $("<table></table>")
 		    .attr("id", "team-probability-table")
-		    .addClass("table table-striped table-condensed");
+		    .addClass("table table-hover table-condensed");
 
 		var tableHead = $("<thead></thead>")
 		    .addClass("team-prob-header");
@@ -219,7 +219,11 @@ var drawTeamProbTable = function(competition, division, targetDiv) {
 			var teamData = json[i];
 			teamNames[i] = teamData.name.toString();
 			var teamRow = $("<tr></tr>")
-			    .addClass("team-prob-row");
+			    .addClass("team-prob-row")
+			    .attr("data-clubname", teamData.name)
+			    .click(function() {
+                    window.document.location = "/" + competition + "/team?club=" + $(this).data("clubname");
+                });
 
 			var teamName = $("<td></td>")
 			    .addClass("teamicon")
@@ -879,4 +883,174 @@ var drawNavbar = function(thispage) {
     container.append(navbarDiv);
 
     navbar.append(container);
+}
+
+
+var drawFinalsChanceByRecordTable = function(competition, club) {
+    console.log("drawFinalsChanceByRecordTable")
+    var tableDiv;
+	if (typeof targetDiv === 'undefined') {
+	    tableDiv = $('#team-probability-wrapper');
+	} else {
+	    tableDiv = $(targetDiv);
+	}
+
+	var tableArray = [];
+
+	var positionsFilename, headerFilename, positionsRecordFilename;
+	positionsFilename = "/" + competition + "-teampositions"
+	headerFilename = "/" + competition + "-finalschancebyrecordheader"
+	positionsRecordFilename = "/" + competition + "-finalschancebyrecord"
+
+	$.getJSON(positionsFilename, function(json) {
+	$.getJSON(positionsRecordFilename, function(recordjson) {
+	$.getJSON(headerFilename, function(headerjson) {
+	    var overallPositionChances = recordjson[club].overall;
+	    console.log(overallPositionChances);
+	    var positionsByRecord = recordjson[club].records;
+
+		var table = $("<table></table>")
+		    .attr("id", "team-probability-table")
+		    .addClass("table table-striped table-condensed");
+
+		var tableHead = $("<thead></thead>")
+		    .addClass("team-prob-header");
+
+		var headerRow = $("<tr></tr>")
+		    .addClass("team-prob-header");
+
+		var headerName = $("<th></th>")
+		    .addClass("team-prob-header")
+		    .attr("rowspan", "2")
+		    .html("W-D-L");
+		headerRow.append(headerName);
+
+		for (var i = 0; i < headerjson.length; i++) {
+		    var headerColumn = $("<th></th>")
+                .addClass("team-prob-header")
+                .attr("rowspan", "2")
+                .html(headerjson[i].title);
+            headerRow.append(headerColumn);
+		}
+
+		var headerPosTop = $("<th></th>")
+		    .addClass("team-prob-header")
+		    .attr("colspan", json.length.toString())
+		    .html("Chance of finishing in position:");
+		headerRow.append(headerPosTop);
+
+        var headerCount = $("<th></th>")
+            .addClass("team-prob-header")
+            .attr("rowspan", "2")
+            .html("Number of<br/>Seasons");
+        headerRow.append(headerCount);
+
+
+		tableHead.append(headerRow);
+
+		var headerSecondRow = $("<tr></tr>")
+		.addClass("team-prob-header");
+
+		for (var p = 1; p <= json.length; p++) {
+			var headerPos = $("<th></th>")
+			    .addClass("team-prob-header")
+			    .text(p);
+			headerSecondRow.append(headerPos);
+		}
+		tableHead.append(headerSecondRow);
+		table.append(tableHead);
+
+		var tableBody = $("<tbody></tbody>");
+		for (var i = 0; i < positionsByRecord.length; i++) {
+		    var record = positionsByRecord[i];
+		    console.log(record);
+			var teamRow = $("<tr></tr>")
+			    .addClass("team-prob-row");
+
+			var teamName = $("<td></td>")
+			    .addClass("team-prob-center")
+			    .text(record.wins + "-" + record.draws + "-" + record.losses);
+			teamRow.append(teamName);
+
+			for (var h = 0; h < headerjson.length; h++) {
+			    var teamValue = $("<td></td>")
+			    .addClass(headerjson[h].class);
+                if (headerjson[h].type === "text") {
+                    teamValue.html(headerjson[h].prefix + record[headerjson[h].attribute] + headerjson[h].suffix);
+                } else {
+                    teamValue.html(headerjson[h].prefix + parseFloat(record[headerjson[h].attribute]).toFixed(headerjson[h].decimals) + headerjson[h].suffix);
+                }
+                teamRow.append(teamValue);
+			}
+
+			for (var p = 1; p <= json.length; p++) {
+
+				var teamPos = $("<td></td>")
+				    .addClass("team-prob-position")
+                    .attr("style", "background-color: rgba(127,127,255," + parseFloat(record.positionChance[p.toString()]).toFixed(2) / 100 + ")");
+
+				var teamPosSpan = $("<span></span>")
+				    .attr("title", parseFloat(record.positionChance[p.toString()]) + "%");
+				if (record.positionChance[p.toString()] != 0) {
+					teamPosSpan.text(parseFloat(record.positionChance[p.toString()].toFixed(0)));
+					teamPos.append(teamPosSpan);
+				}
+
+				teamRow.append(teamPos);
+			}
+			var teamCount = $("<td></td>")
+			    .addClass("border-left")
+                .text(record.recordCount + " (" + (parseFloat(record.recordPerc) * 100).toFixed(2) + "%)");
+            teamRow.append(teamCount);
+
+			tableBody.append(teamRow);
+		}
+		var totalRow = $("<tr></tr>")
+            .addClass("team-prob-row")
+            .addClass("all-bold");
+
+        var totalName = $("<td></td>")
+            .addClass("team-prob-center")
+            .text("Overall");
+        totalRow.append(totalName);
+
+        for (var h = 0; h < headerjson.length; h++) {
+            var totalValue = $("<td></td>")
+                .addClass(headerjson[h].class);
+            if (headerjson[h].type === "text") {
+                totalValue.html(headerjson[h].prefix + overallPositionChances[headerjson[h].attribute] + headerjson[h].suffix);
+            } else {
+                totalValue.html(headerjson[h].prefix + parseFloat(overallPositionChances[headerjson[h].attribute]).toFixed(headerjson[h].decimals) + headerjson[h].suffix);
+            }
+                totalRow.append(totalValue);
+            }
+
+            for (var p = 1; p <= json.length; p++) {
+
+                var totalPos = $("<td></td>")
+                    .addClass("team-prob-position")
+                    .attr("style", "background-color: rgba(127,127,255," + parseFloat(overallPositionChances.positionChance[p.toString()]).toFixed(2) / 100 + ")");
+
+                var totalPosSpan = $("<span></span>")
+                    .attr("title", parseFloat(overallPositionChances.positionChance[p.toString()]) + "%");
+                if (overallPositionChances.positionChance[p.toString()] != 0) {
+                    totalPosSpan.text(parseFloat(overallPositionChances.positionChance[p.toString()].toFixed(0)));
+                    totalPos.append(totalPosSpan);
+                }
+
+                totalRow.append(totalPos);
+            }
+            var totalCount = $("<td></td>")
+                .addClass("border-left")
+                .text(overallPositionChances.recordCount);
+            totalRow.append(totalCount);
+
+            tableBody.append(totalRow);
+
+		table.append(tableBody);
+		tableDiv.empty();
+		tableDiv.append(table);
+	});
+	});
+	});
 }
