@@ -67,6 +67,11 @@
         <h1>Ladder Position Probabilities by Record</h1>
     </div>
 
+    <ul class="nav nav-pills">
+        <li role="presentation" class="active" id="allrecords-button"><a href="#">Show all records</a></li>
+        <li role="presentation" id="onedrawmax-button"><a href="#">Hide records with more than one draw</a></li>
+        <li role="presentation" id="nodraws-button"><a href="#">Hide all records with draws</a></li>
+    </ul>
     <div class="table-responsive" id="team-probability-wrapper"><div class="well">Loading...</div></div>
 
 
@@ -95,7 +100,40 @@
             $('#jumbotron-h1').html(clubName + ' -<br/>Prediction and Analysis');
             $('#jumbotron-p').html('');
             drawNavbar();
-            drawFinalsChanceByRecordTable("afl", clubName)
+            drawFinalsChanceByRecordTable("afl", clubName, "allrecords");
+
+            $('#allrecords-button').click(function() {
+                if (!$(this).hasClass("active")) {
+
+                    $(this).addClass("active");
+                    $(this).siblings().removeClass("active");
+
+                    $('#team-probability-wrapper').html('<div class="well">Loading...</div>');
+                    drawFinalsChanceByRecordTable("afl", clubName, "allrecords");
+                }
+            });
+
+            $('#onedrawmax-button').click(function() {
+                if (!$(this).hasClass("active")) {
+
+                    $(this).addClass("active");
+                    $(this).siblings().removeClass("active");
+
+                    $('#team-probability-wrapper').html('<div class="well">Loading...</div>');
+                    drawFinalsChanceByRecordTable("afl", clubName, "onedrawmax");
+                }
+            });
+
+            $('#nodraws-button').click(function() {
+                if (!$(this).hasClass("active")) {
+
+                    $(this).addClass("active");
+                    $(this).siblings().removeClass("active");
+
+                    $('#team-probability-wrapper').html('<div class="well">Loading...</div>');
+                    drawFinalsChanceByRecordTable("afl", clubName, "nodraws");
+                }
+            });
         });
 
         function getParameterByName(name, url) {
@@ -105,8 +143,8 @@
                 results = regex.exec(url);
             if (!results) return null;
             if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
     </script>
 </body>
 </html>

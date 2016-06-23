@@ -886,7 +886,10 @@ var drawNavbar = function(thispage) {
 }
 
 
-var drawFinalsChanceByRecordTable = function(competition, club) {
+var drawFinalsChanceByRecordTable = function(competition, club, mode) {
+    if (typeof mode === undefined) {
+        mode = "allrecords"
+    }
     console.log("drawFinalsChanceByRecordTable")
     var tableDiv;
 	if (typeof targetDiv === 'undefined') {
@@ -961,9 +964,14 @@ var drawFinalsChanceByRecordTable = function(competition, club) {
 		table.append(tableHead);
 
 		var tableBody = $("<tbody></tbody>");
+		var nonHiddenRecords = 0;
 		for (var i = 0; i < positionsByRecord.length; i++) {
 		    var record = positionsByRecord[i];
 		    console.log(record);
+
+		    if (mode === "onedrawmax" && parseInt(record.draws) > 1) {continue;}
+		    if (mode === "nodraws" && parseInt(record.draws) > 0) {continue;}
+
 			var teamRow = $("<tr></tr>")
 			    .addClass("team-prob-row");
 
@@ -1002,9 +1010,11 @@ var drawFinalsChanceByRecordTable = function(competition, club) {
 			    .addClass("border-left")
                 .text(record.recordCount + " (" + (parseFloat(record.recordPerc) * 100).toFixed(2) + "%)");
             teamRow.append(teamCount);
+            nonHiddenRecords += record.recordCount;
 
 			tableBody.append(teamRow);
 		}
+
 		var totalRow = $("<tr></tr>")
             .addClass("team-prob-row")
             .addClass("all-bold");
@@ -1022,8 +1032,8 @@ var drawFinalsChanceByRecordTable = function(competition, club) {
             } else {
                 totalValue.html(headerjson[h].prefix + parseFloat(overallPositionChances[headerjson[h].attribute]).toFixed(headerjson[h].decimals) + headerjson[h].suffix);
             }
-                totalRow.append(totalValue);
-            }
+            totalRow.append(totalValue);
+        }
 
             for (var p = 1; p <= json.length; p++) {
 
@@ -1040,9 +1050,11 @@ var drawFinalsChanceByRecordTable = function(competition, club) {
 
                 totalRow.append(totalPos);
             }
+
+            var nonHiddenPerc = (nonHiddenRecords/overallPositionChances.recordCount * 100).toFixed(2)
             var totalCount = $("<td></td>")
                 .addClass("border-left")
-                .text(overallPositionChances.recordCount);
+                .text(nonHiddenRecords + " (" + nonHiddenPerc + "%)");
             totalRow.append(totalCount);
 
             tableBody.append(totalRow);
