@@ -1,0 +1,20 @@
+[
+  {
+    "attribute": "finalsChance",
+    "title": "Chance of<br/>Finals",
+    "class": "team-prob-finals",
+    "decimals": 2,
+    "type": "number",
+    "prefix": "",
+    "suffix": "%"
+  },
+  {
+    "attribute": "top4Chance",
+    "title": "Chance wins<br/>Conference",
+    "class": "team-prob-finals",
+    "decimals": 2,
+    "type": "number",
+    "prefix": "",
+    "suffix": "%"
+  }
+]
