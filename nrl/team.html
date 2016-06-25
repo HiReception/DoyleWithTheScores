@@ -67,13 +67,19 @@
         <h1>Ladder Position Probabilities by Record</h1>
     </div>
 
-    <ul class="nav nav-pills">
+    <ul class="nav nav-tabs">
         <li role="presentation" class="active" id="allrecords-button"><a href="#">Show all records</a></li>
         <li role="presentation" id="onedrawmax-button"><a href="#">Hide records with more than one draw</a></li>
         <li role="presentation" id="nodraws-button"><a href="#">Hide all records with draws</a></li>
     </ul>
 
     <div class="table-responsive" id="team-probability-wrapper"><div class="well">Loading...</div></div>
+
+    <div class="page-header">
+        <h1>Who should I barrack for?</h1>
+    </div>
+
+    <div class="table-responsive" id="team-finals-impact-div"><div class="well">Loading...</div></div>
 
 
 </div> <!-- /container -->
@@ -101,6 +107,7 @@
             $('#jumbotron-h1').html(clubName + ' -<br/>Prediction and Analysis');
             drawNavbar();
             drawFinalsChanceByRecordTable("nrl", clubName, "allrecords")
+            drawTeamFinalsImpactTable("nrl", clubName);
 
             $('#allrecords-button').click(function() {
                 if (!$(this).hasClass("active")) {
@@ -111,6 +118,7 @@
                     $('#team-probability-wrapper').html('<div class="well">Loading...</div>');
                     drawFinalsChanceByRecordTable("nrl", clubName, "allrecords");
                 }
+                return false;
             });
 
             $('#onedrawmax-button').click(function() {
@@ -122,6 +130,7 @@
                     $('#team-probability-wrapper').html('<div class="well">Loading...</div>');
                     drawFinalsChanceByRecordTable("nrl", clubName, "onedrawmax");
                 }
+                return false;
             });
 
             $('#nodraws-button').click(function() {
@@ -133,20 +142,9 @@
                     $('#team-probability-wrapper').html('<div class="well">Loading...</div>');
                     drawFinalsChanceByRecordTable("nrl", clubName, "nodraws");
                 }
+                return false;
             });
         });
-
-
-
-        function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
     </script>
 </body>
 </html>

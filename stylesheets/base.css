@@ -184,6 +184,13 @@ img.teamicon
 	min-width: 180px;
 }
 
+.table td.twoteamicons
+{
+	background-size: 20px,80px;
+	min-width: 240px;
+	text-align: center;
+}
+
 .table th.impactheader-left
 {
 	background-size: 20px,80px;

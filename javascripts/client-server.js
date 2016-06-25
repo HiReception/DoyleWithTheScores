@@ -609,7 +609,7 @@ var drawMatchFinalsImpactTable = function(competition) {
 
                     if (headerjson["include-draw"]) {
                         var drawProb = parseFloat(gameData.drawImpact[teamName][headerjson.categories[i]["probability-attr"]]);
-                        var drawChange = parseFloat(gameData.drawImpact[teamName].finalsChange);
+                        var drawChange = parseFloat(gameData.drawImpact[teamName][headerjson.categories[i]["change-attr"]]);
 
                         if (drawProb === -1) {
                             teamRow.append($('<td></td>').addClass("impactcell").text("-"));
@@ -885,7 +885,6 @@ var drawNavbar = function(thispage) {
     navbar.append(container);
 }
 
-
 var drawFinalsChanceByRecordTable = function(competition, club, mode) {
     if (typeof mode === undefined) {
         mode = "allrecords"
@@ -905,11 +904,14 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
 	headerFilename = "/" + competition + "-finalschancebyrecordheader"
 	positionsRecordFilename = "/" + competition + "-finalschancebyrecord"
 
-	$.getJSON(positionsFilename, function(json) {
 	$.getJSON(positionsRecordFilename, function(recordjson) {
 	$.getJSON(headerFilename, function(headerjson) {
+	    var numTeams = Object.keys(recordjson).length
+	    console.log(recordjson);
+	    console.log("numTeams = " + numTeams);
 	    var overallPositionChances = recordjson[club].overall;
 	    console.log(overallPositionChances);
+
 	    var positionsByRecord = recordjson[club].records;
 
 		var table = $("<table></table>")
@@ -938,7 +940,7 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
 
 		var headerPosTop = $("<th></th>")
 		    .addClass("team-prob-header")
-		    .attr("colspan", json.length.toString())
+		    .attr("colspan", numTeams.toString())
 		    .html("Chance of finishing in position:");
 		headerRow.append(headerPosTop);
 
@@ -954,7 +956,7 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
 		var headerSecondRow = $("<tr></tr>")
 		.addClass("team-prob-header");
 
-		for (var p = 1; p <= json.length; p++) {
+		for (var p = 1; p <= numTeams; p++) {
 			var headerPos = $("<th></th>")
 			    .addClass("team-prob-header")
 			    .text(p);
@@ -991,7 +993,7 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
                 teamRow.append(teamValue);
 			}
 
-			for (var p = 1; p <= json.length; p++) {
+			for (var p = 1; p <= numTeams; p++) {
 
 				var teamPos = $("<td></td>")
 				    .addClass("team-prob-position")
@@ -1035,7 +1037,7 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
             totalRow.append(totalValue);
         }
 
-            for (var p = 1; p <= json.length; p++) {
+            for (var p = 1; p <= numTeams; p++) {
 
                 var totalPos = $("<td></td>")
                     .addClass("team-prob-position")
@@ -1064,5 +1066,159 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
 		tableDiv.append(table);
 	});
 	});
-	});
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+var drawTeamFinalsImpactTable = function(competition, club) {
+    console.log("drawTeamFinalsImpactTable")
+    var targetDiv = $('#team-finals-impact-div');
+    var tableArray = [];
+    var newDiv = $('<div></div>');
+    $.getJSON("/" + competition + "-matchfinalsimpact", function(json) {
+    $.getJSON("/" + competition + "-matchfinalsimpactheader", function(headerjson) {
+        var table = $('<table></table>')
+            .addClass("table table-striped table-condensed");
+        var tableHead = $('<thead></thead>');
+            var topHeaderRow = $('<tr></tr>')
+                .append($('<th></th>')
+                    .addClass("impactheader-draw")
+                    .attr("rowspan", "2")
+                    .text("Match")
+                );
+
+            for (var i=0; i < headerjson.categories.length; i++) {
+                var topHeaderCat = $('<th></th>')
+                    .addClass("impactheader-draw")
+                    .addClass("border-left")
+                    .text(headerjson.categories[i].title);
+
+
+                if (headerjson["include-draw"] === "true") {
+                    topHeaderCat.attr("colspan", 3);
+                } else {
+                    topHeaderCat.attr("colspan", 2);
+                }
+
+                topHeaderRow.append(topHeaderCat);
+            }
+            tableHead.append(topHeaderRow);
+
+            var secondHeaderRow = $('<tr></tr>');
+            for (var i=0; i < headerjson.categories.length; i++) {
+                secondHeaderRow.append($('<th></th>')
+                    .addClass("impactheader-left")
+                    .addClass("border-left")
+                    .text("Home win")
+                )
+                secondHeaderRow.append($('<th></th>')
+                    .addClass("impactheader-draw")
+                    .text("Draw")
+                )
+                secondHeaderRow.append($('<th></th>')
+                    .addClass("impactheader-right")
+                    .text("Away win")
+                )
+            }
+            tableHead.append(secondHeaderRow);
+        table.append(tableHead);
+
+        var tableBody = $('<tbody></tbody>');
+        for (var game = 0; game < json.length; game++) {
+            var gameData = json[game];
+            console.log(gameData);
+                var teamRow = $('<tr></tr>');
+                teamRow.append($('<td></td>').addClass("twoteamicons")
+                    .attr("style", "background: url(\"" + "/" + competition + "/" + gameData.homeTeam + "-left\") left center no-repeat, " +
+                    "url(\"" + "/" + competition + "/" + gameData.awayTeam + "-right\") right center no-repeat")
+                    .text(gameData.homeAbbr + " vs " + gameData.awayAbbr));
+            // finals chance
+
+                for (var i = 0; i < headerjson.categories.length; i++) {
+                    var homeWinProb = parseFloat(gameData.homeWinImpact[club][headerjson.categories[i]["probability-attr"]]);
+                    var homeWinChange = parseFloat(gameData.homeWinImpact[club][headerjson.categories[i]["change-attr"]]);
+
+                    if (homeWinProb === -1) {
+                        teamRow.append($('<td></td>').addClass("impactcell").addClass("border-left").text("-"));
+                    } else if (homeWinChange > 0) {
+                        teamRow.append($('<td></td>').addClass("impactcell-up").addClass("border-left")
+                            .text(homeWinProb.toFixed(2) + "%"
+                                + " (+" + homeWinChange.toFixed(2) + "%)")
+                        )
+                    } else if (homeWinChange < 0) {
+                        teamRow.append($('<td></td>').addClass("impactcell-down").addClass("border-left")
+                            .text(homeWinProb.toFixed(2) + "%"
+                                + " (" + homeWinChange.toFixed(2) + "%)")
+                        )
+                    } else {
+                        teamRow.append($('<td></td>').addClass("impactcell").addClass("border-left")
+                            .text(homeWinProb.toFixed(2) + "%" + " (0.00%)")
+                                )
+                    }
+
+                    if (headerjson["include-draw"]) {
+                        var drawProb = parseFloat(gameData.drawImpact[club][headerjson.categories[i]["probability-attr"]]);
+                        var drawChange = parseFloat(gameData.drawImpact[club][headerjson.categories[i]["change-attr"]]);
+
+                        if (drawProb === -1) {
+                            teamRow.append($('<td></td>').addClass("impactcell").text("-"));
+                        } else if (drawChange > 0) {
+                            teamRow.append($('<td></td>').addClass("impactcell-up")
+                                .text(drawProb.toFixed(2) + "%"
+                                    + " (+" + drawChange.toFixed(2) + "%)")
+                            )
+                        } else if (drawChange < 0) {
+                            teamRow.append($('<td></td>').addClass("impactcell-down")
+                                .text(drawProb.toFixed(2) + "%"
+                                    + " (" + drawChange.toFixed(2) + "%)")
+                            )
+                        } else {
+                            teamRow.append($('<td></td>').addClass("impactcell")
+                                .text(drawProb.toFixed(2) + "%" + " (0.00%)")
+                            )
+                        }
+                    }
+
+                    var awayWinProb = parseFloat(gameData.awayWinImpact[club][headerjson.categories[i]["probability-attr"]]);
+                    var awayWinChange = parseFloat(gameData.awayWinImpact[club][headerjson.categories[i]["change-attr"]]);
+
+                    if (awayWinProb === -1) {
+                        teamRow.append($('<td></td>').addClass("impactcell").text("-"));
+                    } else if (awayWinChange > 0) {
+                        teamRow.append($('<td></td>').addClass("impactcell-up")
+                            .text(awayWinProb.toFixed(2) + "%"
+                                + " (+" + awayWinChange.toFixed(2) + "%)")
+                        )
+                    } else if (awayWinChange < 0) {
+                        teamRow.append($('<td></td>').addClass("impactcell-down")
+                            .text(awayWinProb.toFixed(2) + "%"
+                                + " (" + awayWinChange.toFixed(2) + "%)")
+                        )
+                    } else {
+                        teamRow.append($('<td></td>').addClass("impactcell")
+                            .text(awayWinProb.toFixed(2) + "%" + " (0.00%)")
+                        )
+                    }
+                }
+
+                tableBody.append(teamRow);
+
+            table.append(tableBody);
+
+            newDiv.append(table);
+
+        }
+
+        targetDiv.empty();
+        targetDiv.append(newDiv);
+    })
+    })
 }
