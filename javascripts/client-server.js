@@ -527,7 +527,12 @@ var drawMatchFinalsImpactTable = function(competition) {
         for (var game = 0; game < json.length; game++) {
             var gameData = json[game];
             newDiv.append("<h2>" + gameData.homeTeam + " vs " + gameData.awayTeam + "</h2>");
-            newDiv.append("<p>" + gameData.date + "</p>");
+            if (gameData.hasOwnProperty('venue')) {
+                newDiv.append("<p>" + gameData.date + ", " + gameData.venue + "</p>");
+            } else {
+                newDiv.append("<p>" + gameData.date + "</p>");
+            }
+
             var table = $('<table></table>')
                 .addClass("table table-striped table-condensed");
             var tableHead = $('<thead></thead>');
@@ -909,7 +914,15 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
 	    var numTeams = Object.keys(recordjson).length
 	    console.log(recordjson);
 	    console.log("numTeams = " + numTeams);
-	    var overallPositionChances = recordjson[club].overall;
+	    console.log("mode = " + mode);
+	    var overallPositionChances;
+	    if (mode === "nodraws") {
+	        overallPositionChances = recordjson[club]["overall-nodraws"];
+	    } else if (mode === "onedrawmax") {
+	        overallPositionChances = recordjson[club]["overall-onedrawmax"];
+	    } else {
+	        overallPositionChances = recordjson[club]["overall"];
+	    }
 	    console.log(overallPositionChances);
 
 	    var positionsByRecord = recordjson[club].records;
@@ -966,7 +979,6 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
 		table.append(tableHead);
 
 		var tableBody = $("<tbody></tbody>");
-		var nonHiddenRecords = 0;
 		for (var i = 0; i < positionsByRecord.length; i++) {
 		    var record = positionsByRecord[i];
 		    console.log(record);
@@ -1012,7 +1024,6 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
 			    .addClass("border-left")
                 .text(record.recordCount + " (" + (parseFloat(record.recordPerc) * 100).toFixed(2) + "%)");
             teamRow.append(teamCount);
-            nonHiddenRecords += record.recordCount;
 
 			tableBody.append(teamRow);
 		}
@@ -1053,10 +1064,10 @@ var drawFinalsChanceByRecordTable = function(competition, club, mode) {
                 totalRow.append(totalPos);
             }
 
-            var nonHiddenPerc = (nonHiddenRecords/overallPositionChances.recordCount * 100).toFixed(2)
+            var recordPerc = (overallPositionChances.recordPerc * 100).toFixed(2)
             var totalCount = $("<td></td>")
                 .addClass("border-left")
-                .text(nonHiddenRecords + " (" + nonHiddenPerc + "%)");
+                .text(overallPositionChances.recordCount + " (" + recordPerc + "%)");
             totalRow.append(totalCount);
 
             tableBody.append(totalRow);

@@ -6,7 +6,9 @@
     "decimals": 2,
     "type": "number",
     "prefix": "",
-    "suffix": "%"
+    "suffix": "%",
+    "fromPosition": 1,
+    "toPosition": 8
   },
   {
     "attribute": "top4Chance",
@@ -15,6 +17,8 @@
     "decimals": 2,
     "type": "number",
     "prefix": "",
-    "suffix": "%"
+    "suffix": "%",
+    "fromPosition": 1,
+    "toPosition": 4
   }
 ]

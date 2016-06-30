@@ -5,6 +5,15 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var app = express();
+var AWS = require('aws-sdk');
+AWS.config.update({
+  accessKeyId: "AKIAJCUHCZ5XEIA6TKBQ",
+  secretAccessKey: "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",
+  region:'ap-southeast-2',
+  sslEnabled: true,
+});
+
+var s3 = new AWS.S3();
 
 // all environments
 app.set('port', process.env.PORT || 5000);
@@ -18,11 +27,7 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname)));
 
 app.get('/icons/:path', function(req, res, next) {
-  // GET 'http://www.example.com/admin/new'
   res.sendfile(__dirname + '/icons/' + req.params.path);
-  console.log(req.originalUrl); // '/admin/new'
-    console.log(req.baseUrl); // '/admin'
-    console.log(req.path); // '/new'
 });
 
 // development only
@@ -89,15 +94,45 @@ app.get('/:comp/:teamname-square', function(req, res){
 });
 
 app.get('/:comp-teampositions', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/teampositions.json');
+    var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/teampositions.json'
+    };
+	s3.getObject(params, function(err, data) {
+	    if (err)
+	        console.log(err, err.stack);
+	    else {
+	        res.send(data.Body.toString());
+	    }
+	})
 });
 
 app.get('/:comp-winsminuslosses', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/winsminuslosses.json');
+	var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/winsminuslosses.json'
+    };
+   	s3.getObject(params, function(err, data) {
+        if (err)
+            console.log(err, err.stack);
+        else {
+            res.send(data.Body.toString());
+        }
+    })
 });
 
 app.get('/:comp-finalschancebyrecord', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/finalschancebyrecord.json');
+	var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/finalschancebyrecord.json'
+    };
+    s3.getObject(params, function(err, data) {
+        if (err)
+    	    console.log(err, err.stack);
+    	else {
+    	    res.send(data.Body.toString());
+    	}
+    })
 });
 
 app.get('/:comp-finalschancebyrecordheader', function(req, res){
@@ -109,7 +144,17 @@ app.get('/:comp-teampositionsheader', function(req, res){
 });
 
 app.get('/:comp/:div-teampositions', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/' + req.params.div + '/teampositions.json');
+	var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/' + req.params.div + '/teampositions.json'
+    };
+    s3.getObject(params, function(err, data) {
+        if (err)
+            console.log(err, err.stack);
+        else {
+            res.send(data.Body.toString());
+        }
+    })
 });
 
 app.get('/:comp/:div-teampositionsheader', function(req, res){
@@ -117,23 +162,73 @@ app.get('/:comp/:div-teampositionsheader', function(req, res){
 });
 
 app.get('/:comp-mostrecentgames', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/mostrecentgames.json');
+    var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/mostrecentgames.json'
+    };
+	s3.getObject(params, function(err, data) {
+	    if (err)
+	        console.log(err, err.stack);
+	    else {
+	        res.send(data.Body.toString());
+	    }
+	})
 });
 
 app.get('/:comp-averageforagainst', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/averageforagainst.json');
+    var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/averageforagainst.json'
+    };
+	s3.getObject(params, function(err, data) {
+	    if (err)
+	        console.log(err, err.stack);
+	    else {
+	        res.send(data.Body.toString());
+	    }
+	})
 });
 
 app.get('/:comp-upcominggames', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/upcominggames.json');
+    var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/upcominggames.json'
+    };
+	s3.getObject(params, function(err, data) {
+	    if (err)
+	        console.log(err, err.stack);
+	    else {
+	        res.send(data.Body.toString());
+	    }
+	})
 });
 
 app.get('/:comp-firstFinalOpponent', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/firstFinalOpponent.json');
+    var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/firstfinalopponent.json'
+    };
+	s3.getObject(params, function(err, data) {
+	    if (err)
+	        console.log(err, err.stack);
+	    else {
+	        res.send(data.Body.toString());
+	    }
+	})
 });
 
 app.get('/:comp-matchfinalsimpact', function(req, res){
-	res.sendfile(__dirname + '/' + req.params.comp + '/matchfinalsimpact.json');
+    var params = {
+        Bucket: 'doylewiththescores',
+        Key: req.params.comp + '/matchfinalsimpact.json'
+    };
+	s3.getObject(params, function(err, data) {
+	    if (err)
+	        console.log(err, err.stack);
+	    else {
+	        res.send(data.Body.toString());
+	    }
+	})
 });
 
 app.get('/:comp-matchfinalsimpactheader', function(req, res){
@@ -149,19 +244,11 @@ app.get('/fonts/:path', function(req, res) {
 });
 
 app.use('/css', function(req, res, next) {
-  // GET 'http://www.example.com/admin/new'
   res.sendfile(__dirname + '/bootstrap/dist/css' + req.path);
-  console.log(req.originalUrl); // '/admin/new'
-  console.log(req.baseUrl); // '/admin'
-  console.log(req.path); // '/new'
 });
 
 app.use('/js', function(req, res, next) {
-  // GET 'http://www.example.com/admin/new'
   res.sendfile(__dirname + '/bootstrap/dist/js' + req.path);
-  console.log(req.originalUrl); // '/admin/new'
-  console.log(req.baseUrl); // '/admin'
-  console.log(req.path); // '/new'
 });
 
 
