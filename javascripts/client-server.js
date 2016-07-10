@@ -486,7 +486,6 @@ var drawFirstFinalOpponentTable = function(competition) {
         var tableBody = $("<tbody></tbody>");
     	for (var i = 0; i < json.length; i++) {
 			var teamData = json[i];
-			console.log(teamData)
 			var teamRow = $("<tr></tr>")
 			.addClass("team-prob-row");
 
@@ -580,10 +579,29 @@ var drawMatchFinalsImpactTable = function(competition) {
             table.append(tableHead);
 
             var tableBody = $('<tbody></tbody>');
-            console.log(teamNames);
-            $.each(gameData.homeWinImpact, function(key, val) {
-                var teamName = key;
+            var sortedTeamNames = Object.keys(gameData.homeWinImpact).sort(function(a,b) {
+                var aTotalAbsoluteChange = 0;
+                var bTotalAbsoluteChange = 0;
+                for (var i = 0; i < headerjson.categories.length; i++) {
+                    // add absolute change in this category for home win
+                    aTotalAbsoluteChange += Math.abs(parseFloat(gameData.homeWinImpact[a][headerjson.categories[i]["change-attr"]]));
+                    bTotalAbsoluteChange += Math.abs(parseFloat(gameData.homeWinImpact[b][headerjson.categories[i]["change-attr"]]));
 
+                    // add absolute change in this category for draw (if applicable)
+                    if (headerjson["include-draw"]) {
+                        aTotalAbsoluteChange += Math.abs(parseFloat(gameData.drawImpact[a][headerjson.categories[i]["change-attr"]]));
+                        bTotalAbsoluteChange += Math.abs(parseFloat(gameData.drawImpact[b][headerjson.categories[i]["change-attr"]]));
+                    }
+
+                    // add absolute change in this category for away win
+                    aTotalAbsoluteChange += Math.abs(parseFloat(gameData.awayWinImpact[a][headerjson.categories[i]["change-attr"]]));
+                    bTotalAbsoluteChange += Math.abs(parseFloat(gameData.awayWinImpact[b][headerjson.categories[i]["change-attr"]]));
+                }
+                return bTotalAbsoluteChange - aTotalAbsoluteChange
+            });
+
+            for (var t = 0; t < sortedTeamNames.length; t++) {
+                var teamName = sortedTeamNames[t];
                 var teamRow = $('<tr></tr>');
                 teamRow.append($('<td></td>').addClass("teamicon")
                     .attr("style", "background: url(\"" + competition + "/" + teamName + "-left\") left center no-repeat")
@@ -658,7 +676,7 @@ var drawMatchFinalsImpactTable = function(competition) {
                 }
 
                 tableBody.append(teamRow);
-            });
+            }
 
             table.append(tableBody);
 
