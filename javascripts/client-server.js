@@ -317,15 +317,20 @@ var drawTeamProbTable = function(competition, division, targetDiv) {
 	*/
 	
 var drawRecentGamesTable = function(competition) {
-    console.log("drawRecentGamesTable")
+    console.log("drawRecentGamesTable");
 	var tableDiv = $('#last-nine-div');
 	var tableArray = [];
 	$.getJSON("/" + competition + "-mostrecentgames", function(json) {
+	    if (json.length == 0) {
+	        tableDiv.empty();
+    	    $("<div></div>").addClass("alert alert-info").text("No Matches Played").appendTo(tableDiv);
+    	} else {
 			var table = $("<table></table>")
 			.attr("id", "team-probability-table")
 			.addClass("table table-striped table-condensed");
 
 			var tableBody = $("<tbody></tbody>");
+
 
 			for (var i = 0; i < json.length; i++) {
 				var gameData = json[i];
@@ -382,6 +387,7 @@ var drawRecentGamesTable = function(competition) {
 			table.append(tableBody)
 			tableDiv.empty();
 			tableDiv.append(table);
+		}
 	});
 }
 
@@ -390,6 +396,10 @@ var drawUpcomingGamesTable = function(competition) {
 	var tableDiv = $('#next-nine-div');
 	var tableArray = [];
 	$.getJSON(competition + "-upcominggames", function(json) {
+	    if (json.length == 0) {
+	        tableDiv.empty();
+            $("<div></div>").addClass("alert alert-info").text("No Matches to be Played").appendTo(tableDiv);
+	    } else {
 			var table = $("<table></table>")
 			    .attr("id", "team-probability-table")
 			    .addClass("table table-striped table-condensed");
@@ -439,7 +449,8 @@ var drawUpcomingGamesTable = function(competition) {
 			table.append(tableBody);
 			tableDiv.empty();
 			tableDiv.append(table);
-		});
+		}
+	});
 }
 
 var drawFirstFinalOpponentTable = function(competition) {
@@ -523,6 +534,10 @@ var drawMatchFinalsImpactTable = function(competition) {
     var newDiv = $('<div></div>');
     $.getJSON(competition + "-matchfinalsimpact", function(json) {
     $.getJSON(competition + "-matchfinalsimpactheader", function(headerjson) {
+        if (json.length == 0) {
+            targetDiv.empty();
+            $("<div></div>").addClass("alert alert-info").text("No Matches to be Played").appendTo(targetDiv);
+        } else {
         for (var game = 0; game < json.length; game++) {
             var gameData = json[game];
             newDiv.append("<h2>" + gameData.homeTeam + " vs " + gameData.awayTeam + "</h2>");
@@ -686,6 +701,7 @@ var drawMatchFinalsImpactTable = function(competition) {
 
         targetDiv.empty();
         targetDiv.append(newDiv);
+        }
     })
     })
 }
