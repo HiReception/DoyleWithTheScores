@@ -459,6 +459,15 @@ var drawFirstFinalOpponentTable = function(competition) {
 	var tableArray = [];
 	$.getJSON(competition + "-firstFinalOpponent", function(json) {
 
+	    // remove teams that cannot make the finals (teams where all values in object sum to 0)
+        var teamsThatCanMakeFinals = json.filter(function(obj) {
+            var sum = 0;
+            for (var key in obj.probabilities) {
+                sum += obj.probabilities[key];
+            }
+
+            return sum > 0;
+        })
 
 		var table = $('<table></table>')
 		    .attr("id","team-probability-table")
@@ -474,7 +483,7 @@ var drawFirstFinalOpponentTable = function(competition) {
 
 		var headerPosTop = $("<th></th>")
 		    .addClass("team-prob-header")
-		    .attr("colspan", json.length.toString())
+		    .attr("colspan", teamsThatCanMakeFinals.length.toString())
 		    .html("Chance of playing team in the first week of the Finals:");
 		headerRow.append(headerPosTop);
 
@@ -482,12 +491,12 @@ var drawFirstFinalOpponentTable = function(competition) {
 
 		var headerSecondRow = $("<tr></tr>");
 
-		for (var p = 0; p < json.length; p++) {
+		for (var p = 0; p < teamsThatCanMakeFinals.length; p++) {
 			var headerOpp = $("<th></th>")
 			    .addClass("team-prob-header")
-			    .attr("title", json[p].name);
+			    .attr("title", teamsThatCanMakeFinals[p].name);
 			var headerOppIcon = $("<img></img>")
-			    .attr("src", competition + "/" + json[p].name + "-square");
+			    .attr("src", competition + "/" + teamsThatCanMakeFinals[p].name + "-square");
 			headerOpp.append(headerOppIcon);
 			headerSecondRow.append(headerOpp);
 		}
@@ -495,26 +504,26 @@ var drawFirstFinalOpponentTable = function(competition) {
 		table.append(tableHead);
 
         var tableBody = $("<tbody></tbody>");
-    	for (var i = 0; i < json.length; i++) {
-			var teamData = json[i];
+    	for (var i = 0; i < teamsThatCanMakeFinals.length; i++) {
+			var teamData = teamsThatCanMakeFinals[i];
 			var teamRow = $("<tr></tr>")
 			.addClass("team-prob-row");
 
 			var teamName = $("<td></td>")
 			    .addClass("teamicon")
-			    .attr("style", "background: url(\"" + competition + "/" + json[i].name + "-left\") left center no-repeat")
-			    .html(json[i].name);
+			    .attr("style", "background: url(\"" + competition + "/" + teamData.name + "-left\") left center no-repeat")
+			    .html(teamData.name);
 			teamRow.append(teamName);
 
-			for (var p = 0; p < json.length; p++) {
+			for (var p = 0; p < teamsThatCanMakeFinals.length; p++) {
 				var teamPos = $("<td></td>")
-				.attr("style", "background-color: rgba(127,127,255," + parseFloat(teamData.probabilities[json[p].name]).toFixed(2) / 100 + ")")
+				.attr("style", "background-color: rgba(127,127,255," + parseFloat(teamData.probabilities[teamsThatCanMakeFinals[p].name]).toFixed(2) / 100 + ")")
 				.addClass("team-prob-position")
 				var teamPosSpan = $("<span></span>")
-				.attr("title", parseFloat(teamData.probabilities[json[p].name]) + "%")
+				.attr("title", parseFloat(teamData.probabilities[teamsThatCanMakeFinals[p].name]) + "%")
 
-				if (teamData.probabilities[json[p].name] != 0) {
-					teamPosSpan.text(parseFloat(teamData.probabilities[json[p].name]).toFixed(0));
+				if (teamData.probabilities[teamsThatCanMakeFinals[p].name] != 0) {
+					teamPosSpan.text(parseFloat(teamData.probabilities[teamsThatCanMakeFinals[p].name]).toFixed(0));
 				}
 				teamPos.append(teamPosSpan);
 				teamRow.append(teamPos);
