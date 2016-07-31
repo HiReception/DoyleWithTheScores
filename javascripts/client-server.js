@@ -316,23 +316,28 @@ var drawTeamProbTable = function(competition, division, targetDiv) {
 				<tr><td colspan="5" class="gamedetails">Predicted chance of this result: [result chance]</td></tr>
 	*/
 	
-var drawRecentGamesTable = function(competition) {
+var drawRecentGamesTable = function(competition, maxMatches) {
     console.log("drawRecentGamesTable");
 	var tableDiv = $('#last-nine-div');
 	var tableArray = [];
 	$.getJSON("/" + competition + "-mostrecentgames", function(json) {
+
 	    if (json.length == 0) {
 	        tableDiv.empty();
     	    $("<div></div>").addClass("alert alert-info").text("No Matches Played").appendTo(tableDiv);
     	} else {
+    	    var numMatches;
+    	    if (typeof maxMatches === undefined || maxMatches == null) {
+                numMatches = json.length;
+            } else {
+                numMatches = Math.min(maxMatches, json.length)
+            }
 			var table = $("<table></table>")
 			.attr("id", "team-probability-table")
 			.addClass("table table-striped table-condensed");
 
 			var tableBody = $("<tbody></tbody>");
-
-
-			for (var i = 0; i < json.length; i++) {
+			for (var i = 0; i < numMatches; i++) {
 				var gameData = json[i];
 				var gameFirstRow = $("<tr></tr>");
 				var gameSecondRow = $("<tr></tr>");
@@ -391,7 +396,7 @@ var drawRecentGamesTable = function(competition) {
 	});
 }
 
-var drawUpcomingGamesTable = function(competition) {
+var drawUpcomingGamesTable = function(competition, maxMatches) {
     console.log("drawUpcomingGamesTable")
 	var tableDiv = $('#next-nine-div');
 	var tableArray = [];
@@ -400,12 +405,18 @@ var drawUpcomingGamesTable = function(competition) {
 	        tableDiv.empty();
             $("<div></div>").addClass("alert alert-info").text("No Matches to be Played").appendTo(tableDiv);
 	    } else {
+            var numMatches;
+    	    if (typeof maxMatches === undefined || maxMatches == null) {
+                numMatches = json.length;
+            } else {
+                numMatches = Math.min(maxMatches, json.length);
+            }
 			var table = $("<table></table>")
 			    .attr("id", "team-probability-table")
 			    .addClass("table table-striped table-condensed");
 			var tableBody = $("<tbody></tbody>");
 			
-			for (var i = 0; i < json.length; i++) {
+			for (var i = 0; i < numMatches; i++) {
 				var gameData = json[i];
 				var gameFirstRow = $("<tr></tr>");
 				var gameSecondRow = $("<tr></tr>");
