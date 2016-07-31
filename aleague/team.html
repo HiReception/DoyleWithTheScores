@@ -80,6 +80,17 @@
 
     <div class="table-responsive" id="team-finals-impact-div"><div class="well">Loading...</div></div>
 
+    <div class="row">
+        <div class="col-md-6">
+            <div class="page-header"><h1>Matches Played</h1></div>
+            <div class="table-responsive" id="matches-played-div"><div class="well">Loading...</div></div>
+        </div>
+        <div class="col-md-6">
+            <div class="page-header"><h1>Matches to Come</h1></div>
+            <div class="table-responsive" id="matches-to-come-div"><div class="well">Loading...</div></div>
+        </div>
+    </div>
+
 
 </div> <!-- /container -->
 
@@ -109,6 +120,8 @@
             drawNavbar();
             drawFinalsChanceByRecordTable("aleague", clubName, "allrecords");
             drawTeamFinalsImpactTable("aleague", clubName);
+            drawTeamMatchesPlayedTable("aleague", clubName);
+            drawTeamMatchesToComeTable("aleague", clubName);
 
             $('#allrecords-button').click(function() {
                 if (!$(this).hasClass("active")) {

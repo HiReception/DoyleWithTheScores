@@ -464,6 +464,161 @@ var drawUpcomingGamesTable = function(competition, maxMatches) {
 	});
 }
 
+var drawTeamMatchesPlayedTable = function(competition, team) {
+	var tableDiv = $('#matches-played-div');
+	var tableArray = [];
+	$.getJSON("/" + competition + "-mostrecentgames", function(json) {
+
+        var teamMatches = json.filter(function(obj) {
+            return (obj.hometeam == team || obj.awayteam == team);
+        });
+	    if (teamMatches.length == 0) {
+	        tableDiv.empty();
+    	    $("<div></div>").addClass("alert alert-info").text("No Matches Played").appendTo(tableDiv);
+    	} else {
+			var table = $("<table></table>")
+			.attr("id", "team-probability-table")
+			.addClass("table table-striped table-condensed");
+
+			var tableBody = $("<tbody></tbody>");
+			for (var i = 0; i < teamMatches.length; i++) {
+				var gameData = teamMatches[i];
+				var gameFirstRow = $("<tr></tr>");
+				var gameSecondRow = $("<tr></tr>");
+
+				var homeTeam = $("<td></td>")
+				    .addClass("gameteamicon-left")
+				    .attr("style", "background: url(\"/" + competition + "/" + gameData.hometeam + "-left\") left center no-repeat")
+				    .text(gameData.hometeam);
+				gameFirstRow.append(homeTeam);
+
+				var homeScore = $("<td></td>")
+				    .text(gameData.homescore);
+				gameFirstRow.append(homeScore);
+
+				var centre = $("<td></td>")
+				    .addClass("gamecentre")
+				    .text("vs");
+				gameFirstRow.append(centre);
+
+				var awayScore = $("<td></td>")
+				    .text(gameData.awayscore);
+				gameFirstRow.append(awayScore);
+
+				if (parseInt(gameData.homescore) > parseInt(gameData.awayscore)) {
+					homeScore.addClass("gamescore-win");
+					awayScore.addClass("gamescore-lose");
+				} else if (parseInt(gameData.homescore) < parseInt(gameData.awayscore)) {
+					homeScore.addClass("gamescore-lose");
+					awayScore.addClass("gamescore-win");
+				} else {
+					homeScore.addClass("gamescore");
+					awayScore.addClass("gamescore");
+				}
+
+				var awayTeam = $("<td></td>")
+				    .addClass("gameteamicon-right")
+				    .attr("style", "background: url(\"/" + competition + "/" + gameData.awayteam + "-right\") right center no-repeat")
+				    .text(gameData.awayteam);
+				gameFirstRow.append(awayTeam);
+
+				var gameDetails = $("<td></td>")
+				    .addClass("gamedetails")
+				    .attr("colspan", "5")
+				    .text(gameData.date + " - Predicted chance of this result: " + parseFloat(gameData.chanceofresult).toFixed(1) + "%")
+				gameSecondRow.append(gameDetails);
+
+				if (gameData.hometeam === team) {
+                    homeTeam.css("font-weight", "bold");
+                } else {
+                    awayTeam.css("font-weight", "bold");
+                }
+
+
+				tableBody.append(gameFirstRow);
+				tableBody.append(gameSecondRow);
+			}
+
+			table.append(tableBody)
+			tableDiv.empty();
+			tableDiv.append(table);
+		}
+	});
+}
+
+var drawTeamMatchesToComeTable = function(competition, team) {
+	var tableDiv = $('#matches-to-come-div');
+	var tableArray = [];
+	$.getJSON("/" + competition + "-upcominggames", function(json) {
+	    var teamMatches = json.filter(function(obj) {
+	        return (obj.hometeam == team || obj.awayteam == team);
+	    });
+
+	    if (teamMatches.length == 0) {
+	        tableDiv.empty();
+            $("<div></div>").addClass("alert alert-info").text("No Matches to be Played").appendTo(tableDiv);
+	    } else {
+			var table = $("<table></table>")
+			    .attr("id", "team-probability-table")
+			    .addClass("table table-striped table-condensed");
+			var tableBody = $("<tbody></tbody>");
+
+			for (var i = 0; i < teamMatches.length; i++) {
+				var gameData = teamMatches[i];
+				var gameFirstRow = $("<tr></tr>");
+				var gameSecondRow = $("<tr></tr>");
+
+				var homeTeam = $("<td></td>")
+                    .addClass("gameteamicon-left")
+				    .attr("style", "background: url(\"/" + competition + "/" + gameData.hometeam + "-left\") left center no-repeat")
+				    .text(gameData.hometeam);
+				gameFirstRow.append(homeTeam);
+
+				var homePerc = $("<td></td>")
+				    .addClass("gameperc")
+				    .text(parseFloat(gameData.homechance).toFixed(1) + "%");
+				gameFirstRow.append(homePerc);
+
+				var centre = $("<td></td>")
+				    .addClass("gamecentre")
+				    .text("vs");
+				gameFirstRow.append(centre);
+
+				var awayPerc = $("<td></td>")
+				    .addClass("gameperc")
+				    .text(parseFloat(gameData.awaychance).toFixed(1) + "%");
+				gameFirstRow.append(awayPerc);
+
+				var awayTeam = $("<td></td>")
+				    .addClass("gameteamicon-right")
+				    .attr("style", "background: url(\"/" + competition + "/" + gameData.awayteam + "-right\") right center no-repeat")
+				    .text(gameData.awayteam);
+				gameFirstRow.append(awayTeam);
+
+				if (gameData.hometeam === team) {
+                    homeTeam.css("font-weight", "bold");
+                    homePerc.css("font-weight", "bold");
+                } else {
+                    awayTeam.css("font-weight", "bold");
+                    awayPerc.css("font-weight", "bold");
+                }
+
+				var gameDetails = $("<td></td>")
+				    .addClass("gamedetails")
+				    .attr("colspan", "5")
+				    .text(gameData.date + " - Chance of Draw: " + parseFloat(gameData.drawchance).toFixed(1) + "%");
+				gameSecondRow.append(gameDetails);
+
+				tableBody.append(gameFirstRow);
+				tableBody.append(gameSecondRow);
+			}
+			table.append(tableBody);
+			tableDiv.empty();
+			tableDiv.append(table);
+		}
+	});
+}
+
 var drawFirstFinalOpponentTable = function(competition) {
     console.log("drawFirstFinalOpponentTable")
 	var tableDiv = $('#first-final-opponent-div');
@@ -1180,7 +1335,7 @@ var drawTeamFinalsImpactTable = function(competition, club) {
             var secondHeaderRow = $('<tr></tr>');
             for (var i=0; i < headerjson.categories.length; i++) {
                 secondHeaderRow.append($('<th></th>')
-                    .addClass("impactheader-left")
+                    .addClass("impactheader-draw")
                     .addClass("border-left")
                     .text("Home win")
                 )
@@ -1189,7 +1344,7 @@ var drawTeamFinalsImpactTable = function(competition, club) {
                     .text("Draw")
                 )
                 secondHeaderRow.append($('<th></th>')
-                    .addClass("impactheader-right")
+                    .addClass("impactheader-draw")
                     .text("Away win")
                 )
             }
