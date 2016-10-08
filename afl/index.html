@@ -61,7 +61,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <h1>Australian Football League -<br/>Prediction and Analysis</h1>
-        <p>Remember, every year the Bulldogs don't win the flag is further proof that the league is rigged.</p>
+        <p id="jumbotron-byline">Celebrating     glorious days of not being rigged.</p>
     </div>
     <div class="page-header">
         <h1>Ladder Position Probabilities</h1>
@@ -134,6 +134,11 @@
 			drawFirstFinalOpponentTable("afl");
 			drawMatchFinalsImpactTable("afl");
 
+			var endOfRigging = new Date("2016-10-01T07:00:00");
+			var now = new Date();
+			now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+			var daysBetween = (now - endOfRigging)/(1000*60*60*24);
+            $("#jumbotron-byline").text("Celebrating " + Math.floor(daysBetween) + " glorious days of not being rigged.");
         });
 </script>
 
