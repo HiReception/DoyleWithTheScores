@@ -1043,16 +1043,16 @@ var drawNavbar = function(thispage) {
 
             navbarList.append(aleagueButton);
 
-                var shieldButton = $("<li></li>")
-                if (thispage === "sheffieldshield") {
-                    shieldButton.addClass("active")
+                var bblButton = $("<li></li>")
+                if (thispage === "bbl") {
+                    bblButton.addClass("active")
                 }
-                    var shieldLink = $("<a></a>")
-                        .attr("href", "#")
-                        .text("Sheffield Shield (soon)")
-                shieldButton.append(shieldLink);
+                    var bblLink = $("<a></a>")
+                        .attr("href", "/bbl")
+                        .text("BBL")
+                bblButton.append(bblLink);
 
-            navbarList.append(shieldButton);
+            navbarList.append(bblButton);
 
                 var dropdown = $("<li></li>")
                     .addClass("dropdown")

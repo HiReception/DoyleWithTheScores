@@ -68,6 +68,10 @@ app.get('/superrugby', function(req, res){
     res.sendfile(__dirname + '/superrugby/index.html');
 });
 
+app.get('/bbl', function(req, res) {
+    res.sendfile(__dirname + '/bbl/index.html');
+})
+
 
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
