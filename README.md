@@ -1,26 +1,28 @@
-socket.io Flot Chart Example
+Doyle with the Scores
 ======================
 
-This is an example of pushing data to a [flot charts](http://www.flotcharts.org/) through
-[socket.io](http://socket.io/).  This mimics the real time updates
-[example](http://www.flotcharts.org/flot/examples/realtime/index.html) from flot charts with the difference being
-that instead of ajax calls it utilizes web sockets if your browser supports them.
+This is the web component of a sports prediction and analysis website, currently available at http://mtdoyle.com.
+Built using Node.js, Express and Bootstrap, with a bit of Chart.js.
 
-[Online Demo](http://socketioflot.herokuapp.com/)
+# Leagues available
+* Australian Football League
+* National Rugby League
+* Super Rugby
+* A-League
+* Big Bash League
 
-<p align="center">
-  <img src="readme-media/flot-chart-screen.png?raw=true" alt="Sign In"/>
-</p>
+# Components
+On the main page of a competition:
+* Each team's likelihood of making the post-season, and subsections of the post-season cohort (e.g. the Double Chance in the AFL)
+* Chance of finishing in each individual position overall
+* Where applicable, chance of winning (and finishing in particular positions within) divisions and/or conferences
+* Graphical representation of attack and defence (in terms of points/runs scored and conceded)
+* Chance of playing any given team in the first round of the postseason
+* The most recent games' scores, with the percentage chance of the given result (win-draw-win) from before the game
+* Details of the upcoming few games, with the percentage chance of each win-draw-win outcome
+* Impact of each potential result of the next few games on each team's postseason chances
+Click on any team in the top table for:
+* Position and finals chance for every combination of wins, losses and draws in that team's remaining games
+* Full list of that team's results and remaining games (opponent, home or away, chance of winning, date and time)
+* Impact of each potential result of the next few games, on that team's postseason chances, in one table
 
-# Installation
-```
-git clone https://github.com/FrankHassanabad/socket.io-flot-example.git
-cd socket.io-flot-example/
-npm install
-node app.js
-```
-
-Then open up a web browser to
-```
-http://localhost:5000/
-```
