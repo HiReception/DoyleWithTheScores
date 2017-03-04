@@ -2,7 +2,7 @@ Doyle with the Scores
 ======================
 
 This is the web component of a sports prediction and analysis website, currently available at http://mtdoyle.com.
-Built using Node.js, Express and Bootstrap, with a bit of Chart.js.
+Built using Node.js, Express and Bootstrap, with a bit of Chart.js, and hosted on Heroku.
 
 # Leagues available
 * Australian Football League
