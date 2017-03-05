@@ -945,106 +945,154 @@ var drawWinLossWormChart = function(competition) {
 var drawNavbar = function(thispage) {
     var navbar = $("#navbar-nav");
 
-    var mainBarLinks = [
-    	{title: "Home", key: "home", href: "/"},
-    	{title: "AFL", key: "afl", href: "/afl"},
-    	{title: "NRL", key: "nrl", href: "/nrl"},
-    	{title: "Super Rugby", key: "superrugby", href: "/superrugby"},
-    	{title: "A-League", key: "aleague", href: "/aleague"},
-    	{title: "BBL", key: "bbl", href: "/bbl"},
-    ]
-
-    var moreLinks = [
-    	{title: "College Football (soon)", key: "cfb", href: "#"},
-    	{title: "NFL (soon)", key: "nfl", href: "#"},
-    ];
-
     var container = $("<div></div>")
         .addClass("container");
 
-    var navbarHeader = $("<div></div>").addClass("navbar-header");
+        var navbarHeader = $("<div></div>").addClass("navbar-header");
 
-        var toggleButton = $("<button></button>")
-        .addClass("navbar-toggle collapsed")
-        .attr("data-toggle", "collapse")
-        .attr("data-target", "#navbar")
-        .attr("aria-expanded", "false")
-        .attr("aria-controls", "navbar");
+            var toggleButton = $("<button></button>")
+            .addClass("navbar-toggle collapsed")
+            .attr("data-toggle", "collapse")
+            .attr("data-target", "#navbar")
+            .attr("aria-expanded", "false")
+            .attr("aria-controls", "navbar");
 
-            var toggleSR = $("<span></span>")
-            .addClass("sr-only")
-            .text("Toggle navigation");
+                var toggleSR = $("<span></span>")
+                .addClass("sr-only")
+                .text("Toggle navigation");
 
-        toggleButton.append(toggleSR);
-        toggleButton.append($("<span></span>").addClass("icon-bar"));
-        toggleButton.append($("<span></span>").addClass("icon-bar"));
-        toggleButton.append($("<span></span>").addClass("icon-bar"));
+            toggleButton.append(toggleSR);
+            toggleButton.append($("<span></span>").addClass("icon-bar"));
+            toggleButton.append($("<span></span>").addClass("icon-bar"));
+            toggleButton.append($("<span></span>").addClass("icon-bar"));
 
-    navbarHeader.append(toggleButton);
+        navbarHeader.append(toggleButton);
 
-        var titleButton = $("<a></a>")
-            .addClass("navbar-brand")
-            .attr("href", "/")
-            .text("Doyle with the Scores");
+            var titleButton = $("<a></a>")
+                .addClass("navbar-brand")
+                .attr("href", "/")
+                .text("Doyle with the Scores");
 
-    navbarHeader.append(titleButton)
+        navbarHeader.append(titleButton)
 
     container.append(navbarHeader);
 
-    var navbarDiv = $("<div></div>")
-        .attr("id", "navbar")
-        .addClass("navbar-collapse collapse");
+        var navbarDiv = $("<div></div>")
+            .attr("id", "navbar")
+            .addClass("navbar-collapse collapse");
 
-    var navbarList = $("<ul></ul>")
-    	.addClass("nav navbar-nav");
+            var navbarList = $("<ul></ul>")
+                .addClass("nav navbar-nav");
 
-    for (var link in mainBarLinks) {
-      	var button = $("<li></li>")
-        if (thispage === link.key) {
-            button.addClass("active");
-        }
+                var homeButton = $("<li></li>")
+                if (thispage === "home") {
+                    homeButton.addClass("active");
+                }
 
-        var link = $("<a></a>")
-            .attr("href", link.href)
-            .text(link.title);
+                    var homeLink = $("<a></a>")
+                        .attr("href", "/")
+                        .text("Home");
 
-        button.append(link);
+                homeButton.append(homeLink);
 
-      	navbarList.append(button);
-    }
+            navbarList.append(homeButton);
 
-    var dropdown = $("<li></li>")
-        .addClass("dropdown")
+                var aflButton = $("<li></li>");
+                if (thispage === "afl") {
+                    aflButton.addClass("active")
+                }
+                    var aflLink = $("<a></a>")
+                        .attr("href", "/afl")
+                        .text("AFL");
 
-    var dropdownToggle = $("<a></a>")
-        .attr("href", "#")
-        .addClass("dropdown-toggle")
-        .attr("data-toggle", "dropdown")
-        .attr("role", "button")
-        .attr("aria-haspopup", "true")
-        .attr("aria-expanded", "false")
-        .text("Other Sports")
-        .append($("<span></span>").addClass("caret"));
+                aflButton.append(aflLink);
 
-    dropdown.append(dropdownToggle);
-	var dropdownMenu = $("<ul></ul>")
-        .addClass("dropdown-menu");
+            navbarList.append(aflButton);
 
-	for (var link in moreLinks) {
-		var button = $("<li></li>");
-        var link = $("<a></a>")
-            .attr("href", link.href)
-            .text(link.title)
-        button.append(link);
+                var nrlButton = $("<li></li>")
+                if (thispage === "nrl") {
+                    nrlButton.addClass("active")
+                }
+                    var nrlLink = $("<a></a>")
+                        .attr("href", "/nrl")
+                        .text("NRL");
 
-    	dropdownMenu.append(button);
-	}
+                nrlButton.append(nrlLink);
 
-    dropdown.append(dropdownMenu);
+            navbarList.append(nrlButton);
 
-    navbarList.append(dropdown);
+                var superRugbyButton = $("<li></li>")
+                if (thispage === "superrugby") {
+                    superRugbyButton.addClass("active")
+                }
+                    var superRugbyLink = $("<a></a>")
+                        .attr("href", "/superrugby")
+                        .text("Super Rugby");
+                superRugbyButton.append(superRugbyLink);
 
-    navbarDiv.append(navbarList);
+            navbarList.append(superRugbyButton);
+
+                var aleagueButton = $("<li></li>")
+                if (thispage === "aleague") {
+                    aleagueButton.addClass("active")
+                }
+                    var aleagueLink = $("<a></a>")
+                        .attr("href", "/aleague")
+                        .text("A-League");
+                aleagueButton.append(aleagueLink);
+
+            navbarList.append(aleagueButton);
+
+                var bblButton = $("<li></li>")
+                if (thispage === "bbl") {
+                    bblButton.addClass("active")
+                }
+                    var bblLink = $("<a></a>")
+                        .attr("href", "/bbl")
+                        .text("BBL")
+                bblButton.append(bblLink);
+
+            navbarList.append(bblButton);
+
+                var dropdown = $("<li></li>")
+                    .addClass("dropdown")
+
+                    var dropdownToggle = $("<a></a>")
+                        .attr("href", "#")
+                        .addClass("dropdown-toggle")
+                        .attr("data-toggle", "dropdown")
+                        .attr("role", "button")
+                        .attr("aria-haspopup", "true")
+                        .attr("aria-expanded", "false")
+                        .text("Other Sports")
+                        .append($("<span></span>").addClass("caret"));
+
+                dropdown.append(dropdownToggle);
+
+                    var dropdownMenu = $("<ul></ul>")
+                        .addClass("dropdown-menu");
+
+                        var cfbButton = $("<li></li>");
+                            var cfbLink = $("<a></a>")
+                                .attr("href", "#")
+                                .text("College Football (soon)")
+                        cfbButton.append(cfbLink);
+
+                    dropdownMenu.append(cfbButton);
+
+                        var nflButton = $("<li></li>");
+                            var nflLink = $("<a></a>")
+                                .attr("href", "#")
+                                .text("NFL (soon)");
+                        nflButton.append(nflLink);
+
+                    dropdownMenu.append(nflButton);
+
+                dropdown.append(dropdownMenu);
+
+            navbarList.append(dropdown);
+
+        navbarDiv.append(navbarList);
 
     container.append(navbarDiv);
 
