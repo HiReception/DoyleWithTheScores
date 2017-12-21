@@ -1,5 +1,5 @@
 {
-  "include-draw": "true",
+  "include-draw": false,
   "categories": [
     {
       "title": "Finals Chance if:",

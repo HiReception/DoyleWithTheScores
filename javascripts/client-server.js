@@ -709,6 +709,7 @@ var drawMatchFinalsImpactTable = function(competition) {
     var newDiv = $('<div></div>');
     $.getJSON(competition + "-matchfinalsimpact", function(json) {
     $.getJSON(competition + "-matchfinalsimpactheader", function(headerjson) {
+        console.log(headerjson);
         if (json.length == 0) {
             targetDiv.empty();
             $("<div></div>").addClass("alert alert-info").text("No Matches to be Played").appendTo(targetDiv);
@@ -738,7 +739,7 @@ var drawMatchFinalsImpactTable = function(competition) {
                         .text(headerjson.categories[i].title);
 
 
-                    if (headerjson["include-draw"] === "true") {
+                    if (headerjson["include-draw"]) {
                         topHeaderCat.attr("colspan", 3);
                     } else {
                         topHeaderCat.attr("colspan", 2);
@@ -755,10 +756,13 @@ var drawMatchFinalsImpactTable = function(competition) {
                         .attr("style", "background: url(\"" + competition + "/" + gameData.homeTeam + "-left\") left center no-repeat")
                         .text(gameData.homeAbbr + " win")
                     )
-                    secondHeaderRow.append($('<th></th>')
-                        .addClass("impactheader-draw")
-                        .text("Draw")
-                    )
+                    if (headerjson["include-draw"]) {
+                        secondHeaderRow.append($('<th></th>')
+                            .addClass("impactheader-draw")
+                            .text("Draw")
+                        )
+                    }
+
                     secondHeaderRow.append($('<th></th>')
                         .addClass("impactheader-right")
                         .attr("style", "background: url(\"" + competition + "/" + gameData.awayTeam + "-right\") right center no-repeat")
@@ -1339,10 +1343,13 @@ var drawTeamFinalsImpactTable = function(competition, club) {
                     .addClass("border-left")
                     .text("Home win")
                 )
-                secondHeaderRow.append($('<th></th>')
-                    .addClass("impactheader-draw")
-                    .text("Draw")
-                )
+                if (headerjson["include-draw"]) {
+                    secondHeaderRow.append($('<th></th>')
+                        .addClass("impactheader-draw")
+                        .text("Draw")
+                    )
+                }
+
                 secondHeaderRow.append($('<th></th>')
                     .addClass("impactheader-draw")
                     .text("Away win")
