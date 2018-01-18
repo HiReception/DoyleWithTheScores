@@ -44,7 +44,7 @@
     "suffix": "%"
   },
   {
-    "attribute": "top4chance",
+    "attribute": "confchance",
     "title": "Chance wins<br/>Conference",
     "class": "team-prob-finals",
     "decimals": 2,

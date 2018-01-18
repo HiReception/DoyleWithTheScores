@@ -74,12 +74,9 @@
         <h1>Conference/Group Ladders</h1>
     </div>
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active" id="anz-tab"><a href="#">Australasian Group</a></li>
-        <li role="presentation" id="aus-tab"><a href="#">Australian Conference</a></li>
+        <li role="presentation" class="active" id="aus-tab"><a href="#">Australian Conference</a></li>
         <li role="presentation" id="nz-tab"><a href="#">New Zealand Conference</a></li>
         <li role="presentation" id="sa-tab"><a href="#">South African Group</a></li>
-        <li role="presentation" id="a1-tab"><a href="#">Africa 1 Conference</a></li>
-        <li role="presentation" id="a2-tab"><a href="#">Africa 2 Conference</a></li>
     </ul>
 
     <div class="table-responsive" id="conf-probability-wrapper"><div class="well">Loading...</div></div>
@@ -142,19 +139,9 @@
             startClientServer("superrugby");
 
 			drawTeamProbTable("superrugby");
-			drawTeamProbTable("superrugby", "australasia", "#conf-probability-wrapper");
+			drawTeamProbTable("superrugby", "australia", "#conf-probability-wrapper");
 
-			$('#anz-tab').click(function() {
-                if (!$(this).hasClass("active")) {
-                    $(this).addClass("active");
-                    $(this).siblings().removeClass("active");
-                    $('#conf-probability-wrapper').html('<div class="well">Loading...</div>');
-                    drawTeamProbTable("superrugby", "australasia", "#conf-probability-wrapper");
-                }
-                return false;
-            });
-
-            $('#aus-tab').click(function() {
+			$('#aus-tab').click(function() {
                 if (!$(this).hasClass("active")) {
                     $(this).addClass("active");
                     $(this).siblings().removeClass("active");
@@ -180,26 +167,6 @@
                     $(this).siblings().removeClass("active");
                     $('#conf-probability-wrapper').html('<div class="well">Loading...</div>');
                     drawTeamProbTable("superrugby", "southafrica", "#conf-probability-wrapper");
-                }
-                return false;
-            });
-
-            $('#a1-tab').click(function() {
-                if (!$(this).hasClass("active")) {
-                    $(this).addClass("active");
-                    $(this).siblings().removeClass("active");
-                    $('#conf-probability-wrapper').html('<div class="well">Loading...</div>');
-                    drawTeamProbTable("superrugby", "africa1", "#conf-probability-wrapper");
-                }
-                return false;
-            });
-
-            $('#a2-tab').click(function() {
-                if (!$(this).hasClass("active")) {
-                    $(this).addClass("active");
-                    $(this).siblings().removeClass("active");
-                    $('#conf-probability-wrapper').html('<div class="well">Loading...</div>');
-                    drawTeamProbTable("superrugby", "africa2", "#conf-probability-wrapper");
                 }
                 return false;
             });
