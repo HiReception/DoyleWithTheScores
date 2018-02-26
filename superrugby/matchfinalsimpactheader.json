@@ -8,8 +8,8 @@
     },
     {
       "title": "Chance of Winning Conference if:",
-      "probability-attr": "confProb",
-      "change-attr": "confChange"
+      "probability-attr": "win-confProb",
+      "change-attr": "win-confChange"
     }
   ]
 }

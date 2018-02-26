@@ -9,7 +9,7 @@
     "suffix": "%"
   },
   {
-    "attribute": "confChance",
+    "attribute": "win-confChance",
     "title": "Chance wins<br/>Conference",
     "class": "team-prob-finals",
     "decimals": 2,
