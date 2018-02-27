@@ -35,7 +35,7 @@
     "suffix": ""
   },
   {
-    "attribute": "finalschance",
+    "attribute": "finalsChance",
     "title": "Chance of<br/>Finals",
     "class": "team-prob-finals",
     "decimals": 2,
@@ -44,7 +44,7 @@
     "suffix": "%"
   },
   {
-    "attribute": "confchance",
+    "attribute": "win-confChance",
     "title": "Chance wins<br/>Conference",
     "class": "team-prob-finals",
     "decimals": 2,
