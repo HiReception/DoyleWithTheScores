@@ -1,0 +1,13 @@
+[
+  {
+    "attribute": "gfChance",
+    "title": "Chance of<br/>Grand Final",
+    "class": "team-prob-finals",
+    "decimals": 2,
+    "type": "number",
+    "prefix": "",
+    "suffix": "%",
+    "fromPosition": 1,
+    "toPosition": 2
+  }
+]

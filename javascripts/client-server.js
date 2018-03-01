@@ -1013,6 +1013,18 @@ var drawNavbar = function(thispage) {
 
             navbarList.append(aflButton);
 
+                var aflwButton = $("<li></li>");
+                if (thispage === "aflw") {
+                    aflwButton.addClass("active")
+                }
+                    var aflwLink = $("<a></a>")
+                        .attr("href", "/aflw")
+                        .text("AFLW");
+
+                aflwButton.append(aflwLink);
+
+            navbarList.append(aflwButton);
+
                 var nrlButton = $("<li></li>")
                 if (thispage === "nrl") {
                     nrlButton.addClass("active")

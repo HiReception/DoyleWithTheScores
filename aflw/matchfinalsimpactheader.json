@@ -1,0 +1,10 @@
+{
+  "include-draw": "true",
+  "categories": [
+    {
+      "title": "Grand Final Chance if:",
+      "probability-attr": "gfProb",
+      "change-attr": "gfChange"
+    }
+  ]
+}

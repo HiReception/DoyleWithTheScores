@@ -56,6 +56,10 @@ app.get('/afl', function(req, res){
     res.sendfile(__dirname + '/afl/index.html');
 });
 
+app.get('/aflw', function(req, res){
+    res.sendfile(__dirname + '/aflw/index.html');
+});
+
 app.get('/nrl', function(req, res){
     res.sendfile(__dirname + '/nrl/index.html');
 });
