@@ -1,7 +1,18 @@
 [
   {
-    "attribute": "gfChance",
-    "title": "Chance of<br/>Grand Final",
+    "attribute": "finalsChance",
+    "title": "Chance of<br/>Finals",
+    "class": "team-prob-finals",
+    "decimals": 2,
+    "type": "number",
+    "prefix": "",
+    "suffix": "%",
+    "fromPosition": 1,
+    "toPosition": 4
+  },
+  {
+    "attribute": "winconfChance",
+    "title": "Chance wins<br/>Conference",
     "class": "team-prob-finals",
     "decimals": 2,
     "type": "number",

@@ -2,9 +2,14 @@
   "include-draw": "true",
   "categories": [
     {
-      "title": "Grand Final Chance if:",
-      "probability-attr": "gfProb",
-      "change-attr": "gfChange"
+      "title": "Chance of Making Finals if:",
+      "probability-attr": "finalsProb",
+      "change-attr": "finalsChange"
+    },
+    {
+      "title": "Chance of Winning Conference if:",
+      "probability-attr": "winconfProb",
+      "change-attr": "winconfChange"
     }
   ]
 }

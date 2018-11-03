@@ -64,10 +64,20 @@
         <p id="jumbotron-byline">If you think it's too low-scoring, you're following the wrong team.</p>
     </div>
     <div class="page-header">
-        <h1>Ladder Position Probabilities</h1>
+        <h1>Ladder Position Probabilities - All Teams</h1>
     </div>
 
     <div class="table-responsive" id="team-probability-wrapper"><div class="well">Loading...</div></div>
+
+    <div class="page-header">
+        <h1>Conference Ladders</h1>
+    </div>
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active" id="A-tab"><a href="#">Conference A</a></li>
+        <li role="presentation" id="B-tab"><a href="#">Conference B</a></li>
+    </ul>
+
+    <div class="table-responsive" id="conf-probability-wrapper"><div class="well">Loading...</div></div>
 
     <div class="row">
 
@@ -134,9 +144,27 @@
 			drawFirstFinalOpponentTable("aflw");
 			drawMatchFinalsImpactTable("aflw");
 
-			var endOfRigging = new Date("2016-10-01T07:00:00");
-			var now = new Date();
-			now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+			drawTeamProbTable("aflw", "A", "#conf-probability-wrapper");
+
+			$('#A-tab').click(function() {
+                if (!$(this).hasClass("active")) {
+                    $(this).addClass("active");
+                    $(this).siblings().removeClass("active");
+                    $('#conf-probability-wrapper').html('<div class="well">Loading...</div>');
+                    drawTeamProbTable("aflw", "A", "#conf-probability-wrapper");
+                }
+                return false;
+            });
+
+            $('#B-tab').click(function() {
+                if (!$(this).hasClass("active")) {
+                    $(this).addClass("active");
+                    $(this).siblings().removeClass("active");
+                    $('#conf-probability-wrapper').html('<div class="well">Loading...</div>');
+                    drawTeamProbTable("aflw", "B", "#conf-probability-wrapper");
+                }
+                return false;
+            });
         });
 </script>
 
