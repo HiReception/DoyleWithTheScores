@@ -8,7 +8,7 @@
   "dependencies": {
     "chartjs": "^0.3.23",
     "ejs": "2.5.5",
-    "express": "3.4.x",
+    "express": "4.17.x",
     "socket.io": "0.9.x",
     "grunt-cli": "1.2.0",
     "aws-sdk": "2.4.4"
